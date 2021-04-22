@@ -89,11 +89,12 @@ const MocksCount = {
   MAX: 1000
 };
 
-const getRandomFromList = (params) => {
-  const {list, minLength, maxLength} = params;
-  return shuffle(list)
-    .slice(1, getRandomInt(minLength, maxLength))
-    .join(` `);
+const getRandomFromList = (list, minLength, maxLength, isString) => {
+  const result = shuffle(list).slice(1, getRandomInt(minLength, maxLength));
+  if (isString) {
+    return result.join(` `);
+  }
+  return result;
 };
 
 const generateOffers = (count) => {
@@ -105,9 +106,9 @@ const generateOffers = (count) => {
   return Array(count).fill({}).map(() => ({
     title: TITLES[getRandomInt(0, TITLES.length - 1)],
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
-    announce: getRandomFromList({list: SENTENCES, minLength: AnnounceQuantity.MIN, maxLength: AnnounceQuantity.MAX}),
-    fullText: getRandomFromList({list: SENTENCES, minLength: FullQuantity.MIN, maxLength: FullQuantity.MAX}),
-    category: getRandomFromList({list: CATEGORIES, minLength: CategoriesQuantity.MIN, maxLength: CategoriesQuantity.MAX}),
+    announce: getRandomFromList(SENTENCES, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
+    fullText: getRandomFromList(SENTENCES, FullQuantity.MIN, FullQuantity.MAX, true),
+    category: getRandomFromList(CATEGORIES, CategoriesQuantity.MIN, CategoriesQuantity.MAX, false),
   }));
 };
 
