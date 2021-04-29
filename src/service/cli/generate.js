@@ -82,9 +82,11 @@ module.exports = {
       }
     };
 
-    const sentences = await readContent(FILE_SENTENCES_PATH);
-    const titles = await readContent(FILE_TITLES_PATH);
-    const categories = await readContent(FILE_CATEGORIES_PATH);
+    const [sentences, titles, categories] = await Promise.all([
+      readContent(FILE_SENTENCES_PATH),
+      readContent(FILE_TITLES_PATH),
+      readContent(FILE_CATEGORIES_PATH)
+    ]);
 
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || MocksCount.DEFAULT;
