@@ -13,5 +13,6 @@ html(lang='ru')
   body
     div(class= !!wrapper ? wrapper : 'wrapper')
       block content
+      include ../components/footer/footer.pug
     script(src='/js/vendor.js')
     script(src='/js/main.js')
