@@ -16,3 +16,8 @@ module.exports.HttpCode = {
   FORBIDDEN: 403,
   UNAUTHORIZED: 401,
 };
+
+module.exports.WrapperClass = {
+  COLOR: `wrapper-color`,
+  NO_BACKGROUND: `wrapper wrapper--nobackground`,
+};
