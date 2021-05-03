@@ -1,0 +1,16 @@
+extends ../../_layouts/wrapper-color.pug
+block content
+  include ../../components/header/header-menu.pug
+  main
+    section.search-page
+      .search-page__wrapper
+        h1 Поиск
+        .search.search-page__form
+          form(action='#' method='get')
+            label
+              input(type='text' name='search' placeholder='Что ищем?' value='Путешествия')
+            button.search__button.button.button--transparent(type='submit') Найти
+          include ../../components/search/result.pug
+          include ../../components/search/result.pug
+          include ../../components/search/result.pug
+  include ../../components/footer/footer.pug
