@@ -2,6 +2,7 @@
 
 const fs = require(`fs/promises`);
 const chalk = require(`chalk`);
+const {nanoid} = require(`nanoid`);
 
 const {
   getRandomDate,
@@ -10,7 +11,8 @@ const {
 } = require(`../../utils`);
 
 const {
-  ExitCode
+  ExitCode,
+  MAX_ID_LENGTH
 } = require(`../../constants`);
 
 const FILE_NAME = `mocks.json`;
@@ -61,6 +63,7 @@ const generateOffers = (params) => {
   }
 
   return Array(count).fill({}).map(() => ({
+    id: nanoid(MAX_ID_LENGTH),
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
