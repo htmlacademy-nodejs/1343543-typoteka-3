@@ -7,6 +7,8 @@ module.exports.USER_ARGV_INDEX = 2;
 module.exports.MAX_ID_LENGTH = 6;
 module.exports.MAX_COMMENTS = 3;
 
+module.exports.API_PREFIX = `/api`;
+
 module.exports.ExitCode = {
   error: 1,
   success: 0,
