@@ -29,3 +29,8 @@ module.exports.WrapperClass = {
   COLOR: `wrapper-color`,
   NO_BACKGROUND: `wrapper wrapper--nobackground`,
 };
+
+module.exports.Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
