@@ -106,7 +106,7 @@ const app = express();
 app.use(express.json());
 search(app, new DataService(mockData));
 
-describe(`API returns offer based on search query`, () => {
+describe(`API returns article based on search query`, () => {
 
   let response;
 
@@ -122,7 +122,7 @@ describe(`API returns offer based on search query`, () => {
 
   test(`1 articles found`, () => expect(response.body.length).toBe(1));
 
-  test(`Offer has correct id`, () => expect(response.body[0].id).toBe(`ulPbjd`));
+  test(`Article has correct id`, () => expect(response.body[0].id).toBe(`ulPbjd`));
 });
 
 test(`API returns code 404 if nothing is found`,
