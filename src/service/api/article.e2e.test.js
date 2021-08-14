@@ -178,10 +178,9 @@ describe(`API creates an article if data is valid`, () => {
   const newarticle = {
     category: `Котики`,
     title: `Дам погладить котика`,
-    description: `Дам погладить котика. Дорого. Не гербалайф`,
-    picture: `cat.jpg`,
-    type: `article`,
-    sum: 100500
+    announce: `Дам погладить котика`,
+    fullText: `Дам погладить котика. Дорого. Не гербалайф`,
+    createdDate: `2021-05-18T05:51:04.976Z`
   };
   const app = createAPI();
   let response;
@@ -192,9 +191,8 @@ describe(`API creates an article if data is valid`, () => {
       .send(newarticle);
   });
 
-
+  console.log(response);
   test(`Status code 201`, () => expect(response.statusCode).toBe(HttpCode.CREATED));
-
 
   test(`Returns article created`, () => expect(response.body).toEqual(expect.objectContaining(newarticle)));
 
@@ -231,15 +229,14 @@ describe(`API refuses to create an article if data is invalid`, () => {
 });
 
 describe(`API changes existent article`, () => {
-
   const newarticle = {
     category: `Котики`,
     title: `Дам погладить котика`,
-    description: `Дам погладить котика. Дорого. Не гербалайф`,
-    picture: `cat.jpg`,
-    type: `article`,
-    sum: 100500
+    announce: `Дам погладить котика`,
+    fullText: `Дам погладить котика. Дорого. Не гербалайф`,
+    createdDate: `2021-05-18T05:51:04.976Z`
   };
+
   const app = createAPI();
   let response;
 
@@ -267,10 +264,9 @@ test(`API returns status code 404 when trying to change non-existent article`, (
   const validarticle = {
     category: `Это`,
     title: `валидный`,
-    description: `объект`,
-    picture: `объявления`,
-    type: `однако`,
-    sum: 404
+    announce: `объект`,
+    fullText: `объявления`,
+    createdDate: `2021-05-18T05:51:04.976Z`
   };
 
   return request(app)
@@ -312,11 +308,10 @@ describe(`API correctly deletes an article`, () => {
 
   test(`Returns deleted article`, () => expect(response.body.id).toBe(`roBBM7`));
 
-  test(`article count is 4 now`, () => request(app)
+  test(`article count is 11 now`, () => request(app)
     .get(`/articles`)
-    .expect((res) => expect(res.body.length).toBe(4))
+    .expect((res) => expect(res.body.length).toBe(11))
   );
-
 });
 
 test(`API refuses to delete non-existent article`, () => {
@@ -337,14 +332,14 @@ describe(`API returns a list of comments to given article`, () => {
 
   beforeAll(async () => {
     response = await request(app)
-      .get(`/articles/GxdTgz/comments`);
+      .get(`/articles/sWilm2/comments`);
   });
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
 
-  test(`Returns list of 4 comments`, () => expect(response.body.length).toBe(4));
+  test(`Returns list of 2 comments`, () => expect(response.body.length).toBe(2));
 
-  test(`First comment's id is "kqME9j"`, () => expect(response.body[0].id).toBe(`kqME9j`));
+  test(`First comment's id is "csTpVf"`, () => expect(response.body[0].id).toBe(`csTpVf`));
 
 });
 
@@ -359,19 +354,18 @@ describe(`API creates a comment if data is valid`, () => {
 
   beforeAll(async () => {
     response = await request(app)
-      .post(`/articles/GxdTgz/comments`)
+      .post(`/articles/sWilm2/comments`)
       .send(newComment);
   });
 
 
   test(`Status code 201`, () => expect(response.statusCode).toBe(HttpCode.CREATED));
 
-
   test(`Returns comment created`, () => expect(response.body).toEqual(expect.objectContaining(newComment)));
 
   test(`Comments count is changed`, () => request(app)
-    .get(`/articles/GxdTgz/comments`)
-    .expect((res) => expect(res.body.length).toBe(5))
+    .get(`/articles/sWilm2/comments`)
+    .expect((res) => expect(res.body.length).toBe(3))
   );
 
 });
@@ -394,7 +388,7 @@ test(`API refuses to create a comment when data is invalid, and returns status c
   const app = createAPI();
 
   return request(app)
-    .post(`/articles/GxdTgz/comments`)
+    .post(`/articles/sWilm2/comments`)
     .send({})
     .expect(HttpCode.BAD_REQUEST);
 
@@ -408,15 +402,15 @@ describe(`API correctly deletes a comment`, () => {
 
   beforeAll(async () => {
     response = await request(app)
-      .delete(`/articles/GxdTgz/comments/kqME9j`);
+      .delete(`/articles/sWilm2/comments/csTpVf`);
   });
 
   test(`Status code 200`, () => expect(response.statusCode).toBe(HttpCode.OK));
 
-  test(`Returns comment deleted`, () => expect(response.body.id).toBe(`kqME9j`));
+  test(`Returns comment deleted`, () => expect(response.body.id).toBe(`csTpVf`));
 
   test(`Comments count is 3 now`, () => request(app)
-    .get(`/articles/GxdTgz/comments`)
+    .get(`/articles/sWilm2/comments`)
     .expect((res) => expect(res.body.length).toBe(3))
   );
 
