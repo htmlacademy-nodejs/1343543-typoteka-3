@@ -1,20 +1,20 @@
 'use strict';
 
-module.exports.DEFAULT_COMMAND = `--help`;
+const DEFAULT_COMMAND = `--help`;
 
-module.exports.USER_ARGV_INDEX = 2;
+const USER_ARGV_INDEX = 2;
 
-module.exports.MAX_ID_LENGTH = 6;
-module.exports.MAX_COMMENTS = 3;
+const MAX_ID_LENGTH = 6;
+const MAX_COMMENTS = 3;
 
-module.exports.API_PREFIX = `/api`;
+const API_PREFIX = `/api`;
 
-module.exports.ExitCode = {
+const ExitCode = {
   error: 1,
   success: 0,
 };
 
-module.exports.HttpCode = {
+const HttpCode = {
   OK: 200,
   CREATED: 201,
   NOT_FOUND: 404,
@@ -25,7 +25,24 @@ module.exports.HttpCode = {
 };
 
 
-module.exports.WrapperClass = {
+const WrapperClass = {
   COLOR: `wrapper-color`,
   NO_BACKGROUND: `wrapper wrapper--nobackground`,
+};
+
+const Env = {
+  DEVELOPMENT: `development`,
+  PRODUCTION: `production`
+};
+
+module.exports = {
+  DEFAULT_COMMAND,
+  USER_ARGV_INDEX,
+  MAX_ID_LENGTH,
+  MAX_COMMENTS,
+  API_PREFIX,
+  ExitCode,
+  HttpCode,
+  WrapperClass,
+  Env
 };
