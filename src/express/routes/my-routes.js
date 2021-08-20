@@ -13,7 +13,19 @@ myRouter.get(`/`, async (req, res) => {
     articles
   });
 });
-myRouter.get(`/comments`, (req, res) => res.render(`my/comments`, {wrapper: WrapperClass.NO_BACKGROUND}));
+myRouter.get(`/comments`, async (req, res) => {
+  const articles = await api.getArticles();
+
+  // Временно отрисовывает комментарии к первой статье
+  const comments = {
+    title: articles[0].title,
+    comments: articles[0].comments
+  };
+  res.render(`my/comments`, {
+    wrapper: WrapperClass.NO_BACKGROUND,
+    comments
+  });
+});
 myRouter.get(`/new-post`, (req, res) => res.render(`my/new-post`));
 myRouter.get(`/categories`, (req, res) => res.render(`my/categories`, {wrapper: WrapperClass.NO_BACKGROUND}));
 
