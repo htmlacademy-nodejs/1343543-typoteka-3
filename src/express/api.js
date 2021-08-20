@@ -7,8 +7,6 @@ const TIMEOUT = 1000;
 const port = process.env.API_PORT || 3000;
 const defaultUrl = `http://localhost:${port}/api/`;
 
-const defaultAPI = new API(defaultUrl, TIMEOUT);
-
 class API {
 
   constructor(baseURL, timeout) {
@@ -22,7 +20,7 @@ class API {
     return this._load(`/articles`);
   }
 
-  getArticles(id) {
+  getArticle(id) {
     return this._load(`/articles/${id}`);
   }
 
@@ -47,6 +45,8 @@ class API {
     return response.data;
   }
 }
+
+const defaultAPI = new API(defaultUrl, TIMEOUT);
 
 module.exports = {
   API,
