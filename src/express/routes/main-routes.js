@@ -14,7 +14,7 @@ mainRouter.get(`/register`, (req, res) => res.render(`main/sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`main/login`));
 mainRouter.get(`/search`, async (req, res) => {
   try {
-    const {query} = req.query;
+    const query = req.query.search;
     const results = await api.search(query);
     res.render(`main/search`, {
       wrapper: WrapperClass.COLOR,
