@@ -27,19 +27,10 @@ articlesRouter.get(`/add`, async (req, res) => {
 articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
 
 articlesRouter.post(`/add`, async (req, res) => {
-  const articleData = {
-    category: [`Котики`],
-    title: `Дам погладить котика`,
-    announce: `Дам погладить котика`,
-    fullText: `Дам погладить котика. Дорого. Не гербалайф`,
-    createdDate: `2021-05-18T05:51:04.976Z`
-  };
-
   try {
-    await api.createArticle(articleData);
+    await api.createArticle();
     res.redirect(`../my`);
   } catch (e) {
-    console.log(e);
     res.redirect(`back`);
   }
 });

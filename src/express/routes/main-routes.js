@@ -22,7 +22,6 @@ mainRouter.get(`/search`, async (req, res) => {
       query
     });
   } catch (error) {
-    console.log(query);
     res.render(`main/search`, {
       wrapper: WrapperClass.COLOR,
       results: [],
