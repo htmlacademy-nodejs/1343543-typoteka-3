@@ -10,5 +10,8 @@ block content
             label
               input(type='text' name='search' placeholder='Что ищем?' value='Путешествия')
             button.search__button.button.button--transparent(type='submit') Найти
-          each article of articles
-            include ../../components/search/result.pug
+          if results.length !== 0
+            each result of results
+              include ../../components/search/result.pug
+          else
+            include ../../components/search/no-results.pug

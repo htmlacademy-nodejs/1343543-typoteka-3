@@ -13,32 +13,19 @@ mainRouter.get(`/`, async (req, res) => {
 mainRouter.get(`/register`, (req, res) => res.render(`main/sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`main/login`));
 mainRouter.get(`/search`, async (req, res) => {
-  res.render(`main/search`, {articles: [
-    {
-      time: `21.21.2021`,
-      title: `Маркс`
-    },
-    {
-      time: `11.11.2011`,
-      title: `Энегльс`
-    }
-  ]
-  });
-  // try {
-  //   const {query} = req.query;
-  //   const results = await api.search(query);
-  //   console.log(results);
-  //   console.log('Бантик');
-  //   // res.render(`search-result`, {
-  //   //   wrapper: WrapperClass.COLOR,
-  //   //   results
-  //   // });
-  // } catch (error) {
-  //   res.render(`search-result`, {
-  //     wrapper: WrapperClass.COLOR,
-  //     results: []
-  //   });
-  // }
+  try {
+    const {query} = req.query;
+    const results = await api.search(query);
+    res.render(`main/search`, {
+      wrapper: WrapperClass.COLOR,
+      results
+    });
+  } catch (error) {
+    res.render(`main/search`, {
+      wrapper: WrapperClass.COLOR,
+      results: []
+    });
+  }
 });
 mainRouter.get(`/404`, (req, res) => res.render(`errors/404`, {wrapper: WrapperClass.COLOR}));
 mainRouter.get(`/500`, (req, res) => res.render(`errors/500`, {wrapper: WrapperClass.COLOR}));
