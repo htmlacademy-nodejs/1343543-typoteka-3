@@ -33,7 +33,6 @@ class API {
         createdDate: `2021-05-18T05:51:04.976Z`
       }
     });
-    console.log(response);
     return response.data;
   }
 
@@ -55,7 +54,7 @@ class API {
     return this._load(`/category`);
   }
 
-  async createArticle() {
+  async createArticle(data) {
     return this._post;
     // return this._load(`/articles`, {
     //   method: `POST`,
