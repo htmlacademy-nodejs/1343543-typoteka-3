@@ -27,6 +27,7 @@ articlesRouter.get(`/add`, async (req, res) => {
 articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
 
 articlesRouter.post(`/add`, async (req, res) => {
+  console.log(req.body);
   try {
     await api.createArticle();
     res.redirect(`../my`);

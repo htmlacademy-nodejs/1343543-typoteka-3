@@ -5,11 +5,17 @@ const {HttpCode} = require(`../../constants`);
 const articleValidator = require(`../middlewares/article-validator`);
 const articleExist = require(`../middlewares/article-exists`);
 const commentValidator = require(`../middlewares/comment-validator`);
-
-const route = new Router();
+const bodyParser = require(`body-parser`);
 
 module.exports = (app, articleService, commentService) => {
+  const route = new Router();
+
   app.use(`/articles`, route);
+
+  const jsonParser = bodyParser.json()
+
+  // create application/x-www-form-urlencoded parser
+  const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
   route.get(`/`, (req, res) => {
     const articles = articleService.findAll();
@@ -28,6 +34,12 @@ module.exports = (app, articleService, commentService) => {
     return res.status(HttpCode.OK)
       .json(article);
   });
+
+  // route.post(`/`, articleValidator, (req, res) => {
+  //   const articles = articleService.findAll();
+  //   console.log(req.body);
+  //   return req;
+  // });
 
   route.post(`/`, articleValidator, (req, res) => {
     const article = articleService.create(req.body);

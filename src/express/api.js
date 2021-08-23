@@ -21,20 +21,20 @@ class API {
     return response.data;
   }
 
-  async _post() {
-    const response = await this._http.request({
-      url: `/articles`,
-      method: `POST`,
-      data: {
-        category: [`Котики`],
-        title: `Дам погладить котика`,
-        announce: `Дам погладить котика`,
-        fullText: `Дам погладить котика. Дорого. Не гербалайф`,
-        createdDate: `2021-05-18T05:51:04.976Z`
-      }
-    });
-    return response.data;
-  }
+  // async _post() {
+  //   const response = await this._http.request({
+  //     url: `/articles`,
+  //     method: `POST`,
+  //     data: {
+  //       category: [`Котики`],
+  //       title: `Дам погладить котика`,
+  //       announce: `Дам погладить котика`,
+  //       fullText: `Дам погладить котика. Дорого. Не гербалайф`,
+  //       createdDate: `2021-05-18T05:51:04.976Z`
+  //     }
+  //   });
+  //   return response.data;
+  // }
 
 
   getArticles() {
@@ -55,17 +55,17 @@ class API {
   }
 
   async createArticle(data) {
-    return this._post;
-    // return this._load(`/articles`, {
-    //   method: `POST`,
-    //   data: {
-    //     category: [`Котики`],
-    //     title: `Дам погладить котика`,
-    //     announce: `Дам погладить котика`,
-    //     fullText: `Дам погладить котика. Дорого. Не гербалайф`,
-    //     createdDate: `2021-05-18T05:51:04.976Z`
-    //   }
-    // });
+    // return this._post();
+    return this._load(`/articles`, {
+      method: `POST`,
+      data: {
+        category: [`Котики`],
+        title: `Дам погладить котика`,
+        announce: `Дам погладить котика`,
+        fullText: `Дам погладить котика. Дорого. Не гербалайф`,
+        createdDate: `2021-05-18T05:51:04.976Z`
+      }
+    });
   }
 }
 
