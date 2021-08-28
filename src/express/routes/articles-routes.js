@@ -1,9 +1,30 @@
 'use strict';
 
 const {Router} = require(`express`);
+const multer = require(`multer`);
+const path = require(`path`);
+const {nanoid} = require(`nanoid`);
+const {ensureArray} = require(`../../utils`);
+const { text } = require("body-parser");
+
+const UPLOAD_DIR = `../upload/img/`;
+
+const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
+
 const articlesRouter = new Router();
 
 const api = require(`../api`).getAPI();
+
+const storage = multer.diskStorage({
+  destination: uploadDirAbsolute,
+  filename: (req, file, cb) => {
+    const uniqueName = nanoid(10);
+    const extension = file.originalname.split(`.`).pop();
+    cb(null, `${uniqueName}.${extension}`);
+  }
+});
+
+const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, (req, res) => res.render(`articles/articles-by-category`));
 
@@ -26,14 +47,25 @@ articlesRouter.get(`/add`, async (req, res) => {
 
 articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
 
-articlesRouter.post(`/add`, async (req, res) => {
-  console.log(req.body);
-  try {
-    await api.createArticle();
-    res.redirect(`../my`);
-  } catch (e) {
-    res.redirect(`back`);
-  }
+articlesRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
+  const {body, file} = req;
+  const articleData = {
+    photo: file ? file.filename : ``,
+    date: body.date,
+    title: body.title,
+    announcement: body.announcement,
+    fulltext: body[`full-text`],
+    // category: ensureArray(body.category)
+  };
+
+  console.log(body);
+  console.log(articleData);
+  // try {
+  //   await api.createOffer(offerData);
+  //   res.redirect(`/my`);
+  // } catch (error) {
+  //   res.redirect(`back`);
+  // }
 });
 
 module.exports = articlesRouter;
