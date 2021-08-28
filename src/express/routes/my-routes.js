@@ -16,7 +16,6 @@ myRouter.get(`/`, async (req, res) => {
 myRouter.get(`/comments`, async (req, res) => {
   const articles = await api.getArticles();
 
-  // Временно отрисовывает комментарии к первой статье
   const comments = {
     title: articles[0].title,
     comments: articles[0].comments
