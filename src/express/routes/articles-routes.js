@@ -4,8 +4,6 @@ const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
-const {ensureArray} = require(`../../utils`);
-const { text } = require("body-parser");
 
 const UPLOAD_DIR = `../upload/img/`;
 
@@ -47,18 +45,13 @@ articlesRouter.get(`/add`, async (req, res) => {
 
 articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
 
-articlesRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
+articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
   const {body, file} = req;
-  // const articleData = {
-  //   photo: file ? file.filename : ``,
-  //   date: body.date,
-  //   title: body.title,
-  //   announcement: body.announcement,
-  //   fulltext: body[`full-text`],
-  //   // TODO - допилить потом, category: ensureArray(body.category)
-  // };
+  console.log(file);
 
   const articleData = {
+    // TODO тут будет поле photo, когда я пойму почему multer падает
+    // TODO непонятно каким образом должны выбираться категории, кнопка не работает, временно захардкодил котиков
     category: [`Котики`],
     title: body.title,
     announce: body.announcement,

@@ -33,7 +33,7 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  // TODO а почему эти метод async а другие нет?
+  // TODO а почему эти методы async а другие нет?
   async getCategories() {
     return this._load(`/category`);
   }
