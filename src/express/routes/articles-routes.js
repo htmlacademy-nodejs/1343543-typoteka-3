@@ -55,17 +55,15 @@ articlesRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
     title: body.title,
     announcement: body.announcement,
     fulltext: body[`full-text`],
-    // category: ensureArray(body.category)
+    // TODO - допилить потом, category: ensureArray(body.category)
   };
 
-  console.log(body);
-  console.log(articleData);
-  // try {
-  //   await api.createOffer(offerData);
-  //   res.redirect(`/my`);
-  // } catch (error) {
-  //   res.redirect(`back`);
-  // }
+  try {
+    await api.createArticle(articleData);
+    res.redirect(`/my`);
+  } catch (error) {
+    res.redirect(`back`);
+  }
 });
 
 module.exports = articlesRouter;
