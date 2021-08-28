@@ -6,7 +6,6 @@ const api = require(`../api`).getAPI();
 const myRouter = new Router();
 
 myRouter.get(`/`, async (req, res) => {
-  // Временно отправляет моковые данные
   const articles = await api.getArticles();
   res.render(`my/my`, {
     wrapper: WrapperClass.NO_BACKGROUND,
