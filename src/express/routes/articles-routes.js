@@ -49,13 +49,21 @@ articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
 
 articlesRouter.post(`/add`, upload.single(`avatar`), async (req, res) => {
   const {body, file} = req;
+  // const articleData = {
+  //   photo: file ? file.filename : ``,
+  //   date: body.date,
+  //   title: body.title,
+  //   announcement: body.announcement,
+  //   fulltext: body[`full-text`],
+  //   // TODO - допилить потом, category: ensureArray(body.category)
+  // };
+
   const articleData = {
-    photo: file ? file.filename : ``,
-    date: body.date,
+    category: [`Котики`],
     title: body.title,
-    announcement: body.announcement,
-    fulltext: body[`full-text`],
-    // TODO - допилить потом, category: ensureArray(body.category)
+    announce: body.announcement,
+    fullText: body[`full-text`],
+    createdDate: body.date,
   };
 
   try {
