@@ -47,7 +47,6 @@ articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
 
 articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
   const {body, file} = req;
-  console.log(file);
 
   const articleData = {
     // TODO тут будет поле photo, когда я пойму почему multer падает
