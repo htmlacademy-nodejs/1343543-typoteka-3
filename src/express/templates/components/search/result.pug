@@ -1,7 +1,10 @@
 .search__result
-  time.search__date(datetime='2019-03-21T20:33') 21.03.2019, 20:33
+  //- TODO - приделать время
+  time.search__date(datetime=`${result.createdDate}`) #{result.createdDate}
+  //- TODO - приделать ссылки
+  //- TODO - научиться подсвечивать найденное слово
   a.search__link
-    | Huawei открыла в России
+    | #{result.title}
     b путешествия
     |  на смартфон Mate 30 Pro без сервисов
     |                 Google

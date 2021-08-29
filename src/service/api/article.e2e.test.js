@@ -191,7 +191,6 @@ describe(`API creates an article if data is valid`, () => {
       .send(newarticle);
   });
 
-  console.log(response);
   test(`Status code 201`, () => expect(response.statusCode).toBe(HttpCode.CREATED));
 
   test(`Returns article created`, () => expect(response.body).toEqual(expect.objectContaining(newarticle)));
