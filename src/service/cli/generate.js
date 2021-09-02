@@ -15,7 +15,6 @@ const {
   MAX_ID_LENGTH,
   MAX_COMMENTS
 } = require(`../../constants`);
-const { CommentService } = require("../data-service");
 
 const FILE_NAME = `mocks.json`;
 
@@ -82,7 +81,7 @@ const generateArticles = (params) => {
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
     fullText: getRandomFromList(sentences, FullQuantity.MIN, FullQuantity.MAX, true),
-    picture: getRandomFromList(pictures, 1, 1, true),
+    picture: `${getRandomFromList(pictures, 1, 1, true)}@1x.jpg`,
     category: getRandomFromList(categories, CategoriesQuantity.MIN, CategoriesQuantity.MAX, false),
   }));
 };
