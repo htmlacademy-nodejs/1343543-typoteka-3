@@ -93,8 +93,7 @@ module.exports = {
     const readContent = async (filePath) => {
       try {
         const content = await fs.readFile(filePath, `utf8`);
-        content.split(`\n`);
-        return content;
+        return content.trim().split(`\n`);
       } catch (err) {
         console.error(chalk.red(err));
         return [];
@@ -108,14 +107,6 @@ module.exports = {
       readContent(FILE_COMMENTS_PATH),
       readContent(FILE_PICTURES_PATH),
     ]);
-
-    // TODO - косо работает функция readContent, последний элемент - ''
-    // при этом при добавлении content.pop() она почему крашится.
-    sentences.pop();
-    titles.pop();
-    categories.pop();
-    comments.pop();
-    pictures.pop();
 
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || MocksCount.DEFAULT;
