@@ -71,7 +71,7 @@ const generateArticles = (params) => {
 
   if (count > MocksCount.MAX) {
     console.error(`Не больше 1000 публикаций`);
-    process.exit(ExitCode.error);
+    process.exit(ExitCode.ERROR);
   }
 
   return Array(count).fill({}).map(() => ({
