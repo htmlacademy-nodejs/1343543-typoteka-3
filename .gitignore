@@ -2,6 +2,7 @@
 .DS_Store
 Thumbs.db
 model.ndm2
+mocks2.json
 
 # Файлы редактора
 .idea

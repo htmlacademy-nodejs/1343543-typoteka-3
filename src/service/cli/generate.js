@@ -65,7 +65,7 @@ const generateComments = (count, comments) => (
   }))
 );
 
-const generateOffers = (params) => {
+const generateArticles = (params) => {
   const {count, titles, sentences, categories, comments} = params;
 
   if (count > MocksCount.MAX) {
@@ -106,7 +106,7 @@ module.exports = {
 
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || MocksCount.DEFAULT;
-    const content = JSON.stringify(generateOffers({count: countOffer, sentences, titles, categories, comments}));
+    const content = JSON.stringify(generateArticles({count: countOffer, sentences, titles, categories, comments}));
 
     try {
       await fs.writeFile(FILE_NAME, content);
