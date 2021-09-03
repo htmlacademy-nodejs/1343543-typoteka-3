@@ -1,7 +1,6 @@
 # Файлы и папки операционной системы
 .DS_Store
 Thumbs.db
-model.ndm2
 
 # Файлы редактора
 .idea
@@ -13,6 +12,9 @@ model.ndm2
 node_modules/
 upload/
 mocks.json
+mocks2.json
+model.ndm2
+fill-db2.sql
 test.http
 
 # Папка с собранными файлами проекта

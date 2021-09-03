@@ -22,6 +22,7 @@ const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
 const FILE_COMMENTS_PATH = `./data/comments.txt`;
+const FILE_PICTURES_PATH = `./data/pictures.txt`;
 
 const DateCreation = {
   MIN: new Date(new Date().setDate(new Date().getDate() - 90)),
@@ -65,12 +66,12 @@ const generateComments = (count, comments) => (
   }))
 );
 
-const generateOffers = (params) => {
-  const {count, titles, sentences, categories, comments} = params;
+const generateArticles = (params) => {
+  const {count, titles, sentences, categories, comments, pictures} = params;
 
   if (count > MocksCount.MAX) {
     console.error(`Не больше 1000 публикаций`);
-    process.exit(ExitCode.error);
+    process.exit(ExitCode.ERROR);
   }
 
   return Array(count).fill({}).map(() => ({
@@ -80,6 +81,7 @@ const generateOffers = (params) => {
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
     fullText: getRandomFromList(sentences, FullQuantity.MIN, FullQuantity.MAX, true),
+    picture: `${getRandomFromList(pictures, 1, 1, true)}@1x.jpg`,
     category: getRandomFromList(categories, CategoriesQuantity.MIN, CategoriesQuantity.MAX, false),
   }));
 };
@@ -87,26 +89,28 @@ const generateOffers = (params) => {
 module.exports = {
   name: `--generate`,
   async run(args) {
+
     const readContent = async (filePath) => {
       try {
         const content = await fs.readFile(filePath, `utf8`);
-        return content.split(`\n`);
+        return content.trim().split(`\n`);
       } catch (err) {
         console.error(chalk.red(err));
         return [];
       }
     };
 
-    const [sentences, titles, categories, comments] = await Promise.all([
+    const [sentences, titles, categories, comments, pictures] = await Promise.all([
       readContent(FILE_SENTENCES_PATH),
       readContent(FILE_TITLES_PATH),
       readContent(FILE_CATEGORIES_PATH),
       readContent(FILE_COMMENTS_PATH),
+      readContent(FILE_PICTURES_PATH),
     ]);
 
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || MocksCount.DEFAULT;
-    const content = JSON.stringify(generateOffers({count: countOffer, sentences, titles, categories, comments}));
+    const content = JSON.stringify(generateArticles({count: countOffer, sentences, titles, categories, comments, pictures}));
 
     try {
       await fs.writeFile(FILE_NAME, content);

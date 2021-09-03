@@ -8,8 +8,8 @@
     "jest": "jest",
     "eslint": "eslint --ext .js src/",
     "server": "nodemon ./src/service/service.js --server 3000",
-    "start": "cross-env NODE_ENV=production node ./src/service/service.js --server 3000",
-    "start::debug": "cross-env NODE_ENV=development node ./src/service/service.js --server 3000",
+    "start": "cross-env NODE_ENV=production node ./src/service/service.js",
+    "start::debug": "cross-env NODE_ENV=development node ./src/service/service.js",
     "start-front-server": "nodemon ./src/express/index.js"
   },
   "repository": {
