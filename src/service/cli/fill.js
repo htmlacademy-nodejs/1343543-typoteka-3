@@ -203,7 +203,7 @@ ALTER TABLE article_categories ENABLE TRIGGER ALL;
 
 ALTER TABLE comments DISABLE TRIGGER ALL;
 
-INSERT INTO COMMENTS(text, user_id, offer_id) VALUES
+INSERT INTO COMMENTS(text, user_id, article_id) VALUES
 ${commentValues};
 
 ALTER TABLE comments ENABLE TRIGGER ALL;`;
