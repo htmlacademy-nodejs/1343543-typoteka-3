@@ -16,6 +16,7 @@ mocks2.json
 model.ndm2
 fill-db2.sql
 test.http
+backup
 
 # Папка с собранными файлами проекта
 build/

@@ -199,7 +199,7 @@ ALTER TABLE article_categories DISABLE TRIGGER ALL;
 INSERT INTO article_categories(article_id, category_id) VALUES
 ${articleCategoryValues};
 
-ALTER TABLE article_categories ENABLE TRIGGER ALL
+ALTER TABLE article_categories ENABLE TRIGGER ALL;
 
 ALTER TABLE comments DISABLE TRIGGER ALL;
 
