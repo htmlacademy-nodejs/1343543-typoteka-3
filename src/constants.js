@@ -24,7 +24,6 @@ const HttpCode = {
   BAD_REQUEST: 400,
 };
 
-
 const WrapperClass = {
   COLOR: `wrapper-color`,
   NO_BACKGROUND: `wrapper wrapper--nobackground`,
