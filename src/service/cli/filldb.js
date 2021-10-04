@@ -7,6 +7,8 @@ const sequelize = require(`../lib/sequelize`);
 const defineModels = require(`../models`);
 const Alias = require(`../models/alias`);
 const {getLogger} = require(`../lib/logger`);
+const initDatabase = require(`../lib/init-db`);
+
 
 const {
   getRandomDate,
@@ -133,10 +135,6 @@ module.exports = {
     }
     logger.info(`Connection to database established`);
 
-    const {Category, Article} = defineModels(sequelize);
-
-    await sequelize.sync({force: true});
-
     const [sentences, titles, categories, comments, pictures] = await Promise.all([
       readContent(FILE_SENTENCES_PATH),
       readContent(FILE_TITLES_PATH),
@@ -144,12 +142,6 @@ module.exports = {
       readContent(FILE_COMMENTS_PATH),
       readContent(FILE_PICTURES_PATH),
     ]);
-
-    console.log(getRandomFromList(categories, CategoriesQuantity.MIN, CategoriesQuantity.MAX, false));
-
-    const categoryModels = await Category.bulkCreate(
-        categories.map((item) => ({name: item}))
-    );
 
     const [count] = args;
     const countArticle = Number.parseInt(count, 10) || MocksCount.DEFAULT;
@@ -162,11 +154,8 @@ module.exports = {
       pictures
     });
 
-    const articlePromises = articles.map(async (article) => {
-      const articleModel = await Article.create(article, {include: [Alias.COMMENTS]});
-      await articleModel.addCategories(article.categories[0]);
-    });
-    await Promise.all(articlePromises);
+    return initDatabase(sequelize, {articles, categories});
+
 
   //   try {
   //     await fs.writeFile(FILE_NAME, content);
