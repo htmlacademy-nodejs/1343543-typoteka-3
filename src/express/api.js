@@ -34,8 +34,8 @@ class API {
   }
 
   // TODO а почему эти методы async а другие нет?
-  async getCategories() {
-    return this._load(`/category`);
+  async getCategories(count) {
+    return this._load(`/category`, {params: {count}});
   }
 
   async createArticle(data) {

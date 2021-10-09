@@ -10,6 +10,7 @@ module.exports = (app, service) => {
 
   route.get(`/`, async (req, res) => {
     const {count} = req.query;
+    console.log(req.query);
     const categories = await service.findAll(count);
     res.status(HttpCode.OK)
       .json(categories);
