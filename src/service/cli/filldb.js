@@ -1,11 +1,7 @@
 'use strict';
 
 const fs = require(`fs/promises`);
-const chalk = require(`chalk`);
-const {nanoid} = require(`nanoid`);
 const sequelize = require(`../lib/sequelize`);
-const defineModels = require(`../models`);
-const Alias = require(`../models/alias`);
 const {getLogger} = require(`../lib/logger`);
 const initDatabase = require(`../lib/init-db`);
 
@@ -18,13 +14,10 @@ const {
 
 const {
   ExitCode,
-  MAX_ID_LENGTH,
   MAX_COMMENTS
 } = require(`../../constants`);
 
 const logger = getLogger({});
-
-const FILE_NAME = `mocks.json`;
 
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
@@ -45,11 +38,6 @@ const AnnounceQuantity = {
 const FullQuantity = {
   MIN: 1,
   MAX: 10
-};
-
-const CategoriesQuantity = {
-  MIN: 1,
-  MAX: 3
 };
 
 const MocksCount = {
@@ -155,14 +143,6 @@ module.exports = {
     });
 
     return initDatabase(sequelize, {articles, categories});
-
-
-  //   try {
-  //     await fs.writeFile(FILE_NAME, content);
-  //     console.info(chalk.green(`Operation success. File created.`));
-  //   } catch (err) {
-  //     console.error(chalk.red(`Can't write data to file...`));
-  //   }
   }
 };
 
