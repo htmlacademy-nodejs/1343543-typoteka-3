@@ -7,6 +7,7 @@ const mainRouter = new Router();
 
 mainRouter.get(`/`, async (req, res) => {
   const articles = await api.getArticles();
+  console.log(articles[0].categories[1]);
   res.render(`main/main`, {articles});
 });
 

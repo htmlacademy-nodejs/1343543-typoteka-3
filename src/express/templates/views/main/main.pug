@@ -97,10 +97,10 @@ block content
         each article of articles
           li.preview__item
             ul.preview__breadcrumbs
-              each category of article.category
+              each category of article.categories
                 //- TODO не забыть про ссылки
                 li.preview__breadcrumbs-item
-                  a.preview__breadcrumbs-link(href='#') #{category}
+                  a.preview__breadcrumbs-link(href='#') #{category.name}
                   //- TODO придумать контроллер даты (и вообще как его сюда добавить?)
             .preview__background
               //- TODO - и внезапно выяснилось что мы забыли замокать картинки :))

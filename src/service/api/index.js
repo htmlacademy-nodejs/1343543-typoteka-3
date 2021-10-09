@@ -21,7 +21,7 @@ const app = new Router();
 (() => {
   category(app, new CategoryService(sequelize));
   search(app, new SearchService(sequelize));
-  article(app, new ArticleService(sequelize), new CommentService());
+  article(app, new ArticleService(sequelize), new CommentService(sequelize));
 })();
 
 module.exports = app;

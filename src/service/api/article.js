@@ -14,11 +14,12 @@ module.exports = (app, articleService, commentService) => {
   route.get(`/`, async (req, res) => {
     const {offset, limit, comments} = req.query;
     let result;
-    if (limit || offset) {
-      result = await articleService.findPage({limit, offset});
-    } else {
-      result = await articleService.findAll(comments);
-    }
+    result = await articleService.findAll(true);
+    // if (limit || offset) {
+    //   result = await articleService.findPage({limit, offset});
+    // } else {
+    //   result = await articleService.findAll(comments);
+    // }
     res.status(HttpCode.OK).json(result);
   });
 
