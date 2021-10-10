@@ -1,5 +1,10 @@
 extends ../../_layouts/layout.pug
 block content
+  -
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleString();
+    }
   include ../../components/header/header-auth.pug
   main
     section.post
@@ -9,7 +14,7 @@ block content
         .post__wrapper
           .post__head
             a.post__backwards.button.button--backwards(href='#') Назад
-            time.post__date(datetime='2019-03-21T20:33') 21.03.2019, 20:33
+            time.post__date(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
             h2.post__title.title.title--main #{article.title}
             ul.post__themes.themes
               each category of categories
