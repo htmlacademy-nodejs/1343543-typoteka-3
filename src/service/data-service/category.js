@@ -1,7 +1,6 @@
 'use strict';
 
 const Sequelize = require(`sequelize`);
-const logger = require("../lib/logger");
 const Alias = require(`../models/alias`);
 
 class CategoryService {
