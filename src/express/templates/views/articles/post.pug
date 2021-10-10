@@ -35,43 +35,15 @@ block content
         section.post__comments.comments
           h2.comments__title.title.title--middle Комментарии
           ul.comments__list
-            li.comments__comment
-              .comments__avatar.avatar
-                img(src='/img/avatar-1.png' alt='аватар пользователя')
-              .comments__text
-                .comments__head
-                  p Евгений Петров •
-                  time.comments__date(datetime='2019-03-21T20:33') 21.03.2019, 20:33
-                p.comments__message Автор, ты все выдумал, покайся
-            li.comments__comment
-              .comments__avatar.avatar
-                img(src='/img/avatar-5.png' alt='аватар пользователя')
-              .comments__text
-                .comments__head
-                  p Александр Марков •
-                  time.comments__date(datetime='2019-03-21T20:33') 21.03.2019, 20:33
-                p.comments__message
-                  | Конечно, прежде чем так писать, нужно
-                  | искренне
-                  | приложить усилия, чтобы разобраться — не все люди умеют выражать свои мысли.
-            li.comments__comment
-              .comments__avatar.avatar
-                img(src='/img/avatar-4.png' alt='аватар пользователя')
-              .comments__text
-                .comments__head
-                  p Евгений Петров •
-                  time.comments__date(datetime='2019-03-21T20:33') 21.03.2019, 20:33
-                p.comments__message Автор, ты все выдумал, покайся
-            li.comments__comment
-              .comments__avatar.avatar
-                img(src='/img/avatar-3.png' alt='аватар пользователя')
-              .comments__text
-                .comments__head
-                  p Александр Марков •
-                  time.comments__date(datetime='2019-03-21T20:33') 21.03.2019, 20:33
-                p.comments__message
-                  | Конечно, прежде чем так писать, нужно
-                  | искренне приложить усилия, чтобы разобраться — не все люди умеют выражать свои мысли.
+            each comment of article.comments
+              li.comments__comment
+                .comments__avatar.avatar
+                  img(src='/img/avatar-1.png' alt='аватар пользователя')
+                .comments__text
+                  .comments__head
+                    p Евгений Петров •
+                    time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
+                  p.comments__message #{comment.text}
           .comments__footer.comments__footer--user
             form(action='#' method='POST')
               .comments__avatar.avatar
