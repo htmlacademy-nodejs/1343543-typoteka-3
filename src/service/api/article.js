@@ -27,7 +27,7 @@ module.exports = (app, articleService, commentService) => {
     const {articleId} = req.params;
     const {comments} = req.query;
 
-    const article = articleService.findOne(articleId, comments);
+    const article = await articleService.findOne(articleId, true);
 
     if (!article) {
       return res.status(HttpCode.NOT_FOUND)

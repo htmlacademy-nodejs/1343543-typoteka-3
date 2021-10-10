@@ -74,13 +74,11 @@ block content
           li.preview__item
             ul.preview__breadcrumbs
               each category of article.categories
-                //- TODO не забыть про ссылки
                 li.preview__breadcrumbs-item
                   a.preview__breadcrumbs-link(href='#') #{category.name}
                   //- TODO придумать контроллер даты (и вообще как его сюда добавить?)
             .preview__background
-              //- TODO - и внезапно выяснилось что мы забыли замокать картинки :))
-              img.preview__background-image(src='img/sea@1x.jpg' width='460' height='240' srcset='img/sea@1x.jpg 1x, img/sea@2x.jpg 2x' alt='Фотография моря')
+              img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
             time.preview__time(datetime=`${article.createdDate}`) #{article.createdDate}
             h3.preview__name
               a.preview__name-link(href=`articles/${article.id}`) #{article.title}
