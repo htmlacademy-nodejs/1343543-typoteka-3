@@ -81,7 +81,6 @@ block content
               each category of article.categories
                 li.preview__breadcrumbs-item
                   a.preview__breadcrumbs-link(href='#') #{category.name}
-                  //- TODO придумать контроллер даты (и вообще как его сюда добавить?)
             .preview__background
               img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
             time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
