@@ -106,7 +106,7 @@ const generateArticles = (params) => {
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
     fullText: getRandomFromList(sentences, FullQuantity.MIN, FullQuantity.MAX, true),
-    picture: `${getRandomFromList(pictures, 1, 1, true)}@1x.jpg`,
+    picture: `${getRandomFromList(pictures, 1, 1, true)}`,
     categories: getRandomSubarray(categories),
   }));
 };
