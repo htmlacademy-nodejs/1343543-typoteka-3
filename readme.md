@@ -1,8 +1,30 @@
 # Личный проект «Типотека» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Халимов](https://up.htmlacademy.ru/nodejs/3/user/1343543).
-* Наставник: [Алексей Балесный](https://htmlacademy.ru/profile/id221665).
+* Наставник: [Владислав Зубко](https://htmlacademy.ru/profile/id573447).
 
+
+---
+### Запуск
+
+Для работы необходим Node.js версии 14
+
+Для соединения с базой данных переменные окружения в файле .env:
+
+DB_HOST=(адрес)
+DB_PORT=(порт)
+DB_NAME=(имя базы данных)
+DB_USER=(имя пользователя)
+DB_PASSWORD=(пароль)
+
+Запуск серверной части:
+
+npm run start
+npm run start::debug
+
+Запауск фронтовой части
+
+npm run start-front-server
 ---
 
 _Не удаляйте и не изменяйте папки и файлы:_
