@@ -1,10 +1,5 @@
 extends ../../_layouts/layout.pug
 block content
-  -
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleString();
-    }
   include ../../components/header/header-auth.pug
   main
     section.post
