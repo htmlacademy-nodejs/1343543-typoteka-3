@@ -6,6 +6,5 @@
     }
   time.search__date(datetime=`${result.createdAt}`) #{formatDate(result.createdAt)}
   //- TODO - приделать ссылки
-  //- TODO - научиться подсвечивать найденное слово
-  a.search__link
+  a.search__link(href=`/articles/${result.id}`)
     | #{result.title}
