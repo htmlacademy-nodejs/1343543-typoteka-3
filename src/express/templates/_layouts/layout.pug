@@ -11,6 +11,11 @@ html(lang='ru')
     link(rel='preload' href='/./fonts/SFProDisplay-Regular.woff2' as='font' crossorigin='anonymous')
     link(rel='stylesheet' href='/css/style.min.css')
   body
+    -
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString();
+      }
     div(class= !!wrapper ? wrapper : 'wrapper')
       block content
       include ../components/footer/footer.pug

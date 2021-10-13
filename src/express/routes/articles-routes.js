@@ -43,10 +43,20 @@ articlesRouter.get(`/add`, async (req, res) => {
   res.render(`articles/post-add`, {categories});
 });
 
-articlesRouter.get(`/:id`, (req, res) => res.render(`articles/post`));
+articlesRouter.get(`/:id`, async (req, res) => {
+  const {id} = req.params;
+  const [article, categories] = await Promise.all([
+    api.getArticle(id),
+    api.getCategories(true)
+  ]);
+  res.render(`articles/post`, {
+    article,
+    categories
+  });
+});
 
 articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
-  const {body, file} = req;
+  const {body} = req;
 
   const articleData = {
     // TODO тут будет поле photo, когда я пойму почему multer падает

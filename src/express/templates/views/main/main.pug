@@ -7,36 +7,12 @@ block content
       | Это приветственный текст, который владелец блога может выбрать, чтобы описать себя 👏
     section.main-page__theme-list
       h2.visually-hidden Список тем
-      //- TODO не забыть в потом добавить обновление категорий в шаблон
       ul.themes
-        li.themes__item
-          a.themes__item-link(href='#')
-            | Автомобили
-            sup 88
-        li.themes__item
-          a.themes__item-link(href='#')
-            | Удаленная работа
-            sup 13
-        li.themes__item
-          a.themes__item-link(href='#')
-            | Бизнес
-            sup 13
-        li.themes__item
-          a.themes__item-link(href='#')
-            | Путешествия
-            sup 13
-        li.themes__item
-          a.themes__item-link.themes__item-link--padding(href='#')
-            | Дизайн и обустройство
-            sup 13
-        li.themes__item
-          a.themes__item-link(href='#')
-            | Производство игрушек
-            sup 22
-        li.themes__item
-          a.themes__item-link(href='#')
-            | UX & UI
-            sup 22
+        each category of categories
+          li.themes__item
+            a.themes__item-link(href='#')
+              | #{category.name}
+              sup #{category.count}
     .main-page__section-flex
       section.main-page__hot.hot
         h2.hot__name
@@ -97,17 +73,15 @@ block content
         each article of articles
           li.preview__item
             ul.preview__breadcrumbs
-              each category of article.category
-                //- TODO не забыть про ссылки
+              each category of article.categories
                 li.preview__breadcrumbs-item
-                  a.preview__breadcrumbs-link(href='#') #{category}
+                  a.preview__breadcrumbs-link(href='#') #{category.name}
                   //- TODO придумать контроллер даты (и вообще как его сюда добавить?)
             .preview__background
-              //- TODO - и внезапно выяснилось что мы забыли замокать картинки :))
-              img.preview__background-image(src='img/sea@1x.jpg' width='460' height='240' srcset='img/sea@1x.jpg 1x, img/sea@2x.jpg 2x' alt='Фотография моря')
-            time.preview__time(datetime=`${article.createdDate}`) #{article.createdDate}
+              img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
+            time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
             h3.preview__name
-              a.preview__name-link(href='#') #{article.title}
+              a.preview__name-link(href=`articles/${article.id}`) #{article.title}
             p.preview__text #{article.announce}
             a.preview__comment(href='#')
               | Комментарии

@@ -8,7 +8,7 @@ const route = new Router();
 module.exports = (app, service) => {
   app.use(`/search`, route);
 
-  route.get(`/`, (req, res) => {
+  route.get(`/`, async (req, res) => {
     const {query = ``} = req.query;
 
     if (!query) {
