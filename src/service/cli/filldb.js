@@ -119,7 +119,7 @@ module.exports = {
       await sequelize.authenticate();
     } catch (err) {
       logger.error(`An error occurred: ${err.message}`);
-      process.exit(1);
+      process.exit(ExitCode.ERROR);
     }
     logger.info(`Connection to database established`);
 

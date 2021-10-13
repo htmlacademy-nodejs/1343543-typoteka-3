@@ -42,6 +42,11 @@ html(lang='ru')
           li
             a(class=`pagination__button button button--forward ${page === end ? 'button--disabled' : ''}` href=`${prefix}page=${page + 1}` aria-label='Страница вперёд')
 
+    -
+      const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleString();
+      }
     div(class= !!wrapper ? wrapper : 'wrapper')
       block content
       include ../components/footer/footer.pug
