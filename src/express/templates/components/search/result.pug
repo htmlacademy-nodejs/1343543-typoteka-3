@@ -1,9 +1,4 @@
 .search__result
-  -
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleString();
-    }
   time.search__date(datetime=`${result.createdAt}`) #{formatDate(result.createdAt)}
   //- TODO - приделать ссылки
   a.search__link(href=`/articles/${result.id}`)
