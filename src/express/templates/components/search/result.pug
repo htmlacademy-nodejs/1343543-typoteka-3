@@ -1,10 +1,11 @@
 .search__result
-  //- TODO - приделать время
-  time.search__date(datetime=`${result.createdDate}`) #{result.createdDate}
+  -
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleString();
+    }
+  time.search__date(datetime=`${result.createdAt}`) #{formatDate(result.createdAt)}
   //- TODO - приделать ссылки
   //- TODO - научиться подсвечивать найденное слово
   a.search__link
     | #{result.title}
-    b путешествия
-    |  на смартфон Mate 30 Pro без сервисов
-    |                 Google
