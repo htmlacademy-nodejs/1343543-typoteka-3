@@ -6,7 +6,6 @@ const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 
 const UPLOAD_DIR = `../upload/img/`;
-const OFFERS_PER_PAGE = 8;
 
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
@@ -27,24 +26,13 @@ const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
-  let {page = 1} = req.query;
-  page = +page;
-
-  const limit = OFFERS_PER_PAGE;
-
-  const offset = (page - 1) * OFFERS_PER_PAGE;
-
-  const [
-    {count, articles},
-    categories
-  ] = await Promise.all([
-    api.getArticles({limit, offset, comments: true}),
-    api.getCategories(true)
+  const [articles, categories, activeCategory] = await Promise.all([
+    api.getArticlesWithCategory(categoryId),
+    api.getCategories(true),
+    api.getOneCategory(categoryId)
   ]);
 
-  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
-
-  res.render(`articles/articles-by-category`, {articles, categories, categoryId, page, totalPages});
+  res.render(`articles/articles-by-category`, {articles, categories, activeCategory});
 });
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {

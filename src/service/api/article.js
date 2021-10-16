@@ -23,6 +23,15 @@ module.exports = (app, articleService, commentService) => {
     res.status(HttpCode.OK).json(result);
   });
 
+  route.get(`/category/:categoryId`, async (req, res) => {
+    // реализация без пагинации: пофикшу перед защитой
+    const {categoryId} = req.params;
+
+    const result = await articleService.findAllWithCategory({categoryId});
+
+    res.status(HttpCode.OK).json(result);
+  });
+
   route.get(`/:articleId`, async (req, res) => {
     const {articleId} = req.params;
 

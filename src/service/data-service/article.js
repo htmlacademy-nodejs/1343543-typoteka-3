@@ -7,6 +7,7 @@ class ArticleService {
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
+    this._ArticleCategory = sequelize.models.ArticleCategory;
   }
 
   async create(articleData) {
@@ -27,6 +28,29 @@ class ArticleService {
     if (needComments) {
       include.push(Alias.COMMENTS);
     }
+    const articles = await this._Article.findAll({
+      include,
+      order: [
+        [`createdAt`, `DESC`]
+      ]
+    });
+    return articles.map((item) => item.get());
+  }
+
+  async findAllWithCategory({categoryId}) {
+    const include = [
+      Alias.CATEGORIES,
+      Alias.COMMENTS,
+      {
+        model: this._ArticleCategory,
+        where: {
+          CategoryId: categoryId,
+        },
+        as: Alias.ARTICLE_CATEGORIES,
+        attributes: []
+      }
+    ];
+
     const articles = await this._Article.findAll({
       include,
       order: [

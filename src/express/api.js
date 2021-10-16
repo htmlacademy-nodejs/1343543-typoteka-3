@@ -25,6 +25,10 @@ class API {
     return this._load(`/articles`, {params: {offset, limit, comments}});
   }
 
+  getArticlesWithCategory(id) {
+    return this._load(`/articles/category/${id}`);
+  }
+
   getArticle(id) {
     return this._load(`/articles/${id}`);
   }
@@ -36,6 +40,10 @@ class API {
   // TODO а почему эти методы async а другие нет?
   async getCategories(count) {
     return this._load(`/category`, {params: {count}});
+  }
+
+  async getOneCategory(id) {
+    return this._load(`/category/${id}`);
   }
 
   async createArticle(data) {
