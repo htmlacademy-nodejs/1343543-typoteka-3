@@ -27,6 +27,10 @@ const getAddArticleData = () => {
   return api.getCategories();
 };
 
+const getViewArticleData = (articleId, comments) => {
+  return api.getOffer(articleId, comments);
+};
+
 const getEditArticleData = async (articleId) => {
   const [article, categories] = await Promise.all([
     api.getArticle(articleId),
@@ -55,6 +59,7 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
     api.getCategories()
   ]);
   res.render(`articles/post-edit`, {
+    id,
     article,
     categories
   });
@@ -118,6 +123,19 @@ articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
     const validationMessages = prepareErrors(errors);
     const [article, categories] = await getEditArticleData(id);
     res.render(`offers/ticket-edit`, {id, article, validationMessages, categories});
+  }
+});
+
+articlesRouter.post(`/:id/comments`, async (req, res) => {
+  const {id} = req.params;
+  const {comment} = req.body;
+  try {
+    await api.createComment(id, {text: comment});
+    res.redirect(`/offers/${id}`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const offer = await getViewArticleData(id, true);
+    res.render(`offers/ticket`, {offer, id, validationMessages});
   }
 });
 
