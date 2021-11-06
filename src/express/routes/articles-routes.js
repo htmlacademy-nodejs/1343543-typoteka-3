@@ -4,6 +4,7 @@ const {Router} = require(`express`);
 const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
+const {prepareErrors} = require(`../../utils`);
 
 const UPLOAD_DIR = `../upload/img/`;
 
@@ -21,6 +22,18 @@ const storage = multer.diskStorage({
     cb(null, `${uniqueName}.${extension}`);
   }
 });
+
+const getAddArticleData = () => {
+  return api.getCategories();
+};
+
+const getEditArticleData = async (articleId) => {
+  const [article, categories] = await Promise.all([
+    api.getArticle(articleId),
+    api.getCategories()
+  ]);
+  return [article, categories];
+};
 
 const upload = multer({storage});
 
@@ -48,7 +61,7 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
 });
 
 articlesRouter.get(`/add`, async (req, res) => {
-  const categories = await api.getCategories();
+  const categories = await getAddArticleData();
   res.render(`articles/post-add`, {categories});
 });
 
@@ -80,8 +93,31 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
   try {
     await api.createArticle(articleData);
     res.redirect(`/my`);
-  } catch (error) {
-    res.redirect(`back`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const categories = await getAddArticleData();
+    res.render(`offers/new-ticket`, {categories, validationMessages, csrfToken: req.csrfToken()});
+  }
+});
+
+articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
+  const {body, file} = req;
+  const {id} = req.params;
+  const articleData = {
+    picture: file ? file.filename : body[`old-image`],
+    category: [`Котики`],
+    title: body.title,
+    announce: body.announcement,
+    fullText: body[`full-text`],
+    createdDate: body.date,
+  };
+  try {
+    await api.editOffer(id, articleData);
+    res.redirect(`/my`);
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const [article, categories] = await getEditArticleData(id);
+    res.render(`offers/ticket-edit`, {id, article, validationMessages, categories});
   }
 });
 
