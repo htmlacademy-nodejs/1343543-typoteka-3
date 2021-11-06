@@ -35,6 +35,7 @@ const schema = Joi.object({
 
 module.exports = (req, res, next) => {
   const newArticle = req.body;
+  console.log(req.body);
   const {error} = schema.validate(newArticle, {abortEarly: false});
 
   if (error) {

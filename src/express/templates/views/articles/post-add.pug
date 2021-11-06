@@ -23,7 +23,7 @@ block content
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
-                    input(type='text' name='title' placeholder='Заголовок' required='')
+                    input(type='text' name='title' placeholder='Заголовок' value="123132589135139581395183591385921385923583" required='')
                 .form__field.form__field--post-image
                   label
                     input#image-name-field(type='text' name='photo' placeholder='Фотография' readonly='')
@@ -32,12 +32,13 @@ block content
                       input.visually-hidden(type='file' name='upload')
                       | Обзор
                 .new-publication__category-wrapper
+                  +insertErrorMessage(validationMessages)
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label
                     textarea(rows='5' name='announcement' placeholder='Анонс публикации')
-                      | Анонс публикации
+                      | Анонс публикации Анонс публикации Анонс публикации Анонс публикации Анонс публикации
                 .form__field.form__field--publication-text
                   label
                     textarea(rows='10' name='full-text' placeholder='Полный текст публикации')

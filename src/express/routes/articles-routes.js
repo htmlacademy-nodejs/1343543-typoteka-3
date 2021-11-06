@@ -83,16 +83,13 @@ articlesRouter.get(`/:id`, async (req, res) => {
 });
 
 articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
-  const {body} = req;
-
   const articleData = {
     // TODO тут будет поле photo, когда я пойму почему multer падает
     // TODO непонятно каким образом должны выбираться категории, кнопка в форме не работает, временно захардкодил котиков
-    category: [`Котики`],
-    title: body.title,
-    announce: body.announcement,
-    fullText: body[`full-text`],
-    createdDate: body.date,
+    categories: [1],
+    title: req.body.title,
+    announce: req.body.announcement,
+    fullText: req.body[`full-text`],
   };
 
   try {
@@ -101,7 +98,7 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await getAddArticleData();
-    res.render(`offers/new-ticket`, {categories, validationMessages, csrfToken: req.csrfToken()});
+    res.render(`articles/post-add`, {categories, validationMessages});
   }
 });
 

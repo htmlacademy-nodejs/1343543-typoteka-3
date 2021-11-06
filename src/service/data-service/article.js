@@ -4,14 +4,13 @@ const Alias = require(`../models/alias`);
 
 class ArticleService {
   constructor(sequelize) {
-    ga = sequelize.models.Article;
+    this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
     this._ArticleCategory = sequelize.models.ArticleCategory;
   }
 
   async create(articleData) {
-    console.log(articleData);
     const article = await this._Article.create(articleData);
     await article.addCategories(articleData.categories);
     return article.get();
