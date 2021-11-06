@@ -20,6 +20,7 @@ const define = (sequelize) => {
 
   Article.belongsToMany(Category, {through: ArticleCategory, as: Alias.CATEGORIES});
   Category.belongsToMany(Article, {through: ArticleCategory, as: Alias.ARTICLES});
+  Article.hasMany(ArticleCategory, {as: Alias.ARTICLE_CATEGORIES});
   Category.hasMany(ArticleCategory, {as: Alias.ARTICLE_CATEGORIES});
 
   return {Category, Comment, Article, ArticleCategory};

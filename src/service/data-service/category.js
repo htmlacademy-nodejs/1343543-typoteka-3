@@ -35,6 +35,10 @@ class CategoryService {
       return this._Category.findAll({raw: true});
     }
   }
+
+  findOne(id) {
+    return this._Category.findByPk(id);
+  }
 }
 
 module.exports = CategoryService;

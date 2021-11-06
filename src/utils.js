@@ -21,9 +21,12 @@ const shuffle = (someArray) => {
 
 const ensureArray = (value) => Array.isArray(value) ? value : [value];
 
+const prepareErrors = (errors) => errors.response.data.split(`\n`);
+
 module.exports = {
   getRandomDate,
   getRandomInt,
   shuffle,
   ensureArray,
+  prepareErrors,
 };

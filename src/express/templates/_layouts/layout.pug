@@ -10,7 +10,19 @@ html(lang='ru')
     link(rel='preload' href='/./fonts/Inter-Medium.woff2' as='font' crossorigin='anonymous')
     link(rel='preload' href='/./fonts/SFProDisplay-Regular.woff2' as='font' crossorigin='anonymous')
     link(rel='stylesheet' href='/css/style.min.css')
+    style.
+      .server-error{
+        border-radius: 10px;
+        color: white;
+        background-color: tomato;
+        margin: 20px 0;
+        padding: 10px;
+      }
   body
+    mixin insertErrorMessage(messages)
+      if messages
+        each message of messages
+          .server-error= message
 
     mixin pagination(page, totalPages, width, prefix)
       -

@@ -4,13 +4,13 @@ block content
   main.main-page
     h1.visually-hidden Главная страница личного блога Типотека
     p
-      | Это приветственный текст, который владелец блога может выбрать, чтобы описать себя 👏
+      | Самый замечательный блог 👏
     section.main-page__theme-list
       h2.visually-hidden Список тем
       ul.themes
         each category of categories
           li.themes__item
-            a.themes__item-link(href='#')
+            a.themes__item-link(href=`/articles/category/${category.id}`)
               | #{category.name}
               sup #{category.count}
     .main-page__section-flex
@@ -75,7 +75,7 @@ block content
             ul.preview__breadcrumbs
               each category of article.categories
                 li.preview__breadcrumbs-item
-                  a.preview__breadcrumbs-link(href='#') #{category.name}
+                  a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.name}
             .preview__background
               img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
             time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}

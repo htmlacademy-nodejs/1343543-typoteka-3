@@ -34,6 +34,13 @@ const Env = {
   PRODUCTION: `production`
 };
 
+const HttpMethod = {
+  GET: `GET`,
+  POST: `POST`,
+  PUT: `PUT`,
+  DELETE: `DELETE`
+};
+
 module.exports = {
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
@@ -42,6 +49,7 @@ module.exports = {
   API_PREFIX,
   ExitCode,
   HttpCode,
+  HttpMethod,
   WrapperClass,
   Env
 };
