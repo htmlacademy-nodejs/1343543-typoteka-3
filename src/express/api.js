@@ -1,7 +1,7 @@
 'use strict';
 
 const axios = require(`axios`);
-const { HttpMethod } = require("../constants");
+const {HttpMethod} = require(`../constants`);
 
 const TIMEOUT = 1000;
 
