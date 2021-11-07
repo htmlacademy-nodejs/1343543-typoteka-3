@@ -58,11 +58,11 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
     api.getArticle(id),
     api.getCategories()
   ]);
-  console.log(article);
+
   res.render(`articles/post-edit`, {
     id,
     article,
-    categories
+    categories,
   });
 });
 
@@ -111,23 +111,29 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
 });
 
 articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
-  const {body, file} = req;
   const {id} = req.params;
+  // зарефакторить
+  const entries = Object.entries(req.body);
+  const selectedCategories = entries.reduce((acc, element) => {
+    if (element[0][0] === `c`) {
+      acc.push(Number(element[1]));
+    }
+    return acc;
+  }, []);
+
   const articleData = {
-    picture: file ? file.filename : body[`old-image`],
-    category: [`Котики`],
-    title: body.title,
-    announce: body.announcement,
-    fullText: body[`full-text`],
-    createdDate: body.date,
+    categories: selectedCategories,
+    title: req.body.title,
+    announce: req.body.announcement,
+    fullText: req.body[`full-text`],
   };
   try {
-    await api.editOffer(id, articleData);
-    res.redirect(`/my`);
+    await api.editArticle(id, articleData);
+    res.redirect(`/`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const [article, categories] = await getEditArticleData(id);
-    res.render(`offers/ticket-edit`, {id, article, validationMessages, categories});
+    res.render(`articles/post-edit`, {id, article, validationMessages, categories});
   }
 });
 

@@ -56,7 +56,7 @@ class API {
 
   async editArticle(id, data) {
     return this._load(`/articles/${id}`, {
-      method: HttpMethod.POST,
+      method: HttpMethod.PUT,
       data
     });
   }
