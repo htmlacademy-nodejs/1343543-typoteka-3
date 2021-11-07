@@ -11,7 +11,8 @@ const ErrorOfferMessage = {
   ANNOUNCE_MAX: `Анонс публикации не может содержать более 250 символов`,
   TEXT_MAX: `Полный текст публикации не может содержать более 1000 символов`,
   TYPE: `Не выбран ни один тип объявления`,
-  SUM: `Сумма не может быть меньше 100`
+  SUM: `Сумма не может быть меньше 100`,
+  USER_ID: `Некорректный идентификатор пользователя`
 };
 
 const schema = Joi.object({
@@ -31,6 +32,9 @@ const schema = Joi.object({
   fullText: Joi.string().max(1000).messages({
     'string.max': ErrorOfferMessage.TEXT_MAX
   }),
+  userId: Joi.number().integer().positive().required().messages({
+    'number.base': ErrorOfferMessage.USER_ID
+  })
 });
 
 module.exports = (req, res, next) => {
