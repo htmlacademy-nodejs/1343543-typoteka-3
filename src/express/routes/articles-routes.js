@@ -83,10 +83,17 @@ articlesRouter.get(`/:id`, async (req, res) => {
 });
 
 articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
+  const entries = Object.entries(req.body);
+  const selectedCategories = entries.reduce((acc, element) => {
+    if (element[0][0] === `c`) {
+      acc.push(Number(element[1]));
+    }
+    return acc;
+  }, []);
   const articleData = {
     // TODO тут будет поле photo, когда я пойму почему multer падает
     // TODO непонятно каким образом должны выбираться категории, кнопка в форме не работает, временно захардкодил котиков
-    categories: [1],
+    categories: selectedCategories,
     title: req.body.title,
     announce: req.body.announcement,
     fullText: req.body[`full-text`],
