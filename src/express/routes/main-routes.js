@@ -7,15 +7,15 @@ const mainRouter = new Router();
 const upload = require(`../middlewares/upload`);
 const {prepareErrors} = require(`../../utils`);
 
-const OFFERS_PER_PAGE = 8;
+const ARTICLES_PER_PAGE = 8;
 
 mainRouter.get(`/`, async (req, res) => {
   let {page = 1} = req.query;
   page = +page;
 
-  const limit = OFFERS_PER_PAGE;
+  const limit = ARTICLES_PER_PAGE;
 
-  const offset = (page - 1) * OFFERS_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
 
   const [
     {count, articles},
@@ -25,7 +25,7 @@ mainRouter.get(`/`, async (req, res) => {
     api.getCategories(true)
   ]);
 
-  const totalPages = Math.ceil(count / OFFERS_PER_PAGE);
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(`main/main`, {articles, categories, page, totalPages});
 });

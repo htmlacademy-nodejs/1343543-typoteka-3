@@ -28,7 +28,7 @@ const getAddArticleData = () => {
 };
 
 const getViewArticleData = (articleId, comments) => {
-  return api.getOffer(articleId, comments);
+  return api.getArticle(articleId, comments);
 };
 
 const getEditArticleData = async (articleId) => {
@@ -141,11 +141,11 @@ articlesRouter.post(`/:id/comments`, async (req, res) => {
   const {comment} = req.body;
   try {
     await api.createComment(id, {text: comment});
-    res.redirect(`/offers/${id}`);
+    res.redirect(`/articles/${id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    const offer = await getViewArticleData(id, true);
-    res.render(`offers/ticket`, {offer, id, validationMessages});
+    const article = await getViewArticleData(id, true);
+    res.render(`articles/ticket`, {article, id, validationMessages});
   }
 });
 
