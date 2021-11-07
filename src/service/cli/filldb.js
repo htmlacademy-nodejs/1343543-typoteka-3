@@ -161,7 +161,7 @@ module.exports = {
       users
     });
 
-    return initDatabase(sequelize, {articles, categories});
+    return initDatabase(sequelize, {articles, users, categories});
   }
 };
 

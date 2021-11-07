@@ -25,13 +25,13 @@ const define = (sequelize) => {
   Article.hasMany(ArticleCategory, {as: Alias.ARTICLE_CATEGORIES});
   Category.hasMany(ArticleCategory, {as: Alias.ARTICLE_CATEGORIES});
 
-  User.hasMany(Article, {as: Alias.Article, foreignKey: `userId`});
+  User.hasMany(Article, {as: Alias.ARTICLES, foreignKey: `userId`});
   Article.belongsTo(User, {as: Alias.USERS, foreignKey: `userId`});
 
   User.hasMany(Comment, {as: Alias.COMMENTS, foreignKey: `userId`});
   Comment.belongsTo(User, {as: Alias.USERS, foreignKey: `userId`});
 
-  return {Category, Comment, Article, ArticleCategory};
+  return {Category, Comment, Article, User, ArticleCategory};
 };
 
 module.exports = define;
