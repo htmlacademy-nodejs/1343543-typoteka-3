@@ -94,7 +94,7 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
 
   try {
     await api.createArticle(articleData);
-    res.redirect(`/my`);
+    res.redirect(`/`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await getAddArticleData();
