@@ -1,6 +1,11 @@
 extends ../../_layouts/layout.pug
 
 block content
+  -
+    const isChecked = (categoryId) => {
+      const result = article.categories.findIndex((articleCategory) => articleCategory.id === categoryId);
+      return (result !== -1);
+    }
   include ../../components/header/header-menu.pug
   main
     section
@@ -37,9 +42,9 @@ block content
                       | Обзор
                 .new-publication__category-wrapper
                   each category of categories
-                    .new-publication__checkbox.new-publication__checkbox--auto
-                      input#checkbox-auto(type='checkbox' name='category-1' checked)
-                      label(for='checkbox-auto') #{category}
+                    .new-publication__checkbox
+                      input(checked=isChecked(category.id) type='checkbox' name=`category-${category.id}` id=`category-${category.id}` value=`${category.id}`)
+                      label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text

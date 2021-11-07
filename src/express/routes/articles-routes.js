@@ -58,6 +58,7 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
     api.getArticle(id),
     api.getCategories()
   ]);
+  console.log(article);
   res.render(`articles/post-edit`, {
     id,
     article,
