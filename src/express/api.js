@@ -38,37 +38,36 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  // TODO а почему эти методы async а другие нет?
-  async getCategories(count) {
+  getCategories(count) {
     return this._load(`/category`, {params: {count}});
   }
 
-  async getOneCategory(id) {
+  getOneCategory(id) {
     return this._load(`/category/${id}`);
   }
 
-  async createArticle(data) {
+  createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,
       data
     });
   }
 
-  async editArticle(id, data) {
+  editArticle(id, data) {
     return this._load(`/articles/${id}`, {
       method: HttpMethod.PUT,
       data
     });
   }
 
-  async createComment(id, data) {
+  createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
       data
     });
   }
 
-  async createUser(data) {
+  createUser(data) {
     return this._load(`/user`, {
       method: HttpMethod.POST,
       data
