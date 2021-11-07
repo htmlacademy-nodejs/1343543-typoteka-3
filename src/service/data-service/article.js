@@ -8,6 +8,7 @@ class ArticleService {
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
     this._ArticleCategory = sequelize.models.ArticleCategory;
+    this._User = sequelize.models.User;
   }
 
   async create(articleData) {
@@ -24,8 +25,18 @@ class ArticleService {
   }
 
   async findAll(needComments) {
-    const include = [Alias.CATEGORIES];
+    const include = [
+      Alias.CATEGORIES,
+      {
+        model: this._User,
+        as: Alias.USERS,
+        attributes: {
+          exclude: [`passwordHash`]
+        }
+      }
+    ];
     if (needComments) {
+      // допилить комменты
       include.push(Alias.COMMENTS);
     }
     const articles = await this._Article.findAll({
@@ -61,7 +72,16 @@ class ArticleService {
   }
 
   findOne(id, needComments) {
-    const include = [Alias.CATEGORIES];
+    const include = [
+      Alias.CATEGORIES,
+      {
+        model: this._User,
+        as: Alias.USERS,
+        attributes: {
+          exclude: [`passwordHash`]
+        }
+      }
+    ];
     if (needComments) {
       include.push(Alias.COMMENTS);
     }
@@ -69,7 +89,16 @@ class ArticleService {
   }
 
   async findPage({limit, offset, comments}) {
-    const include = [Alias.CATEGORIES];
+    const include = [
+      Alias.CATEGORIES,
+      {
+        model: this._User,
+        as: Alias.USERS,
+        attributes: {
+          exclude: [`passwordHash`]
+        }
+      }
+    ];
     if (comments) {
       include.push(Alias.COMMENTS);
     }
