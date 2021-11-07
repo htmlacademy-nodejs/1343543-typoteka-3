@@ -33,6 +33,10 @@ block content
                       | Обзор
                 .new-publication__category-wrapper
                   +insertErrorMessage(validationMessages)
+                  each category of categories
+                    .new-publication__checkbox
+                      input(type='checkbox' name=`category-${category.id}` id=`category-${category.id}` value=`${category.id}`)
+                      label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
