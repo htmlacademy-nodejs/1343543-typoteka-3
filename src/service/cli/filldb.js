@@ -78,8 +78,9 @@ const getRandomSubarray = (items) => {
   return result;
 };
 
-const generateComments = (count, comments) => (
+const generateComments = (count, comments, users) => (
   Array(count).fill({}).map(() => ({
+    user: users[getRandomInt(0, users.length - 1)].email,
     text: shuffle(comments)
       .slice(0, getRandomInt(1, 3))
       .join(` `),
@@ -104,7 +105,7 @@ const generateArticles = (params) => {
 
   return Array(count).fill({}).map(() => ({
     user: users[getRandomInt(0, users.length - 1)].email,
-    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments),
+    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments, users),
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),

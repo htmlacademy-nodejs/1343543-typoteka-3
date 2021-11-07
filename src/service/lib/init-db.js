@@ -16,7 +16,6 @@ module.exports = async (sequelize, {categories, users, articles}) => {
     ...acc
   }), {});
 
-  console.log(users);
   const userModels = await User.bulkCreate(users, {include: [Alias.ARTICLES, Alias.COMMENTS]});
 
   const userIdByEmail = userModels.reduce((acc, next) => ({
