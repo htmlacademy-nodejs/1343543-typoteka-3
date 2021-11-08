@@ -39,12 +39,23 @@ block content
                     p #{comment.users.name} •
                     time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
                   p.comments__message #{comment.text}
-          .comments__footer.comments__footer--user
-            form(action=`${article.id}/comments` method='POST' enctype="application/x-www-form-urlencoded" autocomplete="off")
-              .comments__avatar.avatar
-                img(src='/img/avatar-2.png' alt='аватар пользователя')
-              label
-                textarea(rows='1' name='message' placeholder='Присоединиться к обсуждению')
-                  | Комментарий содержит меньше 20 символов
-              button.comments__button.button.button--colored(type='submit') Опубликовать
-          +insertErrorMessage(validationMessages)
+          if user
+            .comments__footer.comments__footer--user
+              form(action=`${article.id}/comments` method='POST' enctype="application/x-www-form-urlencoded" autocomplete="off")
+                .comments__avatar.avatar
+                  img(src='/img/avatar-2.png' alt='аватар пользователя')
+                label
+                  textarea(rows='1' name='message' placeholder='Присоединиться к обсуждению')
+                    | Комментарий содержит меньше 20 символов
+                button.comments__button.button.button--colored(type='submit') Опубликовать
+            +insertErrorMessage(validationMessages)
+          else
+            .comments__footer.comments__footer--visitor
+              a.comments__button.button.button--colored(href='/login') Войти
+              .comments__registration
+                p.text.text--signature
+                  b.title.title--small Регистрация
+                  | Чтобы присоединиться к
+                  |                   переписке
+                  |                   нужно зарегистрироваться
+
