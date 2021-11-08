@@ -71,7 +71,26 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
   }
 });
 
+mainRouter.post(`/login`, async (req, res) => {
+  try {
+    const user = await api.auth(req.body[`email`], req.body[`password`]);
+    req.session.user = user;
+    req.session.save(() => {
+      res.redirect(`/`);
+    });
+  } catch (errors) {
+    const validationMessages = prepareErrors(errors);
+    const {user} = req.session;
+    res.render(`login`, {user, validationMessages});
+  }
+});
+
 mainRouter.get(`/404`, (req, res) => res.render(`errors/404`, {wrapper: WrapperClass.COLOR}));
 mainRouter.get(`/500`, (req, res) => res.render(`errors/500`, {wrapper: WrapperClass.COLOR}));
+
+mainRouter.get(`/logout`, (req, res) => {
+  delete req.session.user;
+  res.redirect(`/`);
+});
 
 module.exports = mainRouter;
