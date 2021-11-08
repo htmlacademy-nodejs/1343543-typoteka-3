@@ -5,6 +5,7 @@ const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 const {prepareErrors} = require(`../../utils`);
+const auth = require(`../middlewares/auth`);
 
 const UPLOAD_DIR = `../upload/img/`;
 
@@ -41,6 +42,10 @@ const getEditArticleData = async (articleId) => {
 
 const upload = multer({storage});
 
+// //
+// get
+// //
+
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
   const {user} = req.session;
@@ -54,7 +59,7 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   res.render(`articles/articles-by-category`, {articles, categories, user, activeCategory});
 });
 
-articlesRouter.get(`/edit/:id`, async (req, res) => {
+articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   const {id} = req.params;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
@@ -68,7 +73,7 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
   });
 });
 
-articlesRouter.get(`/add`, async (req, res) => {
+articlesRouter.get(`/add`, auth, async (req, res) => {
   const {user} = req.session;
   const categories = await getAddArticleData();
   res.render(`articles/post-add`, {categories, user});
