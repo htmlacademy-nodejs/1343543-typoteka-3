@@ -32,7 +32,7 @@ const mockUsers = [
   }
 ];
 
-const mockOffers = [
+const mockArticles = [
   {
     "user": `ivanov@example.com`,
     "categories": [
@@ -56,7 +56,6 @@ const mockOffers = [
     "description": `Бонусом отдам все аксессуары. Если товар не понравится — верну всё до последней копейки. Товар в отличном состоянии. Это настоящая находка для коллекционера!`,
     "picture": `item13.jpg`,
     "title": `Куплю антиквариат`,
-    "type": `OFFER`,
     "sum": 10030
   },
   {
@@ -81,8 +80,6 @@ const mockOffers = [
     "description": `Это настоящая находка для коллекционера! Если найдёте дешевле — сброшу цену. Продаю с болью в сердце... Товар в отличном состоянии.`,
     "picture": `item06.jpg`,
     "title": `Куплю породистого кота`,
-    "type": `OFFER`,
-    "sum": 6694
   },
   {
     "user": `ivanov@example.com`,
@@ -149,14 +146,12 @@ const mockOffers = [
     "description": `Таких предложений больше нет! Даю недельную гарантию. Продаю с болью в сердце... Пользовались бережно и только по большим праздникам.`,
     "picture": `item15.jpg`,
     "title": `Куплю породистого кота`,
-    "type": `OFFER`,
-    "sum": 91863
   }
 ];
 
 const createAPI = async () => {
   const mockDB = new Sequelize(`sqlite::memory:`, {logging: false});
-  await initDB(mockDB, {categories: mockCategories, offers: mockOffers, users: mockUsers});
+  await initDB(mockDB, {categories: mockCategories, articles: mockArticles, users: mockUsers});
   const app = express();
   app.use(express.json());
   user(app, new DataService(mockDB));

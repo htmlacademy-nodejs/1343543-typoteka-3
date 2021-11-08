@@ -12,6 +12,12 @@ const articlesRouter = require(`./routes/articles-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const mainRoutes = require(`./routes/main-routes`);
 
+const {SESSION_SECRET} = process.env;
+
+if (!SESSION_SECRET) {
+  throw new Error(`SESSION_SECRET environment variable is not defined`);
+}
+
 const app = express();
 
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
