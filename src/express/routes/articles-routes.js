@@ -87,6 +87,7 @@ articlesRouter.get(`/:id`, async (req, res) => {
     api.getArticle(id),
     api.getCategories(true)
   ]);
+
   res.render(`articles/post`, {
     article,
     categories,
