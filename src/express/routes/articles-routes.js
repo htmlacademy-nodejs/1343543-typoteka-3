@@ -7,6 +7,9 @@ const {nanoid} = require(`nanoid`);
 const {prepareErrors} = require(`../../utils`);
 const auth = require(`../middlewares/auth`);
 
+const csrf = require(`csurf`);
+const csrfProtection = csrf();
+
 const UPLOAD_DIR = `../upload/img/`;
 
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
@@ -73,10 +76,11 @@ articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   });
 });
 
-articlesRouter.get(`/add`, auth, async (req, res) => {
+articlesRouter.get(`/add`, auth, csrfProtection, async (req, res) => {
   const {user} = req.session;
+  const csrfToken = req.csrfToken();
   const categories = await getAddArticleData();
-  res.render(`articles/post-add`, {categories, user});
+  res.render(`articles/post-add`, {categories, user, csrfToken});
 });
 
 articlesRouter.get(`/:id`, async (req, res) => {
@@ -95,7 +99,7 @@ articlesRouter.get(`/:id`, async (req, res) => {
   });
 });
 
-articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
+articlesRouter.post(`/add`, upload.single(`photo`), csrfProtection, async (req, res) => {
   const {user} = req.session;
 
   const entries = Object.entries(req.body);
