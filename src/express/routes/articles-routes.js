@@ -69,8 +69,9 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
 });
 
 articlesRouter.get(`/add`, async (req, res) => {
+  const {user} = req.session;
   const categories = await getAddArticleData();
-  res.render(`articles/post-add`, {categories});
+  res.render(`articles/post-add`, {categories, user});
 });
 
 articlesRouter.get(`/:id`, async (req, res) => {
@@ -89,6 +90,8 @@ articlesRouter.get(`/:id`, async (req, res) => {
 });
 
 articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
+  const {user} = req.session;
+
   const entries = Object.entries(req.body);
   const selectedCategories = entries.reduce((acc, element) => {
     if (element[0][0] === `c`) {
@@ -102,6 +105,7 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
     title: req.body.title,
     announce: req.body.announcement,
     fullText: req.body[`full-text`],
+    userId: user.id
   };
 
   try {
