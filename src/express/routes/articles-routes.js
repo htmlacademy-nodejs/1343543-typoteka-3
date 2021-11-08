@@ -153,14 +153,18 @@ articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
 
 articlesRouter.post(`/:id/comments`, async (req, res) => {
   const {id} = req.params;
-  const {comment} = req.body;
+  const {user} = req.session;
   try {
-    await api.createComment(id, {text: comment});
+    await api.createComment(id, {userId: user.id, text: req.body.message});
     res.redirect(`/articles/${id}`);
   } catch (errors) {
+    console.log(errors);
     const validationMessages = prepareErrors(errors);
     const article = await getViewArticleData(id, true);
-    res.render(`articles/ticket`, {article, id, validationMessages});
+    const [categories] = await Promise.all([
+      api.getCategories(true)
+    ]);
+    res.render(`articles/post`, {article, id, categories, validationMessages});
   }
 });
 
