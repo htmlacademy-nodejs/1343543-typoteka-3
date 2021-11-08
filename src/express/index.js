@@ -51,10 +51,11 @@ app.use(`/`, mainRoutes);
 app.use(`/my`, myRoutes);
 app.use(`/articles`, articlesRouter);
 
-app.use((req, res) => res.status(HttpCode.BAD_REQUEST).render(`errors/404`));
+// временно отключает обработку ошибок, а то ничего при отладке непонятно :))
+// app.use((req, res) => res.status(HttpCode.BAD_REQUEST).render(`errors/404`));
 
-app.use((err, _req, res, _next) => {
-  res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`);
-});
+// app.use((err, _req, res, _next) => {
+//   res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`);
+// });
 
 app.listen(process.env.PORT || DEFAULT_PORT);
