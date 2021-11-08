@@ -11,31 +11,27 @@ block content
           | окно
         h2.popup__title Регистрация
         .popup__form.popup__form--active.form.form--register
-          form(action='#' method='get')
+          form(action='/register' method='POST' enctype='multipart/form-data' autocomplete='off')
             .form__field
               label
-                input(type='email' name='email' placeholder='Электронная почта' required='')
+                input(type='email' name='email' placeholder='Электронная почта' required='' value="ivan@otladochny.ru")
             .form__field
               label
-                input(type='text' name='name' placeholder='Имя' required='')
+                input(type='text' name='name' placeholder='Имя' required='' value='Иван')
             .form__field
               label
-                input(type='text' name='surname' placeholder='Фамилия')
+                input(type='text' name='surname' placeholder='Фамилия' value='Отладочный')
             .form__field
               label
-                input(type='password' name='password' placeholder='Пароль' required='')
+                input(type='password' name='password' placeholder='Пароль' required='' value='qwerty')
             .form__field
               label
-                input(type='password' name='repeat-password' placeholder='Повтор пароля' required='')
-            .form__validation-error
-              p.form__error-message При регистрации произошли ошибки:
-              ul.form__errors
-                li.form__error Пароль не может состоять из двух букв
-                li.form__error Фамилия не должна быть смешной
+                input(type='password' name='repeat-password' placeholder='Повтор пароля' required='' value='qwerty')
+            +insertErrorMessage(validationMessages)
             .form__image-loader
               a.form__avatar.avatar
                 img(src='img/icons/smile.svg' alt='аватар пользователя')
               label
-                input.visually-hidden(type='file' name='upload')
+                input.visually-hidden(type='file' name='avatar')
                 | Загрузить фото профиля
             button.form__submit-btn.form__submit-btn--register.button.button--colored(type='submit') Зарегистрироваться

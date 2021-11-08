@@ -21,8 +21,11 @@ html(lang='ru')
   body
     mixin insertErrorMessage(messages)
       if messages
-        each message of messages
-          .server-error= message
+        .form__validation-error
+          p.form__error-message При регистрации произошли ошибки:
+          ul.form__errors
+            each message of messages
+              li.form__error= message
 
     mixin pagination(page, totalPages, width, prefix)
       -

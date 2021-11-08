@@ -28,7 +28,7 @@ const getAddArticleData = () => {
 };
 
 const getViewArticleData = (articleId, comments) => {
-  return api.getOffer(articleId, comments);
+  return api.getArticle(articleId, comments);
 };
 
 const getEditArticleData = async (articleId) => {
@@ -58,10 +58,11 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
     api.getArticle(id),
     api.getCategories()
   ]);
+
   res.render(`articles/post-edit`, {
     id,
     article,
-    categories
+    categories,
   });
 });
 
@@ -83,10 +84,16 @@ articlesRouter.get(`/:id`, async (req, res) => {
 });
 
 articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
+  const entries = Object.entries(req.body);
+  const selectedCategories = entries.reduce((acc, element) => {
+    if (element[0][0] === `c`) {
+      acc.push(Number(element[1]));
+    }
+    return acc;
+  }, []);
   const articleData = {
     // TODO тут будет поле photo, когда я пойму почему multer падает
-    // TODO непонятно каким образом должны выбираться категории, кнопка в форме не работает, временно захардкодил котиков
-    categories: [1],
+    categories: selectedCategories,
     title: req.body.title,
     announce: req.body.announcement,
     fullText: req.body[`full-text`],
@@ -94,7 +101,7 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
 
   try {
     await api.createArticle(articleData);
-    res.redirect(`/my`);
+    res.redirect(`/`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await getAddArticleData();
@@ -103,23 +110,29 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
 });
 
 articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
-  const {body, file} = req;
   const {id} = req.params;
+  // зарефакторить
+  const entries = Object.entries(req.body);
+  const selectedCategories = entries.reduce((acc, element) => {
+    if (element[0][0] === `c`) {
+      acc.push(Number(element[1]));
+    }
+    return acc;
+  }, []);
+
   const articleData = {
-    picture: file ? file.filename : body[`old-image`],
-    category: [`Котики`],
-    title: body.title,
-    announce: body.announcement,
-    fullText: body[`full-text`],
-    createdDate: body.date,
+    categories: selectedCategories,
+    title: req.body.title,
+    announce: req.body.announcement,
+    fullText: req.body[`full-text`],
   };
   try {
-    await api.editOffer(id, articleData);
-    res.redirect(`/my`);
+    await api.editArticle(id, articleData);
+    res.redirect(`/`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const [article, categories] = await getEditArticleData(id);
-    res.render(`offers/ticket-edit`, {id, article, validationMessages, categories});
+    res.render(`articles/post-edit`, {id, article, validationMessages, categories});
   }
 });
 
@@ -128,11 +141,11 @@ articlesRouter.post(`/:id/comments`, async (req, res) => {
   const {comment} = req.body;
   try {
     await api.createComment(id, {text: comment});
-    res.redirect(`/offers/${id}`);
+    res.redirect(`/articles/${id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    const offer = await getViewArticleData(id, true);
-    res.render(`offers/ticket`, {offer, id, validationMessages});
+    const article = await getViewArticleData(id, true);
+    res.render(`articles/ticket`, {article, id, validationMessages});
   }
 });
 

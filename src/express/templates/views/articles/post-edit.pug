@@ -1,12 +1,17 @@
 extends ../../_layouts/layout.pug
 
 block content
+  -
+    const isChecked = (categoryId) => {
+      const result = article.categories.findIndex((articleCategory) => articleCategory.id === categoryId);
+      return (result !== -1);
+    }
   include ../../components/header/header-menu.pug
   main
     section
       .popup.popup--new-publication.popup--anti
         .new-publication
-          form(action='#' method='POST')
+          form(action='#' method='POST' enctype='multipart/form-data' autocomplete='off')
             .new-publication__header
               h1 Редактировать публикацию
               .new-publication__date-form
@@ -30,17 +35,19 @@ block content
                 .form__field.form__field--post-image
                   label
                     //- TODO - в моках пока нет фотки
-                    input#image-name-field(type='text' name='photo' placeholder='Фотография' readonly='')
+                    input#image-name-field(type='text' name='photo' placeholder='Фотография' readonly='' value=`${article.picture}`)
                   .form__image-loader.form__image-loader--publication
                     label
                       input.visually-hidden(type='file' name='upload')
                       | Обзор
                 .new-publication__category-wrapper
                   each category of categories
-                    .new-publication__checkbox.new-publication__checkbox--auto
-                      input#checkbox-auto(type='checkbox' name='category-1' checked)
-                      label(for='checkbox-auto') #{category}
+                    .new-publication__checkbox
+                      input(checked=isChecked(category.id) type='checkbox' name=`category-${category.id}` id=`category-${category.id}` value=`${category.id}`)
+                      label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+                .new-publication__category-wrapper
+                  +insertErrorMessage(validationMessages)
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label

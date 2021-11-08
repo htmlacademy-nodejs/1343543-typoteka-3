@@ -23,7 +23,7 @@ block content
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
-                    input(type='text' name='title' placeholder='Заголовок' value="123132589135139581395183591385921385923583" required='')
+                    input(type='text' name='title' placeholder='Заголовок' value="Заголовок больше 30 символов чтобы отлаживать" required='')
                 .form__field.form__field--post-image
                   label
                     input#image-name-field(type='text' name='photo' placeholder='Фотография' readonly='')
@@ -32,8 +32,13 @@ block content
                       input.visually-hidden(type='file' name='upload')
                       | Обзор
                 .new-publication__category-wrapper
-                  +insertErrorMessage(validationMessages)
+                  each category of categories
+                    .new-publication__checkbox
+                      input(type='checkbox' name=`category-${category.id}` id=`category-${category.id}` value=`${category.id}`)
+                      label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
+                .new-publication__category-wrapper
+                  +insertErrorMessage(validationMessages)
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label

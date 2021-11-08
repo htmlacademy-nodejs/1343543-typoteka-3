@@ -3,6 +3,7 @@
 const fs = require(`fs/promises`);
 const sequelize = require(`../lib/sequelize`);
 const {getLogger} = require(`../lib/logger`);
+const passwordUtils = require(`../lib/password`);
 const initDatabase = require(`../lib/init-db`);
 
 
@@ -77,8 +78,9 @@ const getRandomSubarray = (items) => {
   return result;
 };
 
-const generateComments = (count, comments) => (
+const generateComments = (count, comments, users) => (
   Array(count).fill({}).map(() => ({
+    user: users[getRandomInt(0, users.length - 1)].email,
     text: shuffle(comments)
       .slice(0, getRandomInt(1, 3))
       .join(` `),
@@ -92,7 +94,8 @@ const generateArticles = (params) => {
     sentences,
     categories,
     comments,
-    pictures
+    pictures,
+    users
   } = params;
 
   if (count > MocksCount.MAX) {
@@ -101,7 +104,8 @@ const generateArticles = (params) => {
   }
 
   return Array(count).fill({}).map(() => ({
-    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments),
+    user: users[getRandomInt(0, users.length - 1)].email,
+    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments, users),
     title: titles[getRandomInt(0, titles.length - 1)],
     createdDate: getRandomDate(DateCreation.MIN, DateCreation.MAX),
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
@@ -131,6 +135,21 @@ module.exports = {
       readContent(FILE_PICTURES_PATH),
     ]);
 
+    const users = [
+      {
+        name: `Иван Иванов`,
+        email: `ivanov@example.com`,
+        passwordHash: await passwordUtils.hash(`ivanov`),
+        avatar: `avatar01.jpg`
+      },
+      {
+        name: `Пётр Петров`,
+        email: `petrov@example.com`,
+        passwordHash: await passwordUtils.hash(`petrov`),
+        avatar: `avatar02.jpg`
+      }
+    ];
+
     const [count] = args;
     const countArticle = Number.parseInt(count, 10) || MocksCount.DEFAULT;
     const articles = generateArticles({
@@ -139,10 +158,11 @@ module.exports = {
       titles,
       categories,
       comments,
-      pictures
+      pictures,
+      users
     });
 
-    return initDatabase(sequelize, {articles, categories});
+    return initDatabase(sequelize, {articles, users, categories});
   }
 };
 
