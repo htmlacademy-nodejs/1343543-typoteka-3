@@ -10,6 +10,8 @@ const {prepareErrors} = require(`../../utils`);
 const ARTICLES_PER_PAGE = 8;
 
 mainRouter.get(`/`, async (req, res) => {
+  const {user} = req.session;
+  console.log(user);
   let {page = 1} = req.query;
   page = +page;
 
@@ -27,7 +29,7 @@ mainRouter.get(`/`, async (req, res) => {
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-  res.render(`main/main`, {articles, categories, page, totalPages});
+  res.render(`main/main`, {articles, categories, page, user, totalPages});
 });
 
 
@@ -81,7 +83,7 @@ mainRouter.post(`/login`, async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const {user} = req.session;
-    res.render(`login`, {user, validationMessages});
+    res.render(`main/login`, {user, validationMessages});
   }
 });
 

@@ -43,13 +43,15 @@ const upload = multer({storage});
 
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
+  const {user} = req.session;
+
   const [articles, categories, activeCategory] = await Promise.all([
     api.getArticlesWithCategory(categoryId),
     api.getCategories(true),
     api.getOneCategory(categoryId)
   ]);
 
-  res.render(`articles/articles-by-category`, {articles, categories, activeCategory});
+  res.render(`articles/articles-by-category`, {articles, categories, user, activeCategory});
 });
 
 articlesRouter.get(`/edit/:id`, async (req, res) => {
@@ -73,13 +75,16 @@ articlesRouter.get(`/add`, async (req, res) => {
 
 articlesRouter.get(`/:id`, async (req, res) => {
   const {id} = req.params;
+  const {user} = req.session;
+
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories(true)
   ]);
   res.render(`articles/post`, {
     article,
-    categories
+    categories,
+    user
   });
 });
 

@@ -6,7 +6,7 @@ header.header
     ul.header__nav-list
       if user
         li.header__list-item
-          p Алёна Фролова
+          p #{user.name}
         li.header__list-item
           a.header__exit(href='/logout') Выйти
       else
@@ -16,5 +16,6 @@ header.header
           a.header__enter(href='/login') Вход с паролем
   if user
     a.header__avatar.avatar
-      img(src='/img/avatar-2.png' alt='аватар пользователя')
+      //- Придумать как привязать к upload
+      img(src=`upload/img/${user.avatar}` alt='аватар пользователя')
   a.header__search.button.button--search(href='/search' aria-label='поиск по сайту')
