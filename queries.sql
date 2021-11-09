@@ -5,14 +5,14 @@ SELECT * FROM categories
 -- Получает список непустых категорий
 
 SELECT id, name FROM categories
-  JOIN offer_categories
+  JOIN article_categories
   ON id = category_id
   GROUP BY id
 
 -- Получает список категорий с количеством публикаций
 
-SELECT id, name, count(offer_id) FROM categories
-  LEFT JOIN offer_categories
+SELECT id, name, count(article_id) FROM categories
+  LEFT JOIN article_categories
   ON id = category_id
   GROUP BY id
 

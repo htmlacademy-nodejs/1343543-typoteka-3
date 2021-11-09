@@ -10,12 +10,12 @@ block content
           | окно
         h2.popup__title Войти
         .popup__form.form.form--log-in
-          form(action='#' method='get')
+          form(action='/login' method='post')
             .form__field
               label
                 input(type='email' name='email' placeholder='Электронная почта' required='')
             .form__field
               label
                 input(type='password' name='password' placeholder='Пароль' required='')
-            p.form__error-message Некоторая ошибка произошла, беда!
+            +insertErrorMessage(validationMessages)
             button.form__submit-btn.form__submit-btn--log-in.button.button--colored(type='submit') Войти

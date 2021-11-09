@@ -5,6 +5,10 @@ const multer = require(`multer`);
 const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 const {prepareErrors} = require(`../../utils`);
+const auth = require(`../middlewares/auth`);
+
+const csrf = require(`csurf`);
+const csrfProtection = csrf();
 
 const UPLOAD_DIR = `../upload/img/`;
 
@@ -41,18 +45,24 @@ const getEditArticleData = async (articleId) => {
 
 const upload = multer({storage});
 
+// //
+// get
+// //
+
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
+  const {user} = req.session;
+
   const [articles, categories, activeCategory] = await Promise.all([
     api.getArticlesWithCategory(categoryId),
     api.getCategories(true),
     api.getOneCategory(categoryId)
   ]);
 
-  res.render(`articles/articles-by-category`, {articles, categories, activeCategory});
+  res.render(`articles/articles-by-category`, {articles, categories, user, activeCategory});
 });
 
-articlesRouter.get(`/edit/:id`, async (req, res) => {
+articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   const {id} = req.params;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
@@ -66,24 +76,32 @@ articlesRouter.get(`/edit/:id`, async (req, res) => {
   });
 });
 
-articlesRouter.get(`/add`, async (req, res) => {
+articlesRouter.get(`/add`, auth, csrfProtection, async (req, res) => {
+  const {user} = req.session;
+  const csrfToken = req.csrfToken();
   const categories = await getAddArticleData();
-  res.render(`articles/post-add`, {categories});
+  res.render(`articles/post-add`, {categories, user, csrfToken});
 });
 
 articlesRouter.get(`/:id`, async (req, res) => {
   const {id} = req.params;
+  const {user} = req.session;
+
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories(true)
   ]);
+
   res.render(`articles/post`, {
     article,
-    categories
+    categories,
+    user
   });
 });
 
-articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
+articlesRouter.post(`/add`, upload.single(`photo`), csrfProtection, async (req, res) => {
+  const {user} = req.session;
+
   const entries = Object.entries(req.body);
   const selectedCategories = entries.reduce((acc, element) => {
     if (element[0][0] === `c`) {
@@ -97,6 +115,7 @@ articlesRouter.post(`/add`, upload.single(`photo`), async (req, res) => {
     title: req.body.title,
     announce: req.body.announcement,
     fullText: req.body[`full-text`],
+    userId: user.id
   };
 
   try {
@@ -138,14 +157,18 @@ articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
 
 articlesRouter.post(`/:id/comments`, async (req, res) => {
   const {id} = req.params;
-  const {comment} = req.body;
+  const {user} = req.session;
   try {
-    await api.createComment(id, {text: comment});
+    await api.createComment(id, {userId: user.id, text: req.body.message});
     res.redirect(`/articles/${id}`);
   } catch (errors) {
+    console.log(errors);
     const validationMessages = prepareErrors(errors);
     const article = await getViewArticleData(id, true);
-    res.render(`articles/ticket`, {article, id, validationMessages});
+    const [categories] = await Promise.all([
+      api.getCategories(true)
+    ]);
+    res.render(`articles/post`, {article, id, categories, validationMessages});
   }
 });
 

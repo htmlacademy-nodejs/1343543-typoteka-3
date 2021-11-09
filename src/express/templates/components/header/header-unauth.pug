@@ -1,11 +1,41 @@
+//- Зарефакторить, вынести варианты в отдельные шаблоны
 header.header
   a.header__logo.logo(href='/')
     img.logo__image(src='/img/icons/logo-image-only.svg' alt='логотип Тайпотеки')
     span.logo__name Типотека
-  nav.header__nav
-    ul.header__nav-list
-      li.header__list-item
-        a.header__registration(href='/register') Регистрация
-      li.header__list-item
-        a.header__enter(href='/login') Вход с паролем
-  a.header__search.button.button--search(href='/search' aria-label='поиск по сайту')
+  if user && user.id === 1
+    a.button.button--colored.header__button-new(href='/articles/add') Новая запись
+    .header__dropdown
+      button.button.button--burger.header__burger(href='#') Открыть меню
+      ul.navigation.header__navigation
+        li.navigation__item
+          a(href='/articles/add') Добавить запись
+        li.navigation__item
+          a(href='/my') Публикации
+        li.navigation__item
+          a(href='/categories') Категории
+        li.navigation__item
+          a(href='/my/comments') Комментарии
+        li.navigation__item
+          a(href='/logout') Выйти
+    a.header__search.button.button--search(href='/search' aria-label='поиск по сайту')
+  else
+    nav.header__nav
+      ul.header__nav-list
+        if user
+          li.header__list-item
+            p #{user.name}
+          li.header__list-item
+            a.header__exit(href='/logout') Выйти
+        else
+          li.header__list-item
+            a.header__registration(href='/register') Регистрация
+          li.header__list-item
+            a.header__enter(href='/login') Вход с паролем
+    if user
+      a.header__avatar.avatar
+        //- Придумать как привязать к upload
+        img(src=`upload/img/${user.avatar}` alt='аватар пользователя')
+    a.header__search.button.button--search(href='/search' aria-label='поиск по сайту')
+
+

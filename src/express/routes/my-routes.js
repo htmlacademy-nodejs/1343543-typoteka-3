@@ -4,15 +4,16 @@ const {WrapperClass} = require(`../../constants`);
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const myRouter = new Router();
+const auth = require(`../middlewares/auth`);
 
-myRouter.get(`/`, async (req, res) => {
+myRouter.get(`/`, auth, async (req, res) => {
   const articles = await api.getArticles();
   res.render(`my/my`, {
     wrapper: WrapperClass.NO_BACKGROUND,
     articles
   });
 });
-myRouter.get(`/comments`, async (req, res) => {
+myRouter.get(`/comments`, auth, async (req, res) => {
   const articles = await api.getArticles({comments: true});
 
   const comments = {
@@ -24,7 +25,7 @@ myRouter.get(`/comments`, async (req, res) => {
     comments
   });
 });
-myRouter.get(`/new-post`, (req, res) => res.render(`my/new-post`));
-myRouter.get(`/categories`, (req, res) => res.render(`my/categories`, {wrapper: WrapperClass.NO_BACKGROUND}));
+
+myRouter.get(`/categories`, auth, (req, res) => res.render(`my/categories`, {wrapper: WrapperClass.NO_BACKGROUND}));
 
 module.exports = myRouter;

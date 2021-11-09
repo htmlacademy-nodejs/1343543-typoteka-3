@@ -36,8 +36,19 @@ class ArticleService {
       }
     ];
     if (needComments) {
-      // допилить комменты
-      include.push(Alias.COMMENTS);
+      include.push({
+        model: this._Comment,
+        as: Alias.COMMENTS,
+        include: [
+          {
+            model: this._User,
+            as: Alias.User,
+            attributes: {
+              exclude: [`passwordHash`]
+            }
+          }
+        ]
+      });
     }
     const articles = await this._Article.findAll({
       include,
@@ -83,7 +94,19 @@ class ArticleService {
       }
     ];
     if (needComments) {
-      include.push(Alias.COMMENTS);
+      include.push({
+        model: this._Comment,
+        as: Alias.COMMENTS,
+        include: [
+          {
+            model: this._User,
+            as: Alias.USERS,
+            attributes: {
+              exclude: [`passwordHash`]
+            }
+          }
+        ]
+      });
     }
     return this._Article.findByPk(id, {include});
   }

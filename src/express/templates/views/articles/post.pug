@@ -1,6 +1,6 @@
 extends ../../_layouts/layout.pug
 block content
-  include ../../components/header/header-auth.pug
+  include ../../components/header/header-unauth.pug
   main
     section.post
       h1.visually-hidden Пост
@@ -8,13 +8,13 @@ block content
         h2.visually-hidden Основное содержание
         .post__wrapper
           .post__head
-            a.post__backwards.button.button--backwards(href='#') Назад
+            a.post__backwards.button.button--backwards(href='javascript:history.back()') Назад
             time.post__date(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
             h2.post__title.title.title--main #{article.title}
             ul.post__themes.themes
               each category of categories
                 li.themes__item
-                  a(class=`themes__item-link` href=`/category/${category.id}`)
+                  a(class=`themes__item-link` href=`category/${category.id}`)
                     | #{category.name}
                     sup #{category.count}
                   button.themes__remove-btn(type='button') Удалить категорию
@@ -28,21 +28,38 @@ block content
               | #{article.fullText}
       .post__wrapper.post__wrapper--comments
         section.post__comments.comments
-          h2.comments__title.title.title--middle Комментарии
-          ul.comments__list
-            each comment of article.comments
-              li.comments__comment
+          if article.comments.length !== 0
+            h2.comments__title.title.title--middle Комментарии
+            ul.comments__list
+              each comment of article.comments
+                li.comments__comment
+                  .comments__avatar.avatar
+                    img(src=`/img/${comment.users.avatar}` alt='аватар пользователя')
+                  .comments__text
+                    .comments__head
+                      p #{comment.users.name} •
+                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
+                    p.comments__message #{comment.text}
+          else
+            h2.comments__title.title.title--middle Комментарии отсутствуют
+
+          if user
+            .comments__footer.comments__footer--user
+              form(action=`${article.id}/comments` method='POST' enctype="application/x-www-form-urlencoded" autocomplete="off")
                 .comments__avatar.avatar
-                  img(src='/img/avatar-1.png' alt='аватар пользователя')
-                .comments__text
-                  .comments__head
-                    p Евгений Петров •
-                    time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
-                  p.comments__message #{comment.text}
-          .comments__footer.comments__footer--user
-            form(action='#' method='POST')
-              .comments__avatar.avatar
-                img(src='/img/avatar-2.png' alt='аватар пользователя')
-              label
-                textarea(rows='1' name='message' placeholder='Присоединиться к обсуждению')
-              button.comments__button.button.button--colored(type='submit') Опубликовать
+                  img(src='/img/avatar-2.png' alt='аватар пользователя')
+                label
+                  textarea(rows='1' name='message' placeholder='Присоединиться к обсуждению')
+                    | Комментарий содержит меньше 20 символов
+                button.comments__button.button.button--colored(type='submit') Опубликовать
+            +insertErrorMessage(validationMessages)
+          else
+            .comments__footer.comments__footer--visitor
+              a.comments__button.button.button--colored(href='/login') Войти
+              .comments__registration
+                p.text.text--signature
+                  b.title.title--small Регистрация
+                  | Чтобы присоединиться к
+                  |                   переписке
+                  |                   нужно зарегистрироваться
+
