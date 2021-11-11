@@ -11,7 +11,6 @@ const ARTICLES_PER_PAGE = 8;
 
 mainRouter.get(`/`, async (req, res) => {
   const {user} = req.session;
-  console.log(user);
   let {page = 1} = req.query;
   page = +page;
 
