@@ -2,7 +2,7 @@ section.main-page__last.last
   h2.last__name
     | Последние комментарии
     span.last__icon.last__icon--cloud
-  if topComments.length < 0
+  if topComments.length > 0
     ul.last__list
       each topComment of topComments
         li.last__list-item
