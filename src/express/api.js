@@ -46,6 +46,10 @@ class API {
     return this._load(`/category/${id}`);
   }
 
+  getNewComments() {
+    return this._load(`/articles/comments`);
+  }
+
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,

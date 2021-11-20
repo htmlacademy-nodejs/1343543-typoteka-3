@@ -23,6 +23,12 @@ module.exports = (app, articleService, commentService) => {
     res.status(HttpCode.OK).json(result);
   });
 
+  route.get(`/comments`, async (req, res) => {
+    let result = await commentService.findNewest();
+
+    res.status(HttpCode.OK).json(result);
+  });
+
   route.get(`/category/:categoryId`, async (req, res) => {
     // реализация без пагинации: пофикшу перед защитой
     const {categoryId} = req.params;
