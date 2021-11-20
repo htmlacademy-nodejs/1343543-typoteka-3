@@ -22,13 +22,14 @@ block content
         h2.visually-hidden Список превью статей
         ul.preview__list
           each article of articles
-            li.preview__item
+            li(class=`preview__item ${article.picture ? `` : `preview__item--noimage`}`)
               ul.preview__breadcrumbs
                 each category of article.categories
                   li.preview__breadcrumbs-item
                     a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.name}
-              .preview__background
-                img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
+              if(article.picture)
+                .preview__background
+                  img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
               time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
               h3.preview__name
                 a.preview__name-link(href=`articles/${article.id}`) #{article.title}
