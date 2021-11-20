@@ -9,6 +9,6 @@ section.main-page__last.last
           img.last__list-image(src='img/avatar-small-1.png' width='20' height='20' alt='Аватар пользователя')
           b.last__list-name #{topComment.users.name}
           a.last__list-link(href=`articles/${topComment.articleId}`)
-            | #{topComment.text}
+            | #{cutLength(topComment.text, 100)}
   else
     p.last__empty Здесь пока ничего нет...

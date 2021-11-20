@@ -62,6 +62,15 @@ html(lang='ru')
         const date = new Date(dateString);
         return date.toLocaleString();
       }
+
+    -
+      const cutLength = (item, length) => {
+        if (item.length > length) {
+          return `${item.slice(0, length)}...`
+        }
+        return item;
+      }
+
     div(class= !!wrapper ? wrapper : 'wrapper')
       block content
       include ../components/footer/footer.pug
