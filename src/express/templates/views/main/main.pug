@@ -10,10 +10,11 @@ block content
         h2.visually-hidden Список тем
         ul.themes
           each category of categories
-            li.themes__item
-              a.themes__item-link(href=`/articles/category/${category.id}`)
-                | #{category.name}
-                sup #{category.count}
+            if category.count > 1
+              li.themes__item
+                a.themes__item-link(href=`/articles/category/${category.id}`)
+                  | #{category.name}
+                  sup #{category.count}
       .main-page__section-flex
         include ../../components/main/hot.pug
         include ../../components/main/last.pug
