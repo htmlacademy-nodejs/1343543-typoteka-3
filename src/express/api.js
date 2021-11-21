@@ -38,12 +38,12 @@ class API {
     return this._load(`/search`, {params: {query}});
   }
 
-  getCategories(count) {
-    return this._load(`/category`, {params: {count}});
+  getCategories({withCount}) {
+    return this._load(`/category`, {params: {withCount}});
   }
 
-  getOneCategory(id) {
-    return this._load(`/category/${id}`);
+  getCategory({categoryId, limit, offset}) {
+    return this._load(`/category/${categoryId}`, {params: {limit, offset}});
   }
 
   getNewComments() {

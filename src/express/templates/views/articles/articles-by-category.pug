@@ -2,20 +2,20 @@ extends ../../_layouts/layout.pug
 block content
   include ../../components/header/header-unauth.pug
   main.articles-category
-    h1 #{activeCategory.name}
+    h1 #{articles.category.name}
     section.articles-category__theme-list
       h2.visually-hidden Список тем
       ul.themes
         ul.themes
-          each category of categories
+          each categoryItem of categories
             li.themes__item
-              a(class=`themes__item-link ${category.id === activeCategory.id ? 'themes__item-link--active' : ''}` href=`/articles/category/${category.id}`)
-                | #{category.name}
-                sup #{category.count}
+              a(class=`themes__item-link ${articles.category.id === categoryItem.id ? 'themes__item-link--active' : ''}` href=`/articles/category/${categoryItem.id}`)
+                | #{categoryItem.name}
+                sup #{categoryItem.count}
     section.articles-category__list.preview
       h2.visually-hidden Список превью статей
       ul.preview__list
-        each article of articles
+        each article of articles.current
           li.preview__item
             ul.preview__breadcrumbs
               each category of article.categories

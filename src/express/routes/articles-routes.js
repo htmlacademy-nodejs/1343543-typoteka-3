@@ -11,6 +11,7 @@ const csrf = require(`csurf`);
 const csrfProtection = csrf();
 
 const UPLOAD_DIR = `../upload/img/`;
+const ARTICLES_PER_PAGE = 8;
 
 const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
@@ -53,13 +54,47 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
   const {user} = req.session;
 
-  const [articles, categories, activeCategory] = await Promise.all([
-    api.getArticlesWithCategory(categoryId),
-    api.getCategories(true),
-    api.getOneCategory(categoryId)
+  let {page = 1} = req.query;
+  page = +page;
+
+  const limit = ARTICLES_PER_PAGE;
+  const offset = (page - 1) * ARTICLES_PER_PAGE;
+
+  console.log(categoryId);
+  console.log(limit);
+  console.log(offset);
+
+  const [categories, {category, count, articlesByCategory}] = await Promise.all([
+    api.getCategories({withCount: true}),
+    api.getCategory({categoryId, limit, offset})
   ]);
 
-  res.render(`articles/articles-by-category`, {articles, categories, user, activeCategory});
+  const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
+
+  const articles = {
+    category,
+    current: articlesByCategory
+  };
+
+  console.log(articles);
+
+  res.render(`articles/articles-by-category`, {
+    fullView: true,
+    categories,
+    count,
+    articles,
+    page,
+    totalPages,
+    user
+  });
+
+  // const [articles, categories, activeCategory] = await Promise.all([
+  //   api.getArticlesWithCategory(categoryId),
+  //   api.getCategories(true),
+  //   api.getOneCategory(categoryId)
+  // ]);
+
+  // res.render(`articles/articles-by-category`, {articles, categories, user, activeCategory});
 });
 
 articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
