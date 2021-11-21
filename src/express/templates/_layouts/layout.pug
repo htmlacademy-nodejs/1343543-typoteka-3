@@ -58,9 +58,20 @@ html(lang='ru')
             a(class=`pagination__button button button--forward ${page === end ? 'button--disabled' : ''}` href=`${prefix}page=${page + 1}` aria-label='Страница вперёд')
 
     -
-      const formatDate = (dateString) => {
+      const formatDate = (dateString, isWithTime) => {
         const date = new Date(dateString);
-        return date.toLocaleString();
+        const options = {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+        }
+
+        if (isWithTime) {
+          options.hour = '2-digit';
+          options.minute = '2-digit';
+        }
+
+        return date.toLocaleString('ru-RU', options);
       }
 
     -

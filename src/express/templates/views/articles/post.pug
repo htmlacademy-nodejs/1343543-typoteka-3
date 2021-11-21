@@ -38,7 +38,7 @@ block content
                   .comments__text
                     .comments__head
                       p #{comment.users.name} •
-                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
+                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt, true)}
                     p.comments__message #{comment.text}
           else
             h2.comments__title.title.title--middle Комментарии отсутствуют
