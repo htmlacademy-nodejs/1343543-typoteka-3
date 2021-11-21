@@ -23,6 +23,21 @@ module.exports = (app, articleService, commentService) => {
     res.status(HttpCode.OK).json(result);
   });
 
+  route.get(`/test`, async (req, res) => {
+    // const {offset, limit, comments} = req.query;
+    // let result;
+    // if (limit || offset) {
+    //   result = await articleService.findPage({limit, offset, comments});
+    // } else {
+    //   result = await articleService.findAll(comments);
+    // }
+
+    let articles = {};
+    articles.commented = await articleService.findLimit({limit: 4, withComments: true});
+
+    return res.status(HttpCode.OK).json(articles);
+  });
+
   route.get(`/comments`, async (req, res) => {
     let result = await commentService.findNewest();
 

@@ -50,6 +50,10 @@ class API {
     return this._load(`/articles/comments`);
   }
 
+  getMostCommented() {
+    return this._load(`/articles/test`);
+  }
+
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,

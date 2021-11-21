@@ -4,6 +4,7 @@ const Alias = require(`../models/alias`);
 
 class ArticleService {
   constructor(sequelize) {
+    this._sequelize = sequelize;
     this._Article = sequelize.models.Article;
     this._Comment = sequelize.models.Comment;
     this._Category = sequelize.models.Category;
@@ -198,6 +199,59 @@ class ArticleService {
     return !!affectedRows;
   }
 
+  async findLimit({limit, withComments}) {
+    if (!withComments) {
+      const options = {
+        limit,
+        include: [
+          Alias.CATEGORIES
+        ],
+        order: [
+          [`createdAt`, `DESC`]
+        ]
+      };
+
+      return await this._Article.findAll(options);
+    }
+
+    const options = {
+      subQuery: false,
+      attributes: {
+        include: [
+          [this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)), `commentsCount`]
+        ]
+      },
+      include: [
+        {
+          model: this._Comment,
+          as: Alias.COMMENTS,
+          attributes: [],
+        },
+        {
+          model: this._Category,
+          as: Alias.CATEGORIES,
+          attributes: [`id`, `name`]
+        }
+      ],
+      group: [
+        `Article.id`,
+        `categories.id`,
+        `categories->ArticleCategory.ArticleId`,
+        `categories->ArticleCategory.CategoryId`
+      ],
+      order: [
+        [this._sequelize.fn(`COUNT`, this._sequelize.col(`comments.id`)), `DESC`]
+      ]
+    };
+
+    let articles = await this._Article.findAll(options);
+
+    articles = articles
+      .map((article) => article.get())
+      .filter((article) => article.commentsCount > 0);
+
+    return articles.slice(0, limit);
+  }
 }
 
 module.exports = ArticleService;

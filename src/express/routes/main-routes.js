@@ -21,17 +21,19 @@ mainRouter.get(`/`, async (req, res) => {
   const [
     {count, articles},
     categories,
-    topComments
+    topComments,
+    mostCommented,
   ] = await Promise.all([
     api.getArticles({limit, offset, comments: true}),
     api.getCategories(true),
     api.getNewComments(),
+    api.getMostCommented(),
   ]);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
-  console.log(topComments);
+  console.log(mostCommented);
 
-  res.render(`main/main`, {articles, categories, topComments, page, user, totalPages});
+  res.render(`main/main`, {articles, categories, topComments, mostCommented, page, user, totalPages});
 });
 
 
