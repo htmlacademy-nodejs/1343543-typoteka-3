@@ -26,6 +26,12 @@ myRouter.get(`/comments`, auth, async (req, res) => {
   });
 });
 
-myRouter.get(`/categories`, auth, (req, res) => res.render(`my/categories`, {wrapper: WrapperClass.NO_BACKGROUND}));
+myRouter.get(`/categories`, auth, async (req, res) => {
+  const categories = await api.getCategories({withCount: false});
+  res.render(`my/categories`, {
+    wrapper: WrapperClass.NO_BACKGROUND,
+    categories,
+  });
+});
 
 module.exports = myRouter;
