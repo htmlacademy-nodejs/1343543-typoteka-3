@@ -25,7 +25,7 @@ mainRouter.get(`/`, async (req, res) => {
     mostCommented,
   ] = await Promise.all([
     api.getArticles({limit, offset, comments: true}),
-    api.getCategories(true),
+    api.getCategories({withCount: true}),
     api.getNewComments(),
     api.getMostCommented(),
   ]);
