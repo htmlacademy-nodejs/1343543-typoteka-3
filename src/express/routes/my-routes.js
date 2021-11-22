@@ -5,6 +5,7 @@ const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
 const myRouter = new Router();
 const auth = require(`../middlewares/auth`);
+const upload = require(`../middlewares/upload`);
 
 myRouter.get(`/`, auth, async (req, res) => {
   const articles = await api.getArticles();
@@ -32,6 +33,19 @@ myRouter.get(`/categories`, auth, async (req, res) => {
     wrapper: WrapperClass.NO_BACKGROUND,
     categories,
   });
+});
+
+myRouter.post(`/categories`, auth, async (req, res) => {
+  const category = req.body[`add-category`];
+  try {
+    await api.createCategory(category);
+    res.redirect(`/my/categories`);
+  } catch (errors) {
+    console.log(errors);
+    // const validationMessages = prepareErrors(errors);
+    // const categories = await getAddArticleData();
+    // res.render(`articles/post-add`, {categories, validationMessages});
+  }
 });
 
 module.exports = myRouter;

@@ -82,6 +82,13 @@ class API {
     });
   }
 
+  createCategory(data) {
+    return this._load(`/category`, {
+      method: HttpMethod.POST,
+      data: {data}
+    });
+  }
+
   auth(email, password) {
     return this._load(`/user/auth`, {
       method: HttpMethod.POST,

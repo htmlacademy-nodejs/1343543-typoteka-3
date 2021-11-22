@@ -42,6 +42,10 @@ class CategoryService {
     return this._Category.findByPk(id);
   }
 
+  async create(name) {
+    return this._Category.create({name});
+  }
+
   async findPage(categoryId, limit, offset) {
     const articlesIdByCategory = await this._ArticleCategory.findAll({
       attributes: [`ArticleId`],
