@@ -2,6 +2,7 @@
 
 const {Router} = require(`express`);
 const {HttpCode} = require(`../../constants`);
+const categoryValidator = require(`../middlewares/category-validator`);
 
 const route = new Router();
 
@@ -17,7 +18,9 @@ module.exports = (app, service) => {
       .json(categories);
   });
 
-  route.post(`/`, async (req, res) => {
+  // добавление новой категории
+  route.post(`/`, categoryValidator, async (req, res) => {
+    // TODO а не добавить ли сюда проверку что добавляемая категория существует?
     const categoryName = req.body.data;
     const result = await service.create(categoryName);
 
