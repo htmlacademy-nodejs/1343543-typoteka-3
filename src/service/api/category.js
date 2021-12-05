@@ -44,9 +44,14 @@ module.exports = (app, service) => {
 
   route.delete(`/:categoryId`, async (req, res) => {
     const {categoryId: id} = req.params;
-    console.log(id);
-    const categories = await service.findSingle(id);
-    console.log(categories);
+    const category = await service.findSingle(id);
+
+    if (category.count > 1) {
+      console.log(`Невозможно удалить непустую категорию`);
+    } else {
+      console.log(`Удаление возможно`);
+    }
+
 
   });
 };

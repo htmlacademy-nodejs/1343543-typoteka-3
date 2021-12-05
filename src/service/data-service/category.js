@@ -44,7 +44,7 @@ class CategoryService {
 
   // возвращает категорию со счётчиком
   async findSingle(id) {
-    const result = await this._Category.findAll({
+    const result = await this._Category.findByPk(id, {
       where: {id},
       attributes: [
         `id`,
@@ -62,9 +62,10 @@ class CategoryService {
         model: this._ArticleCategory,
         as: Alias.ARTICLE_CATEGORIES,
         attributes: []
-      }]
+      }],
+      raw: true,
     });
-    return result.map((it) => it.get());
+    return result;
   }
 
   async create(name) {
