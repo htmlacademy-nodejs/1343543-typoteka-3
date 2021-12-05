@@ -41,4 +41,12 @@ module.exports = (app, service) => {
         articlesByCategory
       });
   });
+
+  route.delete(`/:categoryId`, async (req, res) => {
+    const {categoryId: id} = req.params;
+    console.log(id);
+    const categories = await service.findSingle(id);
+    console.log(categories);
+
+  });
 };

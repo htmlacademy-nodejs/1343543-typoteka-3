@@ -48,4 +48,31 @@ myRouter.post(`/categories`, auth, async (req, res) => {
   }
 });
 
+myRouter.post(`/categories/:id`, auth, async (req, res) => {
+  const action = req.body.button;
+  const {id} = req.params;
+  console.log(id);
+
+  if (action === `delete`) {
+    try {
+      await api.removeCategory(id);
+    } catch (errors) {
+      console.log(errors);
+    }
+  }
+
+  // const category = req.body[`add-category`];
+  // try {
+  //   await api.createCategory(category);
+  //   res.redirect(`/my/categories`);
+  // } catch (errors) {
+  //   console.log(errors);
+  //   // const validationMessages = prepareErrors(errors);
+  //   // const categories = await getAddArticleData();
+  //   // res.render(`articles/post-add`, {categories, validationMessages});
+  // }
+});
+
+
+
 module.exports = myRouter;

@@ -89,6 +89,13 @@ class API {
     });
   }
 
+  removeCategory(id, data) {
+    return this._load(`/category/${id}`, {
+      method: HttpMethod.DELETE,
+      data: {data}
+    });
+  }
+
   auth(email, password) {
     return this._load(`/user/auth`, {
       method: HttpMethod.POST,

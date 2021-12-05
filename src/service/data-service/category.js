@@ -38,8 +38,33 @@ class CategoryService {
     }
   }
 
-  findOne(id) {
+  async findOne(id, needCount) {
     return this._Category.findByPk(id);
+  }
+
+  // возвращает категорию со счётчиком
+  async findSingle(id) {
+    const result = await this._Category.findAll({
+      where: {id},
+      attributes: [
+        `id`,
+        `name`,
+        [
+          Sequelize.fn(
+              `COUNT`,
+              `*`
+          ),
+          `count`
+        ]
+      ],
+      group: [Sequelize.col(`Category.id`)],
+      include: [{
+        model: this._ArticleCategory,
+        as: Alias.ARTICLE_CATEGORIES,
+        attributes: []
+      }]
+    });
+    return result.map((it) => it.get());
   }
 
   async create(name) {
