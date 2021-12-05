@@ -72,6 +72,14 @@ class CategoryService {
     return this._Category.create({name});
   }
 
+  async drop(id) {
+    const deletedRows = await this._Category.destroy({
+      where: {id}
+    });
+
+    return !!deletedRows;
+  }
+
   async findPage(categoryId, limit, offset) {
     const articlesIdByCategory = await this._ArticleCategory.findAll({
       attributes: [`ArticleId`],

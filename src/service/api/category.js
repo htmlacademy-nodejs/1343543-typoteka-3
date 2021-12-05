@@ -50,6 +50,7 @@ module.exports = (app, service) => {
       console.log(`Невозможно удалить непустую категорию`);
     } else {
       console.log(`Удаление возможно`);
+      await service.drop(id);
     }
 
 
