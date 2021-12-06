@@ -54,6 +54,12 @@ class API {
     return this._load(`/articles/test`);
   }
 
+  removeArticle(id) {
+    return this._load(`/articles/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,

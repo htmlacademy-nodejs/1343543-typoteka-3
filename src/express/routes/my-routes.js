@@ -8,18 +8,6 @@ const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
 
 // /////
-// Публикации (my)
-// /////
-myRouter.get(`/`, auth, async (req, res) => {
-  const articles = await api.getArticles({});
-  console.log(articles[0]);
-  res.render(`my/my`, {
-    wrapper: WrapperClass.NO_BACKGROUND,
-    articles
-  });
-});
-
-// /////
 // Комментарии (my/comments)
 // /////
 
@@ -40,6 +28,24 @@ myRouter.get(`/comments/:id`, auth, async (req, res) => {
 
   res.redirect(`/my/comments/`);
 });
+
+// /////
+// Публикации (my)
+// /////
+myRouter.get(`/`, auth, async (req, res) => {
+  const articles = await api.getArticles({});
+  res.render(`my/my`, {
+    wrapper: WrapperClass.NO_BACKGROUND,
+    articles
+  });
+});
+
+myRouter.get(`/:id`, auth, async (req, res) => {
+  const {id} = req.params;
+  await api.removeArticle(id);
+  res.redirect(`/my`);
+});
+
 
 // //////
 // Категории (my/categories)
