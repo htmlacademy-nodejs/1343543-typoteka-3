@@ -82,6 +82,11 @@ class API {
     });
   }
 
+  // /////
+  // my/category
+  // /////
+
+  // Добавляет категорию
   createCategory(data) {
     return this._load(`/category`, {
       method: HttpMethod.POST,
@@ -89,12 +94,25 @@ class API {
     });
   }
 
+  // Удаляет категорию
   removeCategory(id, data) {
     return this._load(`/category/${id}`, {
       method: HttpMethod.DELETE,
       data: {data}
     });
   }
+
+  // Переименовывает категорию
+  renameCategory(id, data) {
+    return this._load(`/category/${id}`, {
+      method: HttpMethod.PUT,
+      data: {data}
+    });
+  }
+
+  // /////
+  // Аутентификация
+  // /////
 
   auth(email, password) {
     return this._load(`/user/auth`, {

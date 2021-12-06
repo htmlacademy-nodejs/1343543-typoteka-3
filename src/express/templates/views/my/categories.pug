@@ -16,7 +16,7 @@ block content
         each category of categories
           li.category__list-item
             form(action=`/my/categories/${category.id}` method='POST' enctype='application/x-www-form-urlencoded' autocomplete='off')
-              input#modify-form-category-1(type='text' name=`category-${category.id}` value=`${category.name}`)
+              input#modify-form-category-1(type='text' name=`category` value=`${category.name}`)
               label(for=`modify-form-category-${category.id}`)
                 span.visually-hidden Редактировать категорию
               button.category__button.button.button--category(type='submit' value='save' name='button') Сохранить

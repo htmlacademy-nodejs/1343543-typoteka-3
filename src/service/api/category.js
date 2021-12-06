@@ -42,6 +42,7 @@ module.exports = (app, service) => {
       });
   });
 
+  // удаление категории
   route.delete(`/:categoryId`, async (req, res) => {
     const {categoryId: id} = req.params;
     const category = await service.findSingle(id);
@@ -60,5 +61,21 @@ module.exports = (app, service) => {
     }
 
     return res.status(HttpCode.OK).json(deleted);
+  });
+
+  // обновление новой категории
+  route.put(`/:categoryId`, categoryValidator, async (req, res) => {
+    const {categoryId: id} = req.params;
+    const categoryName = req.body.data;
+    const category = await service.findSingle(id);
+
+    if (!category) {
+      return res.status(HttpCode.NOT_FOUND)
+        .send(`Not found`);
+    }
+
+    const updated = await service.update(id, categoryName);
+
+    return res.status(HttpCode.OK).json(updated);
   });
 };

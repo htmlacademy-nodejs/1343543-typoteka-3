@@ -49,9 +49,11 @@ myRouter.post(`/categories`, auth, async (req, res) => {
   }
 });
 
+// при нажати на кнопки сохранить и удалить категорию
 myRouter.post(`/categories/:id`, auth, async (req, res) => {
   const action = req.body.button;
   const {id} = req.params;
+  console.log(req.body);
 
   if (action === `delete`) {
     try {
@@ -64,19 +66,18 @@ myRouter.post(`/categories/:id`, auth, async (req, res) => {
     }
   }
 
+  if (action === `save`) {
+    const category = req.body.category;
 
-  // const category = req.body[`add-category`];
-  // try {
-  //   await api.createCategory(category);
-  //   res.redirect(`/my/categories`);
-  // } catch (errors) {
-  //   console.log(errors);
-  //   // const validationMessages = prepareErrors(errors);
-  //   // const categories = await getAddArticleData();
-  //   // res.render(`articles/post-add`, {categories, validationMessages});
-  // }
+    try {
+      await api.renameCategory(id, category);
+      res.redirect(`/my/categories`);
+    } catch (errors) {
+      const validationMessages = prepareErrors(errors);
+      const categories = await api.getCategories({withCount: false});
+      res.render(`my/categories`, {categories, validationMessages});
+    }
+  }
 });
-
-
 
 module.exports = myRouter;

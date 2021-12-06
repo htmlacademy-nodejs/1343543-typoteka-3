@@ -80,6 +80,16 @@ class CategoryService {
     return !!deletedRows;
   }
 
+  async update(id, categoryName) {
+    const updatedRows = await this._Category.update({
+      name: categoryName
+    }, {
+      where: {id}
+    });
+
+    return updatedRows;
+  }
+
   async findPage(categoryId, limit, offset) {
     const articlesIdByCategory = await this._ArticleCategory.findAll({
       attributes: [`ArticleId`],
