@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 });
 
 const getAddArticleData = () => {
-  return api.getCategories();
+  return api.getCategories({withCount: true});
 };
 
 const getViewArticleData = (articleId, comments) => {
@@ -60,10 +60,6 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   const limit = ARTICLES_PER_PAGE;
   const offset = (page - 1) * ARTICLES_PER_PAGE;
 
-  console.log(categoryId);
-  console.log(limit);
-  console.log(offset);
-
   const [categories, {category, count, articlesByCategory}] = await Promise.all([
     api.getCategories({withCount: true}),
     api.getCategory({categoryId, limit, offset})
@@ -75,8 +71,6 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
     category,
     current: articlesByCategory
   };
-
-  console.log(articles);
 
   res.render(`articles/articles-by-category`, {
     fullView: true,
