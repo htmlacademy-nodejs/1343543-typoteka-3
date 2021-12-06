@@ -25,4 +25,4 @@ npm run start-front-server
 
 1. '/' - главная страница
 2. 'register' - регистрация
-3. 
+3. '/articles/add' -- добавить публикацию

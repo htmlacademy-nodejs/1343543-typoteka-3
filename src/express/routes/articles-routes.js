@@ -79,7 +79,7 @@ articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   const {id} = req.params;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
-    api.getCategories()
+    api.getCategories({withCount: false})
   ]);
 
   res.render(`articles/post-edit`, {
@@ -138,7 +138,7 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
 
   try {
     await api.createArticle(articleData);
-    res.redirect(`/`);
+    res.redirect(`/my`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await getAddArticleData();
@@ -146,8 +146,11 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   }
 });
 
-articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
+articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   const {id} = req.params;
+  const {user} = req.session;
+  const {body, file} = req;
+
   // зарефакторить
   const entries = Object.entries(req.body);
   const selectedCategories = entries.reduce((acc, element) => {
@@ -158,11 +161,14 @@ articlesRouter.post(`/edit/:id`, upload.single(`avatar`), async (req, res) => {
   }, []);
 
   const articleData = {
+    picture: file ? file.filename : ``,
     categories: selectedCategories,
     title: req.body.title,
     announce: req.body.announcement,
     fullText: req.body[`full-text`],
+    userId: user.id,
   };
+
   try {
     await api.editArticle(id, articleData);
     res.redirect(`/`);
