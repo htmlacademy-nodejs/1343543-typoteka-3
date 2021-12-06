@@ -14,17 +14,18 @@ myRouter.get(`/`, auth, async (req, res) => {
     articles
   });
 });
-myRouter.get(`/comments`, auth, async (req, res) => {
-  const articles = await api.getArticles({comments: true});
 
-  const comments = {
-    title: articles[0].title,
-    comments: articles[0].comments
-  };
-  res.render(`my/comments`, {
-    wrapper: WrapperClass.NO_BACKGROUND,
-    comments
-  });
+// /////
+// Комментарии (my/comments)
+// /////
+
+// открыть страницу
+myRouter.get(`/comments`, auth, async (req, res) => {
+  const comments = await api.getComments();
+
+  // res.render(`my/comments`, {
+  //   wrapper: WrapperClass.NO_BACKGROUND,
+  // });
 });
 
 // //////

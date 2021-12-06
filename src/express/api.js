@@ -83,7 +83,16 @@ class API {
   }
 
   // /////
-  // my/category
+  // Комментарии
+  // ////
+
+  getComments() {
+    return this._load(`/articles/comments2`);
+  }
+
+
+  // /////
+  // Категории
   // /////
 
   // Добавляет категорию

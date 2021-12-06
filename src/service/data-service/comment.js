@@ -31,6 +31,16 @@ class CommentService {
     });
   }
 
+  async findFull() {
+    const comments = await this._Comment.findAll({
+      include: Alias.ARTICLES,
+      order: [[`createdAt`, `DESC`]],
+      raw: true,
+    });
+
+    return comments;
+  }
+
   findNewest() {
     const include = [
       {
