@@ -24,7 +24,7 @@ myRouter.get(`/comments`, auth, async (req, res) => {
 });
 
 // удалить комментарий
-myRouter.get(`/comments/:id`, auth, async (req, res) => {
+myRouter.delete(`/comments/:id`, auth, async (req, res) => {
   const {id} = req.params;
   await api.removeComment(id);
 
@@ -44,11 +44,11 @@ myRouter.get(`/`, auth, async (req, res) => {
   });
 });
 
-// myRouter.get(`/:id`, auth, async (req, res) => {
-//   const {id} = req.params;
-//   await api.removeArticle(id);
-//   res.redirect(`/my`);
-// });
+myRouter.delete(`/:id`, auth, async (req, res) => {
+  const {id} = req.params;
+  await api.removeArticle(id);
+  res.redirect(`/my`);
+});
 
 
 // //////

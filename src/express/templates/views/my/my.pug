@@ -10,6 +10,6 @@ block content
           li.notes__list-item
             time.notes__item-time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt, true)}
             a.notes__item-text(href=`/articles/${article.id}`) #{article.title}
-            form(action=`/my/${article.id}` method='DELETE' enctype='application/x-www-form-urlencoded' autocomplete='off')
+            form(action=`my/${article.id}?_method=DELETE` method='POST')
               button.notes__button.button.button--close-item(type='submit')
                 span.visually-hidden Закрыть строку списка
