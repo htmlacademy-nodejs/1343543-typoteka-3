@@ -8,8 +8,8 @@ block content
       ul.notes__list
         each article of articles
           li.notes__list-item
-            time.notes__item-time(datetime=`${article.createdDate}`) #{article.createdDate}
-            //- TODO - добавить ссылки
+            time.notes__item-time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt, true)}
             a.notes__item-text(href='#') #{article.title}
-            button.notes__button.button.button--close-item(type='button')
-              span.visually-hidden Закрыть строку списка
+            form(action=`/my/${article.id}` method='DELETE' enctype='application/x-www-form-urlencoded' autocomplete='off')
+              button.notes__button.button.button--close-item(type='submit')
+                span.visually-hidden Закрыть строку списка

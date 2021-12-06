@@ -7,8 +7,12 @@ const myRouter = new Router();
 const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
 
+// /////
+// Публикации (my)
+// /////
 myRouter.get(`/`, auth, async (req, res) => {
-  const articles = await api.getArticles();
+  const articles = await api.getArticles({});
+  console.log(articles[0]);
   res.render(`my/my`, {
     wrapper: WrapperClass.NO_BACKGROUND,
     articles
@@ -22,21 +26,19 @@ myRouter.get(`/`, auth, async (req, res) => {
 // открыть страницу с комментариями
 myRouter.get(`/comments`, auth, async (req, res) => {
   const comments = await api.getComments();
+
   res.render(`my/comments`, {
     wrapper: WrapperClass.NO_BACKGROUND,
     comments,
   });
 });
 
-// /////
-// Удалить комментарий
-// /////
+// удалить комментарий
 myRouter.get(`/comments/:id`, auth, async (req, res) => {
   const {id} = req.params;
   await api.removeComment(id);
 
   res.redirect(`/my/comments/`);
-  // res.redirect(`/my/comments`);
 });
 
 // //////
