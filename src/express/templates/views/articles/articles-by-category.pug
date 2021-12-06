@@ -5,13 +5,7 @@ block content
     h1 #{articles.category.name}
     section.articles-category__theme-list
       h2.visually-hidden Список тем
-      ul.themes
-        ul.themes
-          each categoryItem of categories
-            li.themes__item
-              a(class=`themes__item-link ${articles.category.id === categoryItem.id ? 'themes__item-link--active' : ''}` href=`/articles/category/${categoryItem.id}`)
-                | #{categoryItem.name}
-                sup #{categoryItem.count}
+      include ../common/categories
     section.articles-category__list.preview
       h2.visually-hidden Список превью статей
       ul.preview__list
