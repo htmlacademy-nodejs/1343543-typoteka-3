@@ -44,11 +44,11 @@ myRouter.get(`/`, auth, async (req, res) => {
   });
 });
 
-myRouter.get(`/:id`, auth, async (req, res) => {
-  const {id} = req.params;
-  await api.removeArticle(id);
-  res.redirect(`/my`);
-});
+// myRouter.get(`/:id`, auth, async (req, res) => {
+//   const {id} = req.params;
+//   await api.removeArticle(id);
+//   res.redirect(`/my`);
+// });
 
 
 // //////

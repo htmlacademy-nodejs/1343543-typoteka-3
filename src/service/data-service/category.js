@@ -20,7 +20,7 @@ class CategoryService {
           [
             Sequelize.fn(
                 `COUNT`,
-                `*`
+                Sequelize.col(`CategoryId`)
             ),
             `count`
           ]
