@@ -13,11 +13,13 @@ const {prepareErrors} = require(`../../utils`);
 
 // открыть страницу с комментариями
 myRouter.get(`/comments`, auth, async (req, res) => {
+  const {user} = req.session;
   const comments = await api.getComments();
 
   res.render(`my/comments`, {
     wrapper: WrapperClass.NO_BACKGROUND,
     comments,
+    user
   });
 });
 
@@ -33,10 +35,12 @@ myRouter.get(`/comments/:id`, auth, async (req, res) => {
 // Публикации (my)
 // /////
 myRouter.get(`/`, auth, async (req, res) => {
+  const {user} = req.session;
   const articles = await api.getArticles({});
   res.render(`my/my`, {
     wrapper: WrapperClass.NO_BACKGROUND,
-    articles
+    articles,
+    user
   });
 });
 
@@ -53,15 +57,18 @@ myRouter.get(`/:id`, auth, async (req, res) => {
 
 // открыть страницу
 myRouter.get(`/categories`, auth, async (req, res) => {
+  const {user} = req.session;
   const categories = await api.getCategories({withCount: false});
   res.render(`my/categories`, {
     wrapper: WrapperClass.NO_BACKGROUND,
     categories,
+    user
   });
 });
 
 // добавить категорию
 myRouter.post(`/categories`, auth, async (req, res) => {
+  const {user} = req.session;
   const category = req.body[`add-category`];
   try {
     await api.createCategory(category);
@@ -76,6 +83,7 @@ myRouter.post(`/categories`, auth, async (req, res) => {
       validationMessages,
       errorType: ErrorType.CATEGORY_ADD,
       wrapper: WrapperClass.NO_BACKGROUND,
+      user
     });
   }
 });
@@ -83,6 +91,7 @@ myRouter.post(`/categories`, auth, async (req, res) => {
 // удалить или сохранить категорию
 myRouter.post(`/categories/:id`, auth, async (req, res) => {
   const action = req.body.button;
+  const {user} = req.session;
   const {id} = req.params;
   console.log(req.body);
 
@@ -101,6 +110,7 @@ myRouter.post(`/categories/:id`, auth, async (req, res) => {
         validationMessages,
         errorType: ErrorType.CATEGORY_DELETE,
         wrapper: WrapperClass.NO_BACKGROUND,
+        user,
       });
     }
   }
@@ -122,6 +132,7 @@ myRouter.post(`/categories/:id`, auth, async (req, res) => {
         validationMessages,
         errorType: ErrorType.CATEGORY_UPDATE,
         wrapper: WrapperClass.NO_BACKGROUND,
+        user
       });
     }
   }
