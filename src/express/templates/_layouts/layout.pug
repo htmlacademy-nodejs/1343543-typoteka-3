@@ -19,10 +19,10 @@ html(lang='ru')
         padding: 10px;
       }
   body
-    mixin insertErrorMessage(messages)
+    mixin insertErrorMessage(messages, errorType)
       if messages
         .form__validation-error
-          p.form__error-message При регистрации произошли ошибки:
+          p.form__error-message #{errorType}
           ul.form__errors
             each message of messages
               li.form__error= message
