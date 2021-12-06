@@ -48,11 +48,17 @@ module.exports = (app, service) => {
 
     if (category.count > 1) {
       console.log(`Невозможно удалить непустую категорию`);
-    } else {
-      console.log(`Удаление возможно`);
-      await service.drop(id);
+      return res.status(HttpCode.FORBIDDEN)
+        .send(`Unable to delete not empty category`);
     }
 
+    const deleted = await service.drop(id);
 
+    if (!deleted) {
+      return res.status(HttpCode.NOT_FOUND)
+        .send(`Not found`);
+    }
+
+    return res.status(HttpCode.OK).json(deleted);
   });
 };

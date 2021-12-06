@@ -11,6 +11,7 @@ block content
           label(for='add-form-add-category')
             span.visually-hidden Добавить категорию
           button.category__button.button.button--category(type='submit') Добавить
+      +insertErrorMessage(validationMessages)
       ul.category__list
         each category of categories
           li.category__list-item

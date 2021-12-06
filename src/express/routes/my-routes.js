@@ -6,6 +6,7 @@ const api = require(`../api`).getAPI();
 const myRouter = new Router();
 const auth = require(`../middlewares/auth`);
 const upload = require(`../middlewares/upload`);
+const {prepareErrors} = require(`../../utils`);
 
 myRouter.get(`/`, auth, async (req, res) => {
   const articles = await api.getArticles();
@@ -51,15 +52,18 @@ myRouter.post(`/categories`, auth, async (req, res) => {
 myRouter.post(`/categories/:id`, auth, async (req, res) => {
   const action = req.body.button;
   const {id} = req.params;
-  console.log(id);
 
   if (action === `delete`) {
     try {
       await api.removeCategory(id);
+      res.redirect(`/my/categories`);
     } catch (errors) {
-      console.log(errors);
+      const validationMessages = prepareErrors(errors);
+      const categories = await api.getCategories({withCount: false});
+      res.render(`my/categories`, {categories, validationMessages});
     }
   }
+
 
   // const category = req.body[`add-category`];
   // try {
