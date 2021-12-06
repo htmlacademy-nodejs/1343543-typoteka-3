@@ -29,7 +29,7 @@ block content
                     a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.name}
               if(article.picture)
                 .preview__background
-                  img.preview__background-image(src=`img/${article.picture}@1x.jpg` width='460' height='240' srcset=`img/${article.picture}@1x.jpg 1x, img/${article.picture}@2x.jpg 2x` alt=`${article.title}`)
+                  img.preview__background-image(src=`img/${article.picture}` width='460' height='240' alt=`${article.title}`)
               time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
               h3.preview__name
                 a.preview__name-link(href=`articles/${article.id}`) #{article.title}
