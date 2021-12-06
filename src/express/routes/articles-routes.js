@@ -102,7 +102,7 @@ articlesRouter.get(`/:id`, async (req, res) => {
 
   const [article, categories] = await Promise.all([
     api.getArticle(id),
-    api.getCategories(true)
+    api.getCategories({withCount: true})
   ]);
 
   res.render(`articles/post`, {

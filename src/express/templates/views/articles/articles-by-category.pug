@@ -4,7 +4,9 @@ block content
   main.articles-category
     h1 #{articles.category.name}
     section.articles-category__theme-list
-      include ../../components/common/categories-selected.pug
+      h2.visually-hidden Список тем
+      ul.themes
+        include ../../components/common/categories-selected.pug
     section.articles-category__list.preview
       h2.visually-hidden Список превью статей
       ul.preview__list

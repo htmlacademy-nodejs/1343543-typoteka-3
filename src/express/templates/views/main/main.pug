@@ -8,7 +8,8 @@ block content
     if articles.length > 0
       section.main-page__theme-list
         h2.visually-hidden Список тем
-        include ../../components/common/categories.pug
+        ul.themes
+          include ../../components/common/categories.pug
       .main-page__section-flex
         include ../../components/main/hot.pug
         include ../../components/main/last.pug
