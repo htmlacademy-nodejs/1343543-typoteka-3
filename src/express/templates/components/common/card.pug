@@ -5,12 +5,12 @@ li(class=`preview__item ${article.picture ? `` : `preview__item--noimage`}`)
         a.preview__breadcrumbs-link(href=`/articles/category/${category.id}`) #{category.name}
   if(article.picture)
     .preview__background
-      img.preview__background-image(src=`img/${article.picture}` width='460' height='240' alt=`${article.title}`)
+      img.preview__background-image(src=`/img/${article.picture}` width='460' height='240' alt=`${article.title}`)
   time.preview__time(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
   h3.preview__name
-    a.preview__name-link(href=`articles/${article.id}`) #{article.title}
+    a.preview__name-link(href=`/articles/${article.id}`) #{article.title}
   p.preview__text #{article.announce}
-  a.preview__comment(href='#')
+  a.preview__comment(href=`/articles/${article.id}`)
     | Комментарии
     span.preview__cloud
     b.preview__comment-count #{article.comments.length}

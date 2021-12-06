@@ -1,0 +1,7 @@
+h2.visually-hidden Список тем
+ul.themes
+  each categoryItem of categories
+    li.themes__item
+      a(class=`themes__item-link ${articles.category.id === categoryItem.id ? 'themes__item-link--active' : ''}` href=`/articles/category/${categoryItem.id}`)
+        | #{categoryItem.name}
+        sup #{categoryItem.count}
