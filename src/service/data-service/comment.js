@@ -33,7 +33,16 @@ class CommentService {
 
   async findFull() {
     const comments = await this._Comment.findAll({
-      include: Alias.ARTICLES,
+      include: [
+        Alias.ARTICLES,
+        {
+          model: this._User,
+          as: Alias.USERS,
+          attributes: {
+            exclude: [`passwordHash`]
+          }
+        },
+      ],
       order: [[`createdAt`, `DESC`]],
       raw: true,
     });

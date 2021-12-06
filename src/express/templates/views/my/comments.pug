@@ -6,15 +6,13 @@ block content
     section.main-page__publication.publication
       h1.publication__title Комментарии
       ul.publication__list
-        each comment of comments.comments
+        each comment of comments
           li.publication__list-item
             .publication__header
-              //- TODO незамокан аватар
-              img.publication__list-image(src='/img/avatar-small-2.png' width='20' height='20' alt='Аватар пользователя')
-              b.publication__list-name Александр Петров
-              //- TODO незамокано время комментария
-              time.publication__item-time(datetime='2019-03-21T20:33') 21.03.2019, 20:33
+              img.publication__list-image(src=`/img/${comment[`users.avatar`]}` width='20' height='20' alt='Аватар пользователя')
+              b.publication__list-name #{comment[`users.name`]}
+              time.publication__item-time(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt, true)}
             a.publication__item-text(href='#') #{comment.text}
-            p.publication__text-strong #{comments.title}
+            p.publication__text-strong #{comment[`articles.title`]}
             button.publication__button.button.button--close-item(type='button')
               span.visually-hidden Закрыть строку списка

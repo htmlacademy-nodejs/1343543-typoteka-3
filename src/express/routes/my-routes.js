@@ -22,10 +22,11 @@ myRouter.get(`/`, auth, async (req, res) => {
 // открыть страницу
 myRouter.get(`/comments`, auth, async (req, res) => {
   const comments = await api.getComments();
-
-  // res.render(`my/comments`, {
-  //   wrapper: WrapperClass.NO_BACKGROUND,
-  // });
+  console.log(comments);
+  res.render(`my/comments`, {
+    wrapper: WrapperClass.NO_BACKGROUND,
+    comments,
+  });
 });
 
 // //////

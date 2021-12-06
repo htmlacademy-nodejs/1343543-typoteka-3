@@ -46,8 +46,7 @@ module.exports = (app, articleService, commentService) => {
 
   route.get(`/comments2`, async (req, res) => {
     let result = await commentService.findFull();
-    console.log(result);
-    // res.status(HttpCode.OK).json(result);
+    return res.status(HttpCode.OK).json(result);
   });
 
   route.get(`/category/:categoryId`, async (req, res) => {

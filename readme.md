@@ -20,3 +20,9 @@ npm run start-front-server
 
 [travis-image]: https://travis-ci.com/htmlacademy-nodejs/1343543-typoteka-3.svg?branch=master
 [travis-url]: https://travis-ci.com/htmlacademy-nodejs/1343543-typoteka-3
+
+#### Маршруты
+
+1. '/' - главная страница
+2. 'register' - регистрация
+3. 
