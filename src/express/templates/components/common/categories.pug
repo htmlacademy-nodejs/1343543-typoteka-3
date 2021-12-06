@@ -1,9 +1,7 @@
-section.main-page__theme-list
-  h2.visually-hidden Список тем
-  ul.themes
-    each category of categories
-      if category.count > 1
-        li.themes__item
-          a.themes__item-link(href=`/articles/category/${category.id}`)
-            | #{category.name}
-            sup #{category.count}
+ul.themes
+  each category of categories
+    if category.count > 1
+      li.themes__item
+        a.themes__item-link(href=`/articles/category/${category.id}`)
+          | #{category.name}
+          sup #{category.count}
