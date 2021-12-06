@@ -90,6 +90,12 @@ class API {
     return this._load(`/articles/comments2`);
   }
 
+  removeComment(id) {
+    return this._load(`/articles/comments/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
 
   // /////
   // Категории

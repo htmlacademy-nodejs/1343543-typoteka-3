@@ -19,14 +19,24 @@ myRouter.get(`/`, auth, async (req, res) => {
 // Комментарии (my/comments)
 // /////
 
-// открыть страницу
+// открыть страницу с комментариями
 myRouter.get(`/comments`, auth, async (req, res) => {
   const comments = await api.getComments();
-  console.log(comments);
   res.render(`my/comments`, {
     wrapper: WrapperClass.NO_BACKGROUND,
     comments,
   });
+});
+
+// /////
+// Удалить комментарий
+// /////
+myRouter.get(`/comments/:id`, auth, async (req, res) => {
+  const {id} = req.params;
+  await api.removeComment(id);
+
+  res.redirect(`/my/comments/`);
+  // res.redirect(`/my/comments`);
 });
 
 // //////

@@ -12,7 +12,8 @@ block content
               img.publication__list-image(src=`/img/${comment[`users.avatar`]}` width='20' height='20' alt='Аватар пользователя')
               b.publication__list-name #{comment[`users.name`]}
               time.publication__item-time(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt, true)}
-            a.publication__item-text(href='#') #{comment.text}
+            a.publication__item-text(href=`/articles/${comment[`articles.id`]}`) #{comment.text}
             p.publication__text-strong #{comment[`articles.title`]}
-            button.publication__button.button.button--close-item(type='button')
-              span.visually-hidden Закрыть строку списка
+            form(action=`/my/comments/${comment.id}` method='DELETE' enctype='application/x-www-form-urlencoded' autocomplete='off')
+              button.publication__button.button.button--close-item(type='submit')
+                span.visually-hidden Закрыть строку списка

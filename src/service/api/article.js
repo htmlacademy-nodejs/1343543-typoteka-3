@@ -49,6 +49,18 @@ module.exports = (app, articleService, commentService) => {
     return res.status(HttpCode.OK).json(result);
   });
 
+  route.delete(`/comments/:id`, async (req, res) => {
+    const {id} = req.params;
+    const deleted = await commentService.drop(id);
+
+    if (!deleted) {
+      return res.status(HttpCode.NOT_FOUND)
+        .send(`Not found`);
+    }
+
+    return res.status(HttpCode.OK).json({});
+  });
+
   route.get(`/category/:categoryId`, async (req, res) => {
     // реализация без пагинации: пофикшу перед защитой
     const {categoryId} = req.params;
