@@ -6,7 +6,7 @@ section.main-page__hot.hot
     ul.hot__list
       each mostComment of mostCommented.commented
         li.hot__list-item
-          a.hot__list-link(href=`/article/${mostComment.id}`)
+          a.hot__list-link(href=`/articles/${mostComment.id}`)
             | #{cutLength(mostComment.announce, 100)}
             sup.hot__link-sup #{mostComment.commentsCount}
   else
