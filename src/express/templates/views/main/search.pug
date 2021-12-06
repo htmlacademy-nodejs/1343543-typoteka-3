@@ -3,7 +3,7 @@ block content
   include ../../components/header/header.pug
   main
     section.search-page
-      .search-page__wrapper
+      div(class=`search-page__wrapper ${query !== `` && results.length === 0 ? `search-page__wrapper--empty` : ``}`)
         h1 Поиск
         .search.search-page__form
           form(action='/search' method='get')
@@ -11,8 +11,7 @@ block content
               input(type='text' name='search' placeholder=`Что ищем` value=`${query}`)
             button.search__button.button.button--transparent(type='submit') Найти
           if results.length !== 0
-            each result of results
-              include ../../components/search/result.pug
+            include ../../components/search/result.pug
           else if query !== ``
             include ../../components/search/no-results.pug
 

@@ -1,5 +1,5 @@
-.search__result
-  time.search__date(datetime=`${result.createdAt}`) #{formatDate(result.createdAt)}
-  //- TODO - приделать ссылки
-  a.search__link(href=`/articles/${result.id}`)
-    | #{result.title}
+each result of results
+  .search__result
+    time.search__date(datetime=`${result.createdAt}`) #{formatDate(result.createdAt)}
+    a.search__link(href=`/articles/${result.id}`)
+      | #{result.title}
