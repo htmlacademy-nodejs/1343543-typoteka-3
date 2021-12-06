@@ -87,7 +87,7 @@ mainRouter.post(`/login`, async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const {user} = req.session;
-    res.render(`main/login`, {user, validationMessages});
+    res.render(`main/login`, {user, email: req.body[`email`], validationMessages});
   }
 });
 
