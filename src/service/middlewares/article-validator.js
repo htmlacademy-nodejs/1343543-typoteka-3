@@ -25,6 +25,7 @@ const schema = Joi.object({
     'string.min': ErrorArticleMessage.TITLE_MIN,
     'string.max': ErrorArticleMessage.TITLE_MAX
   }),
+  picture: Joi.string(),
   announce: Joi.string().min(30).max(250).required().messages({
     'string.min': ErrorArticleMessage.ANNOUNCE_MIN,
     'string.max': ErrorArticleMessage.ANNOUNCE_MAX

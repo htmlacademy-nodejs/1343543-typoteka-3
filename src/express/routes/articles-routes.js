@@ -1,32 +1,18 @@
 'use strict';
 
 const {Router} = require(`express`);
-const multer = require(`multer`);
-const path = require(`path`);
-const {nanoid} = require(`nanoid`);
-const {prepareErrors} = require(`../../utils`);
-const auth = require(`../middlewares/auth`);
-
 const csrf = require(`csurf`);
-const csrfProtection = csrf();
 
-const UPLOAD_DIR = `../upload/img/`;
-const ARTICLES_PER_PAGE = 8;
-
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
-
-const articlesRouter = new Router();
+const upload = require(`../middlewares/upload`);
+const auth = require(`../middlewares/auth`);
+const {prepareErrors} = require(`../../utils`);
 
 const api = require(`../api`).getAPI();
+const articlesRouter = new Router();
 
-const storage = multer.diskStorage({
-  destination: uploadDirAbsolute,
-  filename: (req, file, cb) => {
-    const uniqueName = nanoid(10);
-    const extension = file.originalname.split(`.`).pop();
-    cb(null, `${uniqueName}.${extension}`);
-  }
-});
+const csrfProtection = csrf();
+
+const ARTICLES_PER_PAGE = 8;
 
 const getAddArticleData = () => {
   return api.getCategories({withCount: true});
@@ -43,8 +29,6 @@ const getEditArticleData = async (articleId) => {
   ]);
   return [article, categories];
 };
-
-const upload = multer({storage});
 
 // //
 // get
@@ -128,9 +112,11 @@ articlesRouter.get(`/:id`, async (req, res) => {
   });
 });
 
-articlesRouter.post(`/add`, upload.single(`photo`), csrfProtection, async (req, res) => {
+articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   const {user} = req.session;
+  const {body, file} = req;
 
+  // TODO поправить странный код
   const entries = Object.entries(req.body);
   const selectedCategories = entries.reduce((acc, element) => {
     if (element[0][0] === `c`) {
@@ -138,14 +124,17 @@ articlesRouter.post(`/add`, upload.single(`photo`), csrfProtection, async (req, 
     }
     return acc;
   }, []);
+
   const articleData = {
-    // TODO тут будет поле photo, когда я пойму почему multer падает
+    picture: file ? file.filename : ``,
     categories: selectedCategories,
     title: req.body.title,
     announce: req.body.announcement,
     fullText: req.body[`full-text`],
     userId: user.id
   };
+
+  console.log(articleData);
 
   try {
     await api.createArticle(articleData);
