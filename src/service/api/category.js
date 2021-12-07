@@ -9,10 +9,11 @@ const route = new Router();
 module.exports = (app, service) => {
   app.use(`/category`, route);
 
+  // получить все категории
   route.get(`/`, async (req, res) => {
     const {withCount} = req.query;
 
-    const categories = await service.findAll(withCount);
+    const categories = await service.findAll({withCount});
 
     res.status(HttpCode.OK)
       .json(categories);
@@ -20,18 +21,19 @@ module.exports = (app, service) => {
 
   // добавление новой категории
   route.post(`/`, categoryValidator, async (req, res) => {
-    // TODO а не добавить ли сюда проверку что добавляемая категория существует?
     const categoryName = req.body.data;
     const result = await service.create(categoryName);
 
     res.status(HttpCode.OK).json(result);
   });
 
+  // получить список статей категории
+  // вернуть активную категорию
   route.get(`/:categoryId`, async (req, res) => {
     const {categoryId} = req.params;
     const {limit, offset} = req.query;
 
-    const category = await service.findOne(categoryId);
+    const category = await service.findOne({id: categoryId, withCount: false});
     const {count, articlesByCategory} = await service.findPage(categoryId, limit, offset);
 
     res.status(HttpCode.OK)
@@ -45,7 +47,7 @@ module.exports = (app, service) => {
   // удаление категории
   route.delete(`/:categoryId`, async (req, res) => {
     const {categoryId: id} = req.params;
-    const category = await service.findSingle(id);
+    const category = await service.findOne({id, withCount: true});
 
     if (category.count > 1) {
       console.log(`Невозможно удалить непустую категорию`);
@@ -67,7 +69,7 @@ module.exports = (app, service) => {
   route.put(`/:categoryId`, categoryValidator, async (req, res) => {
     const {categoryId: id} = req.params;
     const categoryName = req.body.data;
-    const category = await service.findSingle(id);
+    const category = await service.findOne({id, withCount: true});
 
     if (!category) {
       return res.status(HttpCode.NOT_FOUND)
