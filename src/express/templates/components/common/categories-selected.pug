@@ -1,7 +1,7 @@
 each categoryItem of categories
   if categoryItem.count > 0
     li.themes__item
-      a(class=`themes__item-link ${articles.category.id === categoryItem.id ? 'themes__item-link--active' : ''}` href=`/articles/category/${categoryItem.id}`)
+      a(class=`themes__item-link ${currentCategory.id === categoryItem.id ? 'themes__item-link--active' : ''}` href=`/articles/category/${categoryItem.id}`)
         | #{categoryItem.name}
         sup #{categoryItem.count}
 

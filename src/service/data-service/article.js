@@ -60,28 +60,65 @@ class ArticleService {
     return articles.map((item) => item.get());
   }
 
-  async findAllWithCategory({categoryId}) {
-    const include = [
-      Alias.CATEGORIES,
-      Alias.COMMENTS,
-      {
-        model: this._ArticleCategory,
-        where: {
-          CategoryId: categoryId,
-        },
-        as: Alias.ARTICLE_CATEGORIES,
-        attributes: []
-      }
-    ];
+  /**
+   * Постраничная выгрузка статей определенной категории
+   * @param {Number} categoryId - id категории
+   * @param {Number} limit - количество записей на странице
+   * @param {Number} offset - сдвиг
+   * @return {Array} - массив статей и счетчик
+   */
+  async findCategoryPage(categoryId, limit, offset) {
+    const articlesIdByCategory = await this._ArticleCategory.findAll({
+      attributes: [`ArticleId`],
+      where: {
+        CategoryId: categoryId
+      },
+      raw: true
+    });
 
-    const articles = await this._Article.findAll({
-      include,
+    const articlesId = articlesIdByCategory.map((articleIdItem) => articleIdItem.ArticleId);
+
+    const {count, rows} = await this._Article.findAndCountAll({
+      limit,
+      offset,
+      include: [
+        Alias.CATEGORIES,
+        Alias.COMMENTS,
+      ],
       order: [
         [`createdAt`, `DESC`]
-      ]
+      ],
+      where: {
+        id: articlesId
+      },
+      distinct: true
     });
-    return articles.map((item) => item.get());
+
+    return {count, articlesByCategory: rows};
   }
+
+  // async findAllWithCategory({categoryId}) {
+  //   const include = [
+  //     Alias.CATEGORIES,
+  //     Alias.COMMENTS,
+  //     {
+  //       model: this._ArticleCategory,
+  //       where: {
+  //         CategoryId: categoryId,
+  //       },
+  //       as: Alias.ARTICLE_CATEGORIES,
+  //       attributes: []
+  //     }
+  //   ];
+
+  //   const articles = await this._Article.findAll({
+  //     include,
+  //     order: [
+  //       [`createdAt`, `DESC`]
+  //     ]
+  //   });
+  //   return articles.map((item) => item.get());
+  // }
 
   findOne(id, needComments) {
     const include = [

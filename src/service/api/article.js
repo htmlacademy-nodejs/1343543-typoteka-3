@@ -61,14 +61,18 @@ module.exports = (app, articleService, commentService) => {
     return res.status(HttpCode.OK).json({});
   });
 
-  // route.get(`/category/:categoryId`, async (req, res) => {
-  //   // реализация без пагинации: пофикшу перед защитой
-  //   const {categoryId} = req.params;
+  route.get(`/category/:categoryId`, async (req, res) => {
+    const {categoryId} = req.params;
+    const {limit, offset} = req.query;
 
-  //   const result = await articleService.findAllWithCategory({categoryId});
+    const {count, articlesByCategory} = await articleService.findCategoryPage(categoryId, limit, offset);
 
-  //   res.status(HttpCode.OK).json(result);
-  // });
+    res.status(HttpCode.OK)
+      .json({
+        count,
+        articlesByCategory
+      });
+  });
 
   route.get(`/:articleId`, async (req, res) => {
     const {articleId} = req.params;

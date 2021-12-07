@@ -2,7 +2,7 @@ extends ../../_layouts/layout.pug
 block content
   include ../../components/header/header.pug
   main.articles-category
-    h1 #{articles.category.name}
+    h1 #{currentCategory.name}
     section.articles-category__theme-list
       h2.visually-hidden Список тем
       ul.themes
@@ -10,6 +10,6 @@ block content
     section.articles-category__list.preview
       h2.visually-hidden Список превью статей
       ul.preview__list
-        each article of articles.current
+        each article of articles
           include ../../components/common/card.pug
     +pagination(page, totalPages, 2, `?`)

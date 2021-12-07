@@ -33,7 +33,7 @@ class API {
 
   // получить все статьи одной категории
   getArticlesByCategory({categoryId, limit, offset}) {
-    return this._load(`/category/${categoryId}`, {params: {limit, offset}});
+    return this._load(`/articles/category/${categoryId}`, {params: {limit, offset}});
   }
 
   // получить список наиболее комментируемых
@@ -113,6 +113,10 @@ class API {
   // получить список всех категорий
   getCategories({withCount} = {}) {
     return this._load(`/category`, {params: {withCount}});
+  }
+
+  getCategory(id) {
+    return this._load(`/category/${id}`);
   }
 
   // Добавляет категорию

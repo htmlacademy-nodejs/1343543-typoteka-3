@@ -27,21 +27,11 @@ module.exports = (app, service) => {
     res.status(HttpCode.OK).json(result);
   });
 
-  // получить список статей категории
-  // вернуть активную категорию
+  // вернуть одну категорию
   route.get(`/:categoryId`, async (req, res) => {
     const {categoryId} = req.params;
-    const {limit, offset} = req.query;
-
     const category = await service.findOne({id: categoryId, withCount: false});
-    const {count, articlesByCategory} = await service.findPage(categoryId, limit, offset);
-
-    res.status(HttpCode.OK)
-      .json({
-        category,
-        count,
-        articlesByCategory
-      });
+    res.status(HttpCode.OK).json(category);
   });
 
   // удаление категории

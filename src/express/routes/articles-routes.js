@@ -43,23 +43,20 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
 
   // получить инфу для шапки
   // получить список статей с категориями
-  const [categories, {category, count, articlesByCategory}] = await Promise.all([
+  const [categories, currentCategory, {count, articlesByCategory}] = await Promise.all([
     api.getCategories({withCount: true}),
+    api.getCategory(categoryId),
     api.getArticlesByCategory({categoryId, limit, offset})
   ]);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-  const articles = {
-    category,
-    current: articlesByCategory
-  };
-
   res.render(`articles/articles-by-category`, {
     fullView: true,
     categories,
+    currentCategory,
     count,
-    articles,
+    articles: articlesByCategory,
     page,
     totalPages,
     user
