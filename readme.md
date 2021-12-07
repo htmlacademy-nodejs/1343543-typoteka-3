@@ -9,20 +9,23 @@
 
 Для работы необходим Node.js версии 14
 
-Запуск серверной части:
+Запуск:
 
 npm run start
-npm run start::debug
 
-Запуск фронтовой части
+Частные сценарии
 
-npm run start-front-server
+npm run start-front-server - сервер фронта
+npm run start-back-server - сервер бэка
+npm run cli - командная строка бека
+
+### Пользователи
+
+l: ivanov@example.com - администратор
+p: ivanov
+
+l: petrov@example.com - пользователь
+p: petrov
 
 [travis-image]: https://travis-ci.com/htmlacademy-nodejs/1343543-typoteka-3.svg?branch=master
 [travis-url]: https://travis-ci.com/htmlacademy-nodejs/1343543-typoteka-3
-
-#### Маршруты
-
-1. '/' - главная страница
-2. 'register' - регистрация
-3. '/articles/add' -- добавить публикацию
