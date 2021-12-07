@@ -12,3 +12,4 @@ block content
       ul.preview__list
         each article of articles.current
           include ../../components/common/card.pug
+    +pagination(page, totalPages, 2, `?`)

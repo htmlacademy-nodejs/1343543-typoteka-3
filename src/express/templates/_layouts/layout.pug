@@ -52,8 +52,12 @@ html(lang='ru')
           li
             a(class=`pagination__button button button--backwards ${page === start ? 'button--disabled' : ''}` href=`${prefix}page=${page - 1}` aria-label='Страница назад')
           while i++ < end
-            li(class=`pagination__item ${i === page ? 'pagination__item--active' : ''}`)
-              a(href=`${prefix}page=${i}`)= i
+            if i === page
+              li(class=`pagination__item pagination__item--active`)
+                span= i
+            else
+              li(class=`pagination__item`)
+                a(href=`${prefix}page=${i}`)= i
           li
             a(class=`pagination__button button button--forward ${page === end ? 'button--disabled' : ''}` href=`${prefix}page=${page + 1}` aria-label='Страница вперёд')
 

@@ -34,6 +34,7 @@ const getEditArticleData = async (articleId) => {
 // get
 // //
 
+// статьи по категориям
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
   const {user} = req.session;
