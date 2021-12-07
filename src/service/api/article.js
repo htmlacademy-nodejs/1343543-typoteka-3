@@ -89,6 +89,7 @@ module.exports = (app, articleService, commentService) => {
 
   route.put(`/:articleId`, articleValidator, async (req, res) => {
     const {articleId} = req.params;
+    console.log(req.body);
 
     const updated = await articleService.update(articleId, req.body);
 

@@ -138,6 +138,7 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
 
   // зарефакторить
   const entries = Object.entries(body);
+
   const selectedCategories = entries.reduce((acc, element) => {
     if (element[0][0] === `c`) {
       acc.push(Number(element[1]));
