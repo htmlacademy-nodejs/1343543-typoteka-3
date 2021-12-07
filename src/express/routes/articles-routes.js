@@ -5,7 +5,7 @@ const csrf = require(`csurf`);
 
 const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
-const {prepareErrors} = require(`../../utils`);
+const {prepareErrors, ensureArray} = require(`../../utils`);
 const {ErrorType} = require(`../../constants`);
 
 const api = require(`../api`).getAPI();
@@ -76,11 +76,11 @@ articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
 // открыть страницу добавления статьи
 articlesRouter.get(`/add`, auth, async (req, res) => {
   const {user} = req.session;
-  const categories = await api.getCategories({withCount: true});
+  const categories = await api.getCategories({withCount: false});
   res.render(`articles/post-add`, {categories, user});
 });
 
-// !открыть страницу статьи
+// открыть страницу статьи
 articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {id} = req.params;
   const {user} = req.session;
@@ -98,23 +98,16 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   });
 });
 
-// !добавить статью
+// добавить статью
 articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   const {user} = req.session;
   const {body, file} = req;
 
-  // TODO поправить странный код
-  const entries = Object.entries(body);
-  const selectedCategories = entries.reduce((acc, element) => {
-    if (element[0][0] === `c`) {
-      acc.push(Number(element[1]));
-    }
-    return acc;
-  }, []);
+  console.log(body);
 
   const articleData = {
     picture: file ? file.filename : ``,
-    categories: selectedCategories,
+    categories: ensureArray(body.categories),
     title: body.title,
     announce: body.announcement,
     fullText: body[`full-text`],
@@ -137,21 +130,11 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   const {user} = req.session;
   const {body, file} = req;
 
-  // зарефакторить
-  const entries = Object.entries(body);
-
-  const selectedCategories = entries.reduce((acc, element) => {
-    if (element[0][0] === `c`) {
-      acc.push(Number(element[1]));
-    }
-    return acc;
-  }, []);
-
-  console.log(selectedCategories);
   const photo = body.photo ? body.photo : ``;
+
   const articleData = {
     picture: file ? file.filename : photo,
-    categories: selectedCategories,
+    categories: ensureArray(body.categories),
     title: body.title,
     announce: body.announcement,
     fullText: body[`full-text`],
