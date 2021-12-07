@@ -50,7 +50,7 @@ block content
                   textarea(rows='1' name='message' placeholder='Присоединиться к обсуждению')
                     | Комментарий содержит меньше 20 символов
                 button.comments__button.button.button--colored(type='submit') Опубликовать
-            +insertErrorMessage(validationMessages)
+            +insertErrorMessage(validationMessages, errorType)
           else
             .comments__footer.comments__footer--visitor
               a.comments__button.button.button--colored(href='/login') Войти

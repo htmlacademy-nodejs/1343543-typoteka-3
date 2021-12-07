@@ -42,9 +42,14 @@ const HttpMethod = {
 };
 
 const ErrorType = {
-  CATEGORY_DELETE: `Ошибка при удалении категории`,
-  CATEGORY_UPDATE: `Ошибка при изменении названия категории`,
-  CATEGORY_ADD: `Ошибка при добавлении категории`
+  COMMENT: `Ошибка при создании комментария:`,
+  ARTICLE_ADD: `Ошибка при создании статьи:`,
+  ARTICLE_EDIT: `Ошибка при изменении статьи:`,
+  LOGIN_WRONG: `Ошибка при авторизации:`,
+  REGISTER_WRONG: `Ошибка при регистрации:`,
+  CATEGORY_DELETE: `Ошибка при удалении категории:`,
+  CATEGORY_UPDATE: `Ошибка при изменении названия категории:`,
+  CATEGORY_ADD: `Ошибка при добавлении категории:`
 };
 
 module.exports = {

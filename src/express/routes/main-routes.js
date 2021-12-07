@@ -1,5 +1,5 @@
 'use strict';
-const {WrapperClass} = require(`../../constants`);
+const {WrapperClass, ErrorType} = require(`../../constants`);
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
@@ -75,7 +75,7 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     res.redirect(`/login`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    res.render(`main/sign-up`, {user, validationMessages});
+    res.render(`main/sign-up`, {user, errorType: ErrorType.REGISTER_WRONG, validationMessages});
   }
 });
 
@@ -89,7 +89,7 @@ mainRouter.post(`/login`, async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const {user} = req.session;
-    res.render(`main/login`, {user, email: req.body[`email`], validationMessages});
+    res.render(`main/login`, {user, errorType: ErrorType.LOGIN_WRONG, email: req.body[`email`], validationMessages});
   }
 });
 

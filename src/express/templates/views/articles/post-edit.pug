@@ -47,7 +47,7 @@ block content
                       label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
                 .new-publication__category-wrapper
-                  +insertErrorMessage(validationMessages)
+                  +insertErrorMessage(validationMessages, errorType)
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label

@@ -6,6 +6,7 @@ const csrf = require(`csurf`);
 const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 const {prepareErrors} = require(`../../utils`);
+const {ErrorType} = require(`../../constants`);
 
 const api = require(`../api`).getAPI();
 const articlesRouter = new Router();
@@ -126,7 +127,7 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await api.getCategories({withCount: true});
-    res.render(`articles/post-add`, {categories, user, validationMessages});
+    res.render(`articles/post-add`, {categories, errorType: ErrorType.ARTICLE_ADD, user, validationMessages});
   }
 });
 
@@ -163,7 +164,14 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const [article, categories] = await getEditArticleData(id);
-    res.render(`articles/post-edit`, {id, article, user, validationMessages, categories});
+    res.render(`articles/post-edit`, {
+      id,
+      article,
+      user,
+      errorType: ErrorType.ARTICLE_EDIT,
+      validationMessages,
+      categories
+    });
   }
 });
 
@@ -180,7 +188,7 @@ articlesRouter.post(`/:id/comments`, csrfProtection, async (req, res) => {
     const [categories] = await Promise.all([
       api.getCategories(true)
     ]);
-    res.render(`articles/post`, {article, id, categories, user, validationMessages, csrfToken: req.csrfToken()});
+    res.render(`articles/post`, {article, id, categories, errorType: ErrorType.COMMENT, user, validationMessages, csrfToken: req.csrfToken()});
   }
 });
 
