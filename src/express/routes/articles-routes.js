@@ -126,7 +126,7 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const categories = await api.getCategories({withCount: true});
-    res.render(`articles/post-add`, {categories, validationMessages});
+    res.render(`articles/post-add`, {categories, user, validationMessages});
   }
 });
 
@@ -163,7 +163,7 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const [article, categories] = await getEditArticleData(id);
-    res.render(`articles/post-edit`, {id, article, validationMessages, categories});
+    res.render(`articles/post-edit`, {id, article, user, validationMessages, categories});
   }
 });
 
@@ -180,7 +180,7 @@ articlesRouter.post(`/:id/comments`, csrfProtection, async (req, res) => {
     const [categories] = await Promise.all([
       api.getCategories(true)
     ]);
-    res.render(`articles/post`, {article, id, categories, validationMessages, csrfToken: req.csrfToken()});
+    res.render(`articles/post`, {article, id, categories, user, validationMessages, csrfToken: req.csrfToken()});
   }
 });
 

@@ -39,17 +39,20 @@ mainRouter.get(`/`, async (req, res) => {
 mainRouter.get(`/register`, (req, res) => res.render(`main/sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`main/login`));
 mainRouter.get(`/search`, async (req, res) => {
+  const {user} = req.session;
   const query = req.query.search;
   try {
     const results = await api.search(query);
     res.render(`main/search`, {
       wrapper: WrapperClass.COLOR,
+      user,
       results,
       query
     });
   } catch (error) {
     res.render(`main/search`, {
       wrapper: WrapperClass.COLOR,
+      user,
       results: [],
       query: query ? query : ``
     });
@@ -58,6 +61,7 @@ mainRouter.get(`/search`, async (req, res) => {
 
 mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
   const {body, file} = req;
+  const {user} = req.session;
   const userData = {
     avatar: file ? file.filename : ``,
     name: body.name,
@@ -71,7 +75,7 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     res.redirect(`/login`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    res.render(`main/sign-up`, {validationMessages});
+    res.render(`main/sign-up`, {user, validationMessages});
   }
 });
 
@@ -89,8 +93,14 @@ mainRouter.post(`/login`, async (req, res) => {
   }
 });
 
-mainRouter.get(`/404`, (req, res) => res.render(`errors/404`, {wrapper: WrapperClass.COLOR}));
-mainRouter.get(`/500`, (req, res) => res.render(`errors/500`, {wrapper: WrapperClass.COLOR}));
+mainRouter.get(`/404`, (req, res) => {
+  const {user} = req.session;
+  res.render(`errors/404`, {user, wrapper: WrapperClass.COLOR});
+});
+mainRouter.get(`/500`, (req, res) => {
+  const {user} = req.session;
+  res.render(`errors/500`, {user, wrapper: WrapperClass.COLOR});
+});
 
 mainRouter.get(`/logout`, (req, res) => {
   delete req.session.user;
