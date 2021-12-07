@@ -30,10 +30,6 @@ const getEditArticleData = async (articleId) => {
   return [article, categories];
 };
 
-// //
-// get
-// //
-
 // статьи по категориям
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
@@ -45,9 +41,11 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   const limit = ARTICLES_PER_PAGE;
   const offset = (page - 1) * ARTICLES_PER_PAGE;
 
+  // получить инфу для шапки
+  // получить список статей с категориями
   const [categories, {category, count, articlesByCategory}] = await Promise.all([
     api.getCategories({withCount: true}),
-    api.getCategory({categoryId, limit, offset})
+    api.getArticlesByCategory({categoryId, limit, offset})
   ]);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);

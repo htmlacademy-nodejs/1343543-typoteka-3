@@ -22,44 +22,38 @@ class API {
     return response.data;
   }
 
+  // /////
+  // Статьи
+  // /////
+
+  // получить все статьи
   getArticles({offset, limit, comments}) {
     return this._load(`/articles`, {params: {offset, limit, comments}});
   }
 
-  getArticlesWithCategory(id) {
-    return this._load(`/articles/category/${id}`);
-  }
-
-  getArticle(id) {
-    return this._load(`/articles/${id}`);
-  }
-
-  search(query) {
-    return this._load(`/search`, {params: {query}});
-  }
-
-  getCategories({withCount} = {}) {
-    return this._load(`/category`, {params: {withCount}});
-  }
-
-  getCategory({categoryId, limit, offset}) {
+  // получить все статьи одной категории
+  getArticlesByCategory({categoryId, limit, offset}) {
     return this._load(`/category/${categoryId}`, {params: {limit, offset}});
   }
 
-  getNewComments() {
-    return this._load(`/articles/comments`);
-  }
-
+  // получить список наиболее комментируемых
   getMostCommented() {
     return this._load(`/articles/test`);
   }
 
+  // получить одну статью
+  getArticle(id) {
+    return this._load(`/articles/${id}`);
+  }
+
+  // удалить статью
   removeArticle(id) {
     return this._load(`/articles/${id}`, {
       method: HttpMethod.DELETE,
     });
   }
 
+  // создать статью
   createArticle(data) {
     return this._load(`/articles`, {
       method: HttpMethod.POST,
@@ -67,6 +61,7 @@ class API {
     });
   }
 
+  // править статью
   editArticle(id, data) {
     return this._load(`/articles/${id}`, {
       method: HttpMethod.PUT,
@@ -74,6 +69,36 @@ class API {
     });
   }
 
+  // /////
+  // Поиск
+  // /////
+
+  search(query) {
+    return this._load(`/search`, {params: {query}});
+  }
+
+  // /////
+  // Комментарии
+  // /////
+
+  // получить список последних комментариев
+  getNewComments() {
+    return this._load(`/articles/comments`);
+  }
+
+  // получить все комментарии
+  getComments() {
+    return this._load(`/articles/comments2`);
+  }
+
+  // удалить комментарий
+  removeComment(id) {
+    return this._load(`/articles/comments/${id}`, {
+      method: HttpMethod.DELETE,
+    });
+  }
+
+  // добавить комментариий
   createComment(id, data) {
     return this._load(`/articles/${id}/comments`, {
       method: HttpMethod.POST,
@@ -81,31 +106,14 @@ class API {
     });
   }
 
-  createUser(data) {
-    return this._load(`/user`, {
-      method: HttpMethod.POST,
-      data
-    });
-  }
-
-  // /////
-  // Комментарии
-  // ////
-
-  getComments() {
-    return this._load(`/articles/comments2`);
-  }
-
-  removeComment(id) {
-    return this._load(`/articles/comments/${id}`, {
-      method: HttpMethod.DELETE,
-    });
-  }
-
-
   // /////
   // Категории
   // /////
+
+  // получить список всех категорий
+  getCategories({withCount} = {}) {
+    return this._load(`/category`, {params: {withCount}});
+  }
 
   // Добавляет категорию
   createCategory(data) {
@@ -135,12 +143,23 @@ class API {
   // Аутентификация
   // /////
 
+  createUser(data) {
+    return this._load(`/user`, {
+      method: HttpMethod.POST,
+      data
+    });
+  }
+
   auth(email, password) {
     return this._load(`/user/auth`, {
       method: HttpMethod.POST,
       data: {email, password}
     });
   }
+
+  // getArticlesWithCategory(id) {
+  //   return this._load(`/articles/category/${id}`);
+  // }
 }
 
 const defaultAPI = new API(defaultUrl, TIMEOUT);
