@@ -14,13 +14,6 @@ const csrfProtection = csrf();
 
 const ARTICLES_PER_PAGE = 8;
 
-const getAddArticleData = () => {
-  return api.getCategories({withCount: true});
-};
-
-const getViewArticleData = (articleId, comments) => {
-  return api.getArticle(articleId, comments);
-};
 
 const getEditArticleData = async (articleId) => {
   const [article, categories] = await Promise.all([
@@ -30,7 +23,7 @@ const getEditArticleData = async (articleId) => {
   return [article, categories];
 };
 
-// статьи по категориям
+// открыть статьи по категориям
 articlesRouter.get(`/category/:id`, async (req, res) => {
   const categoryId = req.params.id;
   const {user} = req.session;
@@ -42,6 +35,7 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   const offset = (page - 1) * ARTICLES_PER_PAGE;
 
   // получить инфу для шапки
+  // получить текущую категорию
   // получить список статей с категориями
   const [categories, currentCategory, {count, articlesByCategory}] = await Promise.all([
     api.getCategories({withCount: true}),
@@ -52,27 +46,20 @@ articlesRouter.get(`/category/:id`, async (req, res) => {
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
   res.render(`articles/articles-by-category`, {
-    fullView: true,
     categories,
     currentCategory,
-    count,
     articles: articlesByCategory,
+    count,
     page,
     totalPages,
     user
   });
-
-  // const [articles, categories, activeCategory] = await Promise.all([
-  //   api.getArticlesWithCategory(categoryId),
-  //   api.getCategories(true),
-  //   api.getOneCategory(categoryId)
-  // ]);
-
-  // res.render(`articles/articles-by-category`, {articles, categories, user, activeCategory});
 });
 
+// открыть страницу редактирования статьи
 articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   const {id} = req.params;
+  const {user} = req.session;
   const [article, categories] = await Promise.all([
     api.getArticle(id),
     api.getCategories({withCount: false})
@@ -80,18 +67,20 @@ articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
 
   res.render(`articles/post-edit`, {
     id,
+    user,
     article,
     categories,
   });
 });
 
-articlesRouter.get(`/add`, auth, csrfProtection, async (req, res) => {
+// открыть страницу редактирования статьи
+articlesRouter.get(`/add`, auth, async (req, res) => {
   const {user} = req.session;
-  const csrfToken = req.csrfToken();
-  const categories = await getAddArticleData();
-  res.render(`articles/post-add`, {categories, user, csrfToken});
+  const categories = await api.getCategories({withCount: true});
+  res.render(`articles/post-add`, {categories, user});
 });
 
+// !открыть страницу статьи
 articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   const {id} = req.params;
   const {user} = req.session;
@@ -101,6 +90,8 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
     api.getCategories({withCount: true})
   ]);
 
+  console.log(article);
+
   res.render(`articles/post`, {
     article,
     categories,
@@ -109,12 +100,13 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
   });
 });
 
+// !добавить статью
 articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   const {user} = req.session;
   const {body, file} = req;
 
   // TODO поправить странный код
-  const entries = Object.entries(req.body);
+  const entries = Object.entries(body);
   const selectedCategories = entries.reduce((acc, element) => {
     if (element[0][0] === `c`) {
       acc.push(Number(element[1]));
@@ -125,9 +117,9 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
   const articleData = {
     picture: file ? file.filename : ``,
     categories: selectedCategories,
-    title: req.body.title,
-    announce: req.body.announcement,
-    fullText: req.body[`full-text`],
+    title: body.title,
+    announce: body.announcement,
+    fullText: body[`full-text`],
     userId: user.id
   };
 
@@ -138,18 +130,19 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
     res.redirect(`/my`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    const categories = await getAddArticleData();
+    const categories = await api.getCategories({withCount: true});
     res.render(`articles/post-add`, {categories, validationMessages});
   }
 });
 
+// редактировать статью
 articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   const {id} = req.params;
   const {user} = req.session;
   const {body, file} = req;
 
   // зарефакторить
-  const entries = Object.entries(req.body);
+  const entries = Object.entries(body);
   const selectedCategories = entries.reduce((acc, element) => {
     if (element[0][0] === `c`) {
       acc.push(Number(element[1]));
@@ -160,9 +153,9 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   const articleData = {
     picture: file ? file.filename : ``,
     categories: selectedCategories,
-    title: req.body.title,
-    announce: req.body.announcement,
-    fullText: req.body[`full-text`],
+    title: body.title,
+    announce: body.announcement,
+    fullText: body[`full-text`],
     userId: user.id,
   };
 
@@ -176,6 +169,7 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   }
 });
 
+// добавить комментарий к статье
 articlesRouter.post(`/:id/comments`, csrfProtection, async (req, res) => {
   const {id} = req.params;
   const {user} = req.session;
@@ -184,7 +178,7 @@ articlesRouter.post(`/:id/comments`, csrfProtection, async (req, res) => {
     res.redirect(`/articles/${id}`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    const article = await getViewArticleData(id, true);
+    const article = await api.getArticle(id, true);
     const [categories] = await Promise.all([
       api.getCategories(true)
     ]);

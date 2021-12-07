@@ -115,6 +115,7 @@ class API {
     return this._load(`/category`, {params: {withCount}});
   }
 
+  // получить данные об одной категории
   getCategory(id) {
     return this._load(`/category/${id}`);
   }
@@ -161,9 +162,6 @@ class API {
     });
   }
 
-  // getArticlesWithCategory(id) {
-  //   return this._load(`/articles/category/${id}`);
-  // }
 }
 
 const defaultAPI = new API(defaultUrl, TIMEOUT);
