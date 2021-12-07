@@ -32,7 +32,14 @@ mainRouter.get(`/`, async (req, res) => {
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-  res.render(`main/main`, {articles, categories, topComments, mostCommented, page, user, totalPages});
+  res.render(`main/main`, {
+    articles,
+    categories,
+    topComments,
+    mostCommented,
+    page,
+    user,
+    totalPages});
 });
 
 
@@ -75,7 +82,11 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     res.redirect(`/login`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    res.render(`main/sign-up`, {user, errorType: ErrorType.REGISTER_WRONG, validationMessages});
+    res.render(`main/sign-up`, {
+      user,
+      errorType: ErrorType.REGISTER_WRONG,
+      validationMessages
+    });
   }
 });
 
@@ -89,7 +100,12 @@ mainRouter.post(`/login`, async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const {user} = req.session;
-    res.render(`main/login`, {user, errorType: ErrorType.LOGIN_WRONG, email: req.body[`email`], validationMessages});
+    res.render(`main/login`, {
+      user,
+      errorType: ErrorType.LOGIN_WRONG,
+      email: req.body[`email`],
+      validationMessages
+    });
   }
 });
 
@@ -104,7 +120,9 @@ mainRouter.get(`/500`, (req, res) => {
 
 mainRouter.get(`/logout`, (req, res) => {
   delete req.session.user;
-  res.redirect(`/`);
+  req.session.save(() => {
+    res.redirect(`/`);
+  });
 });
 
 module.exports = mainRouter;
