@@ -355,19 +355,19 @@ describe(`API creates a comment if data is valid`, () => {
 
 });
 
-// test(`API refuses to create a comment to non-existent article and returns status code 404`, async () => {
+test(`API refuses to create a comment to non-existent article and returns status code 404`, async () => {
 
-//   const app = await createAPI();
+  const app = await createAPI();
 
-//   return request(app)
-//     .post(`/articles/20/comments`)
-//     .send({
-//       text: `Валидный текст комментария больше 20 символов`,
-//       userId: 1
-//     })
-//     .expect(HttpCode.NOT_FOUND);
+  return request(app)
+    .post(`/articles/20/comments`)
+    .send({
+      text: `Валидный текст комментария больше 20 символов`,
+      userId: 1
+    })
+    .expect(HttpCode.NOT_FOUND);
 
-// });
+});
 
 test(`API refuses to create a comment when data is invalid, and returns status code 400`, async () => {
 
