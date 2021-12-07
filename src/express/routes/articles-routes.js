@@ -164,6 +164,7 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const [article, categories] = await getEditArticleData(id);
+
     res.render(`articles/post-edit`, {
       id,
       article,
