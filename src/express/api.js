@@ -88,7 +88,7 @@ class API {
 
   // получить все комментарии
   getComments() {
-    return this._load(`/articles/comments2`);
+    return this._load(`/articles/commentsAll`);
   }
 
   // удалить комментарий

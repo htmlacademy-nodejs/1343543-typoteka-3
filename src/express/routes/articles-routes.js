@@ -14,7 +14,6 @@ const csrfProtection = csrf();
 
 const ARTICLES_PER_PAGE = 8;
 
-
 const getEditArticleData = async (articleId) => {
   const [article, categories] = await Promise.all([
     api.getArticle(articleId),
