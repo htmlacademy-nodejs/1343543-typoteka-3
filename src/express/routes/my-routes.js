@@ -93,7 +93,6 @@ myRouter.post(`/categories/:id`, auth, async (req, res) => {
   const action = req.body.button;
   const {user} = req.session;
   const {id} = req.params;
-  console.log(req.body);
 
   // Кнопка удалить
   if (action === `delete`) {

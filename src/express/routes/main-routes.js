@@ -31,7 +31,6 @@ mainRouter.get(`/`, async (req, res) => {
   ]);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
-  console.log(mostCommented);
 
   res.render(`main/main`, {articles, categories, topComments, mostCommented, page, user, totalPages});
 });
@@ -59,7 +58,6 @@ mainRouter.get(`/search`, async (req, res) => {
 
 mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
   const {body, file} = req;
-  console.log(body);
   const userData = {
     avatar: file ? file.filename : ``,
     name: body.name,

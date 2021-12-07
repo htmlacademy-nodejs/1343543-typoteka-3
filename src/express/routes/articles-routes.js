@@ -89,8 +89,6 @@ articlesRouter.get(`/:id`, csrfProtection, async (req, res) => {
     api.getCategories({withCount: true})
   ]);
 
-  console.log(article);
-
   res.render(`articles/post`, {
     article,
     categories,
@@ -122,8 +120,6 @@ articlesRouter.post(`/add`, upload.single(`upload`), async (req, res) => {
     userId: user.id
   };
 
-  console.log(articleData);
-
   try {
     await api.createArticle(articleData);
     res.redirect(`/my`);
@@ -148,6 +144,8 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
     }
     return acc;
   }, []);
+
+  console.log(selectedCategories);
 
   const articleData = {
     picture: file ? file.filename : ``,
