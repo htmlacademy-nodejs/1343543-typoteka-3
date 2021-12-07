@@ -147,9 +147,9 @@ articlesRouter.post(`/edit/:id`, upload.single(`upload`), async (req, res) => {
   }, []);
 
   console.log(selectedCategories);
-
+  const photo = body.photo ? body.photo : ``;
   const articleData = {
-    picture: file ? file.filename : ``,
+    picture: file ? file.filename : photo,
     categories: selectedCategories,
     title: body.title,
     announce: body.announcement,

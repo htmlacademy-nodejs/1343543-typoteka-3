@@ -87,7 +87,7 @@ class ArticleService {
   }
 
   // Найти одну статью
-  findOne(id, needComments) {
+  async findOne(id, needComments) {
     const include = [
       Alias.CATEGORIES,
       {
@@ -110,7 +110,8 @@ class ArticleService {
               exclude: [`passwordHash`]
             }
           }
-        ]
+        ],
+        order: [[`createdAt`, `DESC`]],
       });
     }
     return this._Article.findByPk(id, {include});
@@ -187,6 +188,7 @@ class ArticleService {
 
   // обновить статью
   async update(id, article) {
+    console.log(article);
     const [affectedRows] = await this._Article.update(article, {
       where: {id}
     });
