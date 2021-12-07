@@ -43,9 +43,7 @@ const schema = Joi.object({
 
 module.exports = (req, res, next) => {
   const newArticle = req.body;
-  console.log(req.body);
   const {error} = schema.validate(newArticle, {abortEarly: false});
-
   if (error) {
     return res.status(HttpCode.BAD_REQUEST)
       .send(error.details.map((err) => err.message).join(`\n`));

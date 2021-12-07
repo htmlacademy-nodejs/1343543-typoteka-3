@@ -118,8 +118,8 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.get(`/:articleId/comments`, articleExist(articleService), async (req, res) => {
-    const {article} = res.locals;
-    const comments = await commentService.findAll(article);
+    const {articleId} = req.params;
+    const comments = await commentService.findAll(articleId);
 
     res.status(HttpCode.OK)
       .json(comments);
@@ -127,13 +127,16 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.delete(`/:articleId/comments/:commentId`, articleExist(articleService), async (req, res) => {
-    const {commentId} = req.params;
-    const deleted = await commentService.drop(commentId);
+    const {articleId, commentId} = req.params;
 
-    if (!deleted) {
+    const comment = await commentService.findOne(commentId, articleId);
+
+    if (!comment) {
       return res.status(HttpCode.NOT_FOUND)
         .send(`Not found`);
     }
+
+    const deleted = await commentService.drop(commentId);
 
     return res.status(HttpCode.OK)
       .json(deleted);

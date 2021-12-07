@@ -31,6 +31,15 @@ class CommentService {
     });
   }
 
+  async findOne(id, articleId) {
+    return await this._Comment.findOne({
+      where: {
+        id,
+        articleId
+      }
+    });
+  }
+
   async findFull() {
     const comments = await this._Comment.findAll({
       include: [
