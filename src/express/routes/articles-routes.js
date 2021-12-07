@@ -73,7 +73,7 @@ articlesRouter.get(`/edit/:id`, auth, async (req, res) => {
   });
 });
 
-// открыть страницу редактирования статьи
+// открыть страницу добавления статьи
 articlesRouter.get(`/add`, auth, async (req, res) => {
   const {user} = req.session;
   const categories = await api.getCategories({withCount: true});

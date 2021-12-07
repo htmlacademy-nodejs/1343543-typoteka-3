@@ -38,7 +38,7 @@ class API {
 
   // получить список наиболее комментируемых
   getMostCommented() {
-    return this._load(`/articles/test`);
+    return this._load(`/articles/commented`);
   }
 
   // получить одну статью
