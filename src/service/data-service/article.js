@@ -188,13 +188,15 @@ class ArticleService {
 
   // обновить статью
   async update(id, article) {
-    console.log(article);
     const [affectedRows] = await this._Article.update(article, {
       where: {id}
     });
 
     const updatedArticle = await this._Article.findByPk(id);
-    await updatedArticle.setCategories(article.categories);
+
+    if (updatedArticle) {
+      await updatedArticle.setCategories(article.categories);
+    }
 
     return !!affectedRows;
   }
