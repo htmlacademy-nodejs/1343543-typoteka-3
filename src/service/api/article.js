@@ -25,20 +25,20 @@ module.exports = (app, articleService, commentService) => {
   });
 
   route.get(`/commented`, async (req, res) => {
-    let articles = {};
+    const articles = {};
     articles.commented = await articleService.findLimit({limit: 4, withComments: true});
 
     return res.status(HttpCode.OK).json(articles);
   });
 
   route.get(`/comments`, async (req, res) => {
-    let result = await commentService.findNewest();
+    const result = await commentService.findNewest();
 
     res.status(HttpCode.OK).json(result);
   });
 
   route.get(`/commentsAll`, async (req, res) => {
-    let result = await commentService.findFull();
+    const result = await commentService.findFull();
     return res.status(HttpCode.OK).json(result);
   });
 
