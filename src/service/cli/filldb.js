@@ -17,8 +17,6 @@ const {
   MAX_COMMENTS
 } = require(`../../constants`);
 
-const logger = getLogger({});
-
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
@@ -54,6 +52,8 @@ const CategoriesCount = {
   MIN: 1,
   MAX: 5
 };
+
+const logger = getLogger({});
 
 const getRandomFromList = (list, minLength, maxLength, isString) => {
   const result = shuffle(list).slice(0, getRandomInt(minLength, maxLength));

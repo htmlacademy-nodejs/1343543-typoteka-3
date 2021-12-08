@@ -16,9 +16,6 @@ block content
               h1 Редактировать публикацию
               .new-publication__date-form
                 h3 Дата публикации
-                //- TODO - дата инициализируется в vendor.js
-                //- на завершающем этапе подумать как передать дату из article в flatpickr
-                //- думаю изменить класс, написать заново инициализацию в main.js, дату брать из дата-атрибута (добавить)
                 .new-publication__date-form-division
                   .new-publication__date-block
                     label(for='new-publication-date' aria-label='Календарь')
@@ -34,7 +31,6 @@ block content
                     input(type='text' name='title' placeholder='Заголовок' value=article.title required='')
                 .form__field.form__field--post-image
                   label
-                    //- TODO - в моках пока нет фотки
                     input#image-name-field(type='text' name='photo' placeholder='Фотография' readonly='' value=`${article.picture}`)
                   .form__image-loader.form__image-loader--publication
                     label

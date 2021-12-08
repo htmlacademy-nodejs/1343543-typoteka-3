@@ -5,9 +5,9 @@ const path = require(`path`);
 const {nanoid} = require(`nanoid`);
 
 const UPLOAD_DIR = `../upload/img/`;
-const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
-
 const FILE_TYPES = [`image/png`, `image/jpg`, `image/jpeg`];
+
+const uploadDirAbsolute = path.resolve(__dirname, UPLOAD_DIR);
 
 const storage = multer.diskStorage({
   destination: uploadDirAbsolute,
