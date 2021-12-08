@@ -1,6 +1,6 @@
 extends ../../_layouts/layout.pug
 block content
-  include ../../components/header/header-unauth.pug
+  include ../../components/header/header.pug
   main
     h1.visually-hidden Регистрация пользователя
     section
@@ -13,9 +13,9 @@ block content
           form(action='/login' method='post')
             .form__field
               label
-                input(type='email' name='email' placeholder='Электронная почта' required='')
+                input(type='email' name='email' placeholder='Электронная почта' required='' value=`${email ? email : ``}`)
             .form__field
               label
                 input(type='password' name='password' placeholder='Пароль' required='')
-            +insertErrorMessage(validationMessages)
+            +insertErrorMessage(validationMessages, errorType)
             button.form__submit-btn.form__submit-btn--log-in.button.button--colored(type='submit') Войти

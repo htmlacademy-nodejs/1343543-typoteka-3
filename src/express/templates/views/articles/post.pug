@@ -1,6 +1,6 @@
 extends ../../_layouts/layout.pug
 block content
-  include ../../components/header/header-unauth.pug
+  include ../../components/header/header.pug
   main
     section.post
       h1.visually-hidden Пост
@@ -11,15 +11,12 @@ block content
             a.post__backwards.button.button--backwards(href='javascript:history.back()') Назад
             time.post__date(datetime=`${article.createdAt}`) #{formatDate(article.createdAt)}
             h2.post__title.title.title--main #{article.title}
+
             ul.post__themes.themes
-              each category of categories
-                li.themes__item
-                  a(class=`themes__item-link` href=`category/${category.id}`)
-                    | #{category.name}
-                    sup #{category.count}
-                  button.themes__remove-btn(type='button') Удалить категорию
-          .post__picture
-            img(src=`/img/${article.picture}@1x.jpg` alt=`Фотография с ${article.title}`)
+              include ../../components/common/categories.pug
+          if article.picture
+            .post__picture
+              img(src=`/img/${article.picture}` alt=`Фотография с ${article.title}`)
           .post__text
             h3 #{article.title}
             p
@@ -38,7 +35,7 @@ block content
                   .comments__text
                     .comments__head
                       p #{comment.users.name} •
-                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt)}
+                      time.comments__date(datetime=`${comment.createdAt}`) #{formatDate(comment.createdAt, true)}
                     p.comments__message #{comment.text}
           else
             h2.comments__title.title.title--middle Комментарии отсутствуют
@@ -46,13 +43,14 @@ block content
           if user
             .comments__footer.comments__footer--user
               form(action=`${article.id}/comments` method='POST' enctype="application/x-www-form-urlencoded" autocomplete="off")
+                input(type="hidden" name="_csrf" value=csrfToken)
                 .comments__avatar.avatar
                   img(src='/img/avatar-2.png' alt='аватар пользователя')
                 label
                   textarea(rows='1' name='message' placeholder='Присоединиться к обсуждению')
                     | Комментарий содержит меньше 20 символов
                 button.comments__button.button.button--colored(type='submit') Опубликовать
-            +insertErrorMessage(validationMessages)
+            +insertErrorMessage(validationMessages, errorType)
           else
             .comments__footer.comments__footer--visitor
               a.comments__button.button.button--colored(href='/login') Войти

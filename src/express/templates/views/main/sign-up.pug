@@ -1,7 +1,7 @@
 extends ../../_layouts/layout.pug
 
 block content
-  include ../../components/header/header-unauth.pug
+  include ../../components/header/header.pug
   main
     h1.visually-hidden Регистрация пользователя
     section
@@ -14,20 +14,20 @@ block content
           form(action='/register' method='POST' enctype='multipart/form-data' autocomplete='off')
             .form__field
               label
-                input(type='email' name='email' placeholder='Электронная почта' required='' value="ivan@otladochny.ru")
+                input(type='email' name='email' placeholder='Электронная почта' required='' value="")
             .form__field
               label
-                input(type='text' name='name' placeholder='Имя' required='' value='Иван')
+                input(type='text' name='name' placeholder='Имя' required='' value='')
             .form__field
               label
-                input(type='text' name='surname' placeholder='Фамилия' value='Отладочный')
+                input(type='text' name='surname' placeholder='Фамилия' value='')
             .form__field
               label
-                input(type='password' name='password' placeholder='Пароль' required='' value='qwerty')
+                input(type='password' name='password' placeholder='Пароль' required='' value='')
             .form__field
               label
-                input(type='password' name='repeat-password' placeholder='Повтор пароля' required='' value='qwerty')
-            +insertErrorMessage(validationMessages)
+                input(type='password' name='repeat-password' placeholder='Повтор пароля' required='' value='')
+            +insertErrorMessage(validationMessages, errorType)
             .form__image-loader
               a.form__avatar.avatar
                 img(src='img/icons/smile.svg' alt='аватар пользователя')

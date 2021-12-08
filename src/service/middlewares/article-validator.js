@@ -12,7 +12,8 @@ const ErrorArticleMessage = {
   TEXT_MAX: `Полный текст публикации не может содержать более 1000 символов`,
   TYPE: `Не выбран ни один тип объявления`,
   SUM: `Сумма не может быть меньше 100`,
-  USER_ID: `Некорректный идентификатор пользователя`
+  USER_ID: `Некорректный идентификатор пользователя`,
+  PICTURE: `Недопустимый формат файла. Разрешены форматы jpg и png`
 };
 
 const schema = Joi.object({
@@ -24,6 +25,9 @@ const schema = Joi.object({
   title: Joi.string().min(30).max(250).required().messages({
     'string.min': ErrorArticleMessage.TITLE_MIN,
     'string.max': ErrorArticleMessage.TITLE_MAX
+  }),
+  picture: Joi.string().allow(``).pattern(new RegExp(`^.*\.(jpg|JPG|jpeg|JPEG|png|PNG)$`)).messages({
+    'string.regex': ErrorArticleMessage.PICTURE,
   }),
   announce: Joi.string().min(30).max(250).required().messages({
     'string.min': ErrorArticleMessage.ANNOUNCE_MIN,
@@ -39,9 +43,7 @@ const schema = Joi.object({
 
 module.exports = (req, res, next) => {
   const newArticle = req.body;
-  console.log(req.body);
   const {error} = schema.validate(newArticle, {abortEarly: false});
-
   if (error) {
     return res.status(HttpCode.BAD_REQUEST)
       .send(error.details.map((err) => err.message).join(`\n`));

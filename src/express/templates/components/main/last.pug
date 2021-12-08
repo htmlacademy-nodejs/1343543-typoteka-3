@@ -1,0 +1,14 @@
+section.main-page__last.last
+  h2.last__name
+    | Последние комментарии
+    span.last__icon.last__icon--cloud
+  if topComments.length > 0
+    ul.last__list
+      each topComment of topComments
+        li.last__list-item
+          img.last__list-image(src='img/avatar-small-1.png' width='20' height='20' alt='Аватар пользователя')
+          b.last__list-name #{topComment.users.name}
+          a.last__list-link(href=`articles/${topComment.articleId}`)
+            | #{cutLength(topComment.text, 100)}
+  else
+    p.last__empty Здесь пока ничего нет...

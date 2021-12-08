@@ -16,14 +16,7 @@ class SearchService {
           [Op.substring]: searchText
         }
       },
-      include: [Alias.CATEGORIES,
-        {
-          model: this._User,
-          as: Alias.USER,
-          attributes: {
-            exclude: [`passwordHash`]
-          }
-        }],
+      include: Alias.CATEGORIES,
       order: [
         [`createdAt`, `DESC`]
       ]

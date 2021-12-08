@@ -6,6 +6,7 @@ const path = require(`path`);
 const {HttpCode} = require(`../constants`);
 const sequelize = require(`../service/lib/sequelize`);
 const SequelizeStore = require(`connect-session-sequelize`)(session.Store);
+const methodOverride = require(`method-override`);
 
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
@@ -22,6 +23,7 @@ if (!SESSION_SECRET) {
 }
 
 const app = express();
+app.use(methodOverride(`_method`));
 
 const mySessionStore = new SequelizeStore({
   db: sequelize,

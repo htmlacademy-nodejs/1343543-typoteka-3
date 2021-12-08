@@ -1,5 +1,5 @@
 'use strict';
-const {WrapperClass} = require(`../../constants`);
+const {WrapperClass, ErrorType} = require(`../../constants`);
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
@@ -20,32 +20,46 @@ mainRouter.get(`/`, async (req, res) => {
 
   const [
     {count, articles},
-    categories
+    categories,
+    topComments,
+    mostCommented,
   ] = await Promise.all([
     api.getArticles({limit, offset, comments: true}),
-    api.getCategories(true)
+    api.getCategories({withCount: true}),
+    api.getNewComments(),
+    api.getMostCommented(),
   ]);
 
   const totalPages = Math.ceil(count / ARTICLES_PER_PAGE);
 
-  res.render(`main/main`, {articles, categories, page, user, totalPages});
+  res.render(`main/main`, {
+    articles,
+    categories,
+    topComments,
+    mostCommented,
+    page,
+    user,
+    totalPages});
 });
 
 
 mainRouter.get(`/register`, (req, res) => res.render(`main/sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`main/login`));
 mainRouter.get(`/search`, async (req, res) => {
+  const {user} = req.session;
   const query = req.query.search;
   try {
     const results = await api.search(query);
     res.render(`main/search`, {
       wrapper: WrapperClass.COLOR,
+      user,
       results,
       query
     });
   } catch (error) {
     res.render(`main/search`, {
       wrapper: WrapperClass.COLOR,
+      user,
       results: [],
       query: query ? query : ``
     });
@@ -54,7 +68,7 @@ mainRouter.get(`/search`, async (req, res) => {
 
 mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
   const {body, file} = req;
-  console.log(body);
+  const {user} = req.session;
   const userData = {
     avatar: file ? file.filename : ``,
     name: body.name,
@@ -68,7 +82,11 @@ mainRouter.post(`/register`, upload.single(`avatar`), async (req, res) => {
     res.redirect(`/login`);
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
-    res.render(`main/sign-up`, {validationMessages});
+    res.render(`main/sign-up`, {
+      user,
+      errorType: ErrorType.REGISTER_WRONG,
+      validationMessages
+    });
   }
 });
 
@@ -82,16 +100,29 @@ mainRouter.post(`/login`, async (req, res) => {
   } catch (errors) {
     const validationMessages = prepareErrors(errors);
     const {user} = req.session;
-    res.render(`main/login`, {user, validationMessages});
+    res.render(`main/login`, {
+      user,
+      errorType: ErrorType.LOGIN_WRONG,
+      email: req.body[`email`],
+      validationMessages
+    });
   }
 });
 
-mainRouter.get(`/404`, (req, res) => res.render(`errors/404`, {wrapper: WrapperClass.COLOR}));
-mainRouter.get(`/500`, (req, res) => res.render(`errors/500`, {wrapper: WrapperClass.COLOR}));
+mainRouter.get(`/404`, (req, res) => {
+  const {user} = req.session;
+  res.render(`errors/404`, {user, wrapper: WrapperClass.COLOR});
+});
+mainRouter.get(`/500`, (req, res) => {
+  const {user} = req.session;
+  res.render(`errors/500`, {user, wrapper: WrapperClass.COLOR});
+});
 
 mainRouter.get(`/logout`, (req, res) => {
   delete req.session.user;
-  res.redirect(`/`);
+  req.session.save(() => {
+    res.redirect(`/`);
+  });
 });
 
 module.exports = mainRouter;

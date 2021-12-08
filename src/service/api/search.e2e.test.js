@@ -5,6 +5,7 @@ const request = require(`supertest`);
 const Sequelize = require(`sequelize`);
 
 const initDB = require(`../lib/init-db`);
+const passwordUtils = require(`../lib/password`);
 const search = require(`./search`);
 const DataService = require(`../data-service/search`);
 
@@ -13,27 +14,54 @@ const {HttpCode} = require(`../../constants`);
 const mockCategories = [
   `Музыка`,
   `Деревья`,
-  `За жизнь`
+  `За жизнь`,
+  `Без рамки`,
+  `Разное`,
+  `IT`,
+  `Музыка`,
+  `Кино`,
+  `Программирование`,
+  `Железо`
+];
+
+const mockUsers = [
+  {
+    name: `Иван Иванов`,
+    email: `ivanov@example.com`,
+    passwordHash: passwordUtils.hashSync(`ivanov`),
+    avatar: `avatar01.jpg`
+  },
+  {
+    name: `Пётр Петров`,
+    email: `petrov@example.com`,
+    passwordHash: passwordUtils.hashSync(`petrov`),
+    avatar: `avatar02.jpg`
+  }
 ];
 
 const mockData = [
   {
     "comments": [
       {
+        "user": `ivanov@example.com`,
         "text": `Мне кажется или я уже читал это где-то? `},
       {
+        "user": `petrov@example.com`,
         "text": `Это где ж такие красоты? Совсем немного...`},
       {
+        "user": `ivanov@example.com`,
         "text": `Давно не пользуюсь стационарными компьютерами. Ноутбуки победили. Планируете записать видосик на эту тему?`
       }],
     "title": `Ёлки. История деревьев`,
     "announce": `Как начать действовать? Для начала просто соберитесь. Альбом стал настоящим открытием года. Мощные гитарные рифы и скоростные соло-партии не дадут заскучать. Первая большая ёлка была установлена только в 1938 году. Программировать не настолько сложно, как об этом говорят. Это один из лучших рок-музыкантов.`,
     "fullText": `Вы можете достичь всего. Стоит только немного постараться и запастись книгами. Собрать камни бесконечности легко, если вы прирожденный герой. Достичь успеха помогут ежедневные повторения. Простые ежедневные упражнения помогут достичь успеха.`,
-    "categories": [`Разное`, `Программирование`]
+    "categories": [`Разное`, `Программирование`],
+    "user": `ivanov@example.com`,
   },
   {
     "comments": [
       {
+        "user": `ivanov@example.com`,
         "text": `Это где ж такие красоты?`
       }
     ],
@@ -44,12 +72,15 @@ const mockData = [
   {
     "comments": [
       {
+        "user": `ivanov@example.com`,
         "text": `Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`
       },
       {
+        "user": `ivanov@example.com`,
         "text": `Согласен с автором!`
       },
       {
+        "user": `petrov@example.com`,
         "text": `Совсем немного... Это где ж такие красоты?`
       }
     ],
@@ -60,12 +91,15 @@ const mockData = [
   {
     "comments": [
       {
+        "user": `ivanov@example.com`,
         "text": `Плюсую, но слишком много буквы! Согласен с автором!`
       },
       {
+        "user": `ivanov@example.com`,
         "text": ` Плюсую, но слишком много буквы! Мне кажется или я уже читал это где-то?`
       },
       {
+        "user": `ivanov@example.com`,
         "text": `Хочу такую же футболку :-)`
       }
     ],
@@ -76,12 +110,15 @@ const mockData = [
   {
     "comments": [
       {
+        "user": `ivanov@example.com`,
         "text": `Это где ж такие красоты?`
       },
       {
+        "user": `ivanov@example.com`,
         "text": ` Давно не пользуюсь стационарными компьютерами. Ноутбуки победили.`
       },
       {
+        "user": `ivanov@example.com`,
         "text": `Плюсую, но слишком много буквы!`
       }
     ],
@@ -98,7 +135,7 @@ const app = express();
 app.use(express.json());
 
 beforeAll(async () => {
-  await initDB(mockDB, {categories: mockCategories, articles: mockData});
+  await initDB(mockDB, {categories: mockCategories, articles: mockData, users: mockUsers});
   search(app, new DataService(mockDB));
 });
 
@@ -110,7 +147,7 @@ describe(`API returns article based on search query`, () => {
     response = await request(app)
       .get(`/search`)
       .query({
-        query: `Что такое золотое сечение`
+        query: `Самый лучший музыкальный альбом этого года`
       });
   });
 
@@ -118,7 +155,7 @@ describe(`API returns article based on search query`, () => {
 
   test(`1 articles found`, () => expect(response.body.length).toBe(1));
 
-  test(`Article has correct title`, () => expect(response.body[0].title).toBe(`Ёлки. История деревьев`));
+  test(`Article has correct title`, () => expect(response.body[0].title).toBe(`Самый лучший музыкальный альбом этого года`));
 });
 
 test(`API returns code 404 if nothing is found`,

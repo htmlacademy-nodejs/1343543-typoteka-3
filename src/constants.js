@@ -41,6 +41,17 @@ const HttpMethod = {
   DELETE: `DELETE`
 };
 
+const ErrorType = {
+  COMMENT: `Ошибка при создании комментария:`,
+  ARTICLE_ADD: `Ошибка при создании статьи:`,
+  ARTICLE_EDIT: `Ошибка при изменении статьи:`,
+  LOGIN_WRONG: `Ошибка при авторизации:`,
+  REGISTER_WRONG: `Ошибка при регистрации:`,
+  CATEGORY_DELETE: `Ошибка при удалении категории:`,
+  CATEGORY_UPDATE: `Ошибка при изменении названия категории:`,
+  CATEGORY_ADD: `Ошибка при добавлении категории:`
+};
+
 module.exports = {
   DEFAULT_COMMAND,
   USER_ARGV_INDEX,
@@ -51,5 +62,6 @@ module.exports = {
   HttpCode,
   HttpMethod,
   WrapperClass,
-  Env
+  Env,
+  ErrorType
 };

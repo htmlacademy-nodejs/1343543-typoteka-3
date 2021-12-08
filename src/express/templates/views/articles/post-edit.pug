@@ -6,7 +6,7 @@ block content
       const result = article.categories.findIndex((articleCategory) => articleCategory.id === categoryId);
       return (result !== -1);
     }
-  include ../../components/header/header-menu.pug
+  include ../../components/header/header.pug
   main
     section
       .popup.popup--new-publication.popup--anti
@@ -43,11 +43,11 @@ block content
                 .new-publication__category-wrapper
                   each category of categories
                     .new-publication__checkbox
-                      input(checked=isChecked(category.id) type='checkbox' name=`category-${category.id}` id=`category-${category.id}` value=`${category.id}`)
+                      input(checked=isChecked(category.id) type='checkbox' name=`categories` id=`category-${category.id}` value=`${category.id}`)
                       label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
                 .new-publication__category-wrapper
-                  +insertErrorMessage(validationMessages)
+                  +insertErrorMessage(validationMessages, errorType)
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label

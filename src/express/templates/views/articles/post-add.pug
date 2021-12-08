@@ -1,13 +1,12 @@
 extends ../../_layouts/layout.pug
 
 block content
-  include ../../components/header/header-unauth.pug
+  include ../../components/header/header.pug
   main
     section
       .popup.popup--new-publication.popup--anti
         .new-publication
           form(action='/articles/add' method='POST' enctype='multipart/form-data' autocomplete='off')
-            input(type="hidden" name="_csrf" value=csrfToken)
             .new-publication__header
               h1 Добавить публикацию
               .new-publication__date-form
@@ -24,7 +23,7 @@ block content
               .form__wrapper.form__wrapper--intro
                 .form__field
                   label
-                    input(type='text' name='title' placeholder='Заголовок' value="Заголовок больше 30 символов чтобы отлаживать" required='')
+                    input(type='text' name='title' placeholder='Заголовок' value="" required='')
                 .form__field.form__field--post-image
                   label
                     input#image-name-field(type='text' name='photo' placeholder='Фотография' readonly='')
@@ -35,17 +34,15 @@ block content
                 .new-publication__category-wrapper
                   each category of categories
                     .new-publication__checkbox
-                      input(type='checkbox' name=`category-${category.id}` id=`category-${category.id}` value=`${category.id}`)
+                      input(type='checkbox' name=`categories` id=`category-${category.id}` value=`${category.id}`)
                       label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
                 .new-publication__category-wrapper
-                  +insertErrorMessage(validationMessages)
+                  +insertErrorMessage(validationMessages, errorType)
               .form__wrapper.form__wrapper--text
                 .form__field.form__field--publication-text
                   label
                     textarea(rows='5' name='announcement' placeholder='Анонс публикации')
-                      | Анонс публикации Анонс публикации Анонс публикации Анонс публикации Анонс публикации
                 .form__field.form__field--publication-text
                   label
                     textarea(rows='10' name='full-text' placeholder='Полный текст публикации')
-                      | Полный текст публикации

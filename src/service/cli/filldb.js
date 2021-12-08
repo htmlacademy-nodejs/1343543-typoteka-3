@@ -6,7 +6,6 @@ const {getLogger} = require(`../lib/logger`);
 const passwordUtils = require(`../lib/password`);
 const initDatabase = require(`../lib/init-db`);
 
-
 const {
   getRandomDate,
   getRandomInt,
@@ -46,6 +45,16 @@ const MocksCount = {
   MAX: 1000
 };
 
+const CommentsCount = {
+  MIN: 1,
+  MAX: 5
+};
+
+const CategoriesCount = {
+  MIN: 1,
+  MAX: 5
+};
+
 const getRandomFromList = (list, minLength, maxLength, isString) => {
   const result = shuffle(list).slice(0, getRandomInt(minLength, maxLength));
   if (isString) {
@@ -64,14 +73,14 @@ const readContent = async (filePath) => {
   }
 };
 
-const getRandomSubarray = (items) => {
+const getRandomSubarray = (items, min, max) => {
   items = items.slice();
-  let count = getRandomInt(1, items.length - 1);
+  let count = getRandomInt(min, max);
   const result = [];
   while (count--) {
     result.push(
         ...items.splice(
-            getRandomInt(0, items.length - 1), 1
+            getRandomInt(min - 1, max - 1), 1
         )
     );
   }
@@ -82,7 +91,7 @@ const generateComments = (count, comments, users) => (
   Array(count).fill({}).map(() => ({
     user: users[getRandomInt(0, users.length - 1)].email,
     text: shuffle(comments)
-      .slice(0, getRandomInt(1, 3))
+      .slice(0, getRandomInt(CommentsCount.MIN, CommentsCount.MAX))
       .join(` `),
   }))
 );
@@ -111,7 +120,7 @@ const generateArticles = (params) => {
     announce: getRandomFromList(sentences, AnnounceQuantity.MIN, AnnounceQuantity.MAX, true),
     fullText: getRandomFromList(sentences, FullQuantity.MIN, FullQuantity.MAX, true),
     picture: `${getRandomFromList(pictures, 1, 1, true)}`,
-    categories: getRandomSubarray(categories),
+    categories: getRandomSubarray(categories, CategoriesCount.MIN, CategoriesCount.MAX),
   }));
 };
 
@@ -140,13 +149,13 @@ module.exports = {
         name: `Иван Иванов`,
         email: `ivanov@example.com`,
         passwordHash: await passwordUtils.hash(`ivanov`),
-        avatar: `avatar01.jpg`
+        avatar: `avatar-1.png`
       },
       {
         name: `Пётр Петров`,
         email: `petrov@example.com`,
         passwordHash: await passwordUtils.hash(`petrov`),
-        avatar: `avatar02.jpg`
+        avatar: `avatar-2.png`
       }
     ];
 

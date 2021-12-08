@@ -17,6 +17,7 @@ model.ndm2
 fill-db2.sql
 test.http
 backup
+todo2.md
 
 # Папка с собранными файлами проекта
 build/
