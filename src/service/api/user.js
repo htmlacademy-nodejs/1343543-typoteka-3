@@ -2,17 +2,15 @@
 
 const {Router} = require(`express`);
 const {HttpCode} = require(`../../constants`);
-
 const userValidator = require(`../middlewares/user-validator`);
-
 const passwordUtils = require(`../lib/password`);
-
-const route = new Router();
 
 const ErrorAuthMessage = {
   EMAIL: `Электронный адрес не существует`,
-  PASSWORD: `Неверный пароль`
+  PASSWORD: `Неверный пароль`,
 };
+
+const route = new Router();
 
 module.exports = (app, service) => {
   app.use(`/user`, route);

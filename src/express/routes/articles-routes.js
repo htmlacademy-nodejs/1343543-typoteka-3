@@ -2,18 +2,16 @@
 
 const {Router} = require(`express`);
 const csrf = require(`csurf`);
-
 const upload = require(`../middlewares/upload`);
 const auth = require(`../middlewares/auth`);
 const {prepareErrors, ensureArray} = require(`../../utils`);
 const {ErrorType} = require(`../../constants`);
-
 const api = require(`../api`).getAPI();
-const articlesRouter = new Router();
-
-const csrfProtection = csrf();
 
 const ARTICLES_PER_PAGE = 8;
+
+const articlesRouter = new Router();
+const csrfProtection = csrf();
 
 const getEditArticleData = async (articleId) => {
   const [article, categories] = await Promise.all([
