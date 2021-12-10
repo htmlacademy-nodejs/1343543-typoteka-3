@@ -1,6 +1,6 @@
 'use strict';
 
-const defineModels = require(`../models`);
+const defineModels = require(`../models/define`);
 const Alias = require(`../models/alias`);
 
 module.exports = async (sequelize, {categories, users, articles}) => {

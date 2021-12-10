@@ -2,7 +2,7 @@ extends ../../_layouts/layout.pug
 
 block content
   -
-    const isChecked = (categoryId) => {
+    const getChecked = (categoryId) => {
       const result = article.categories.findIndex((articleCategory) => articleCategory.id === categoryId);
       return (result !== -1);
     }
@@ -39,7 +39,7 @@ block content
                 .new-publication__category-wrapper
                   each category of categories
                     .new-publication__checkbox
-                      input(checked=isChecked(category.id) type='checkbox' name=`categories` id=`category-${category.id}` value=`${category.id}`)
+                      input(checked=getChecked(category.id) type='checkbox' name=`categories` id=`category-${category.id}` value=`${category.id}`)
                       label(for=`category-${category.id}`) #{category.name}
                   a.new-publication__form-link.button.button--transparent(href='#') Добавить категорию
                 .new-publication__category-wrapper
