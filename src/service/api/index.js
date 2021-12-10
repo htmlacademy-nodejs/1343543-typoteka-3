@@ -6,7 +6,7 @@ const article = require(`../api/article`);
 const search = require(`../api/search`);
 const user = require(`../api/user`);
 const sequelize = require(`../lib/sequelize`);
-const defineModels = require(`../models`);
+const defineModels = require(`../models/define`);
 
 const {
   CategoryService,
