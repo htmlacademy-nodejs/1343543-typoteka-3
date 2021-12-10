@@ -6,7 +6,7 @@ const {
   defineArticle,
   defineUser,
   defineArticleCategory
-} = require(`./index`);
+} = require(`../models`);
 
 const Alias = require(`./alias`);
 
